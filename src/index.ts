@@ -6,37 +6,49 @@ console.log(figlet.textSync('C-Meet Manager\n'));
 const program = new Command();
 
 program
-  .version('1.0.0')
-  .name('Exemplo --> npm run execute')
+  .version('-v, --version', 'Mostra a versao do C-Meet Manager')
+  .name('Exemplo ---> npm run execute')
   .usage('-u u13o12i3kf49 hour 15:30')
   .description('Programa feito para gerenciar eventos de uma empresa')
-  .option(
-    '-c, --create <date && hour && name && hosts && modality && location? && plattform?>',
-    'Cria um novo evento',
-  )
+  .option('Eventos: ')
+  .option('-c, --create <values>', 'Cria um novo evento')
   .option('-r, --read', 'Mostra todas os eventos')
   .option('-u, --update <values>', 'Atualiza os dados de um evento')
   .option('-d, --delete <id>', 'Deleta um evento')
   .option('-f, --finished <id>', 'Marca um evento como concluido sem deleta-lo')
   .option(
-    '-s, --search <date || hour || name || hosts || modality || location? || plattform?>',
+    '-s, --search <searchEventOptions>',
     'Atualiza os dados de uma reuniao',
   )
-  .option('------------------------------------------------------')
+  .option('Usuarios: ')
+  .option('-cs, --createUser <values> <adminPassword>', 'Cria um novo usuario')
+  .option('-ru, --readUsers <adminPassword>', 'Mostra todas os usuarios')
   .option(
-    '-c, --create <name && email && eventCreatorId>',
-    'Cria um novo usuario',
+    '-uu, --updateUsers <values> <adminPassword>',
+    'Atualiza os dados de um usuario',
   )
-  .option('-ru, --readUsers', 'Mostra todas os usuarios')
-  .option('-uu, --updateUsers <values>', 'Atualiza os dados de um usuario')
-  .option('-du, --deleteUsers <id>', 'Deleta um usuario')
+  .option('-du, --deleteUsers <id> <adminPassword>', 'Deleta um usuario')
   .option(
-    '-su, --search <date || hour || name || hosts || modality || location? || plattform?>',
+    '-su, --searchUsers <searchUserOptions> <adminPassword>',
     'Atualiza os dados de uma reuniao',
   )
+  .option('                                                ')
+  .option('Legendas: ', '? --> campo opcional')
   .option(
-    '-Legendas: ',
-    '&& --> operador "e"\n|| --> operador "ou"\n? --> campo opcional',
+    'Dados relativos ao cadastro e pesquisa de eventos: ',
+    'eventCreator, date, hour, name, hosts, modality, location? plattform?',
+  )
+  .option(
+    'Valores para cadastrar e pesquisar por usuarios (somente administrador): ',
+    'name, email, eventCreatorId',
+  )
+  .option(
+    '-ca, --cadmin <password> <adminDeletePassword>',
+    'Cadastra o usuario administrador',
+  )
+  .option(
+    '-adel, --adminDelete <password> <adminDeletePassword>',
+    'Cadastra o usuario administrador',
   )
   .parse(process.argv);
 
