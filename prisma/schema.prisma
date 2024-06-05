@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Event {
+  id String @id @default(uuid())
+  eventCreator String @map("event_creator")
+  date DateTime
+  hour DateTime
+  name String
+  hosts String
+  modality String
+  location String?
+  plattform String?
+  slug String @unique
+
+  eventCreatedBy Employee[]
+
+  @@map("events")
+}
+
+model Employee {
+  id String @id @default(uuid())
+  name String
+  email String
+  createdAt DateTime @default(now()) @map("created_at")
+  eventCreatorId String @map("event_creator_id")
+
+  event Event @relation(fields: [eventCreatorId], references: [id], onDelete: Cascade)
+
+  @@unique([eventCreatorId, email])
+  @@map("employees")
+}

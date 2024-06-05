@@ -11,7 +11,7 @@ program
   .usage('-u u13o12i3kf49 hour 15:30')
   .description('Programa feito para gerenciar eventos de uma empresa')
   .option(
-    '-c, --create <date && type && subject && ?members && date && hour>',
+    '-c, --create <date && hour && name && hosts && modality && location? && plattform?>',
     'Cria um novo evento',
   )
   .option('-r, --read', 'Mostra todas os eventos')
@@ -19,7 +19,19 @@ program
   .option('-d, --delete <id>', 'Deleta um evento')
   .option('-f, --finished <id>', 'Marca um evento como concluido sem deleta-lo')
   .option(
-    '-s, --search <id || date || hour || type || subject || members>',
+    '-s, --search <date || hour || name || hosts || modality || location? || plattform?>',
+    'Atualiza os dados de uma reuniao',
+  )
+  .option('------------------------------------------------------')
+  .option(
+    '-c, --create <name && email && eventCreatorId>',
+    'Cria um novo usuario',
+  )
+  .option('-ru, --readUsers', 'Mostra todas os usuarios')
+  .option('-uu, --updateUsers <values>', 'Atualiza os dados de um usuario')
+  .option('-du, --deleteUsers <id>', 'Deleta um usuario')
+  .option(
+    '-su, --search <date || hour || name || hosts || modality || location? || plattform?>',
     'Atualiza os dados de uma reuniao',
   )
   .option(
