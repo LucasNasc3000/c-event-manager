@@ -24,8 +24,9 @@ model Event {
   location String?
   plattform String?
   slug String @unique
+  eventCreatorId String @map("event_creator_id")
 
-  eventCreatedBy Employee[]
+  employee Employee @relation(fields: [eventCreatorId], references: [id], onDelete: Cascade)
 
   @@map("events")
 }
@@ -34,11 +35,23 @@ model Employee {
   id String @id @default(uuid())
   name String
   email String
+  password String
   createdAt DateTime @default(now()) @map("created_at")
-  eventCreatorId String @map("event_creator_id")
 
-  event Event @relation(fields: [eventCreatorId], references: [id], onDelete: Cascade)
+  event Event[]
 
-  @@unique([eventCreatorId, email])
+  @@unique([email])
   @@map("employees")
+}
+
+model AdminLogin {
+  id String @id @default(uuid())
+  adminUser String @map("admin_user")
+  adminPassword String @map("admin_password")
+}
+
+model UserLogin {
+  id String @id @default(uuid())
+  userEmail String @map("user_email")
+  userPassword String @map("user_password")
 }

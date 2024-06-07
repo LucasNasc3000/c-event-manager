@@ -25,7 +25,7 @@ program
   .option('Legendas: ', '? --> campo opcional')
   .option(
     'Dados relativos ao cadastro e pesquisa de eventos: ',
-    'eventCreator, date, hour, name, hosts, modality, location? plattform?',
+    'date, hour, name, hosts, modality, location? plattform?',
   )
   .option(
     'Valores para cadastrar e pesquisar por usuarios (somente administrador): ',
