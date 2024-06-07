@@ -1,37 +1,26 @@
 import { Command } from 'commander';
 import figlet from 'figlet';
 
-console.log(figlet.textSync('C-Meet Manager\n'));
+console.log(figlet.textSync('C-Event Manager\n'));
 
 const program = new Command();
 
 program
-  .version('-v, --version', 'Mostra a versao do C-Meet Manager')
   .name('Exemplo ---> npm run execute')
   .usage('-u u13o12i3kf49 hour 15:30')
   .description('Programa feito para gerenciar eventos de uma empresa')
   .option('Eventos: ')
   .option('-c, --create <values>', 'Cria um novo evento')
   .option('-r, --read', 'Mostra todas os eventos')
-  .option('-u, --update <values>', 'Atualiza os dados de um evento')
+  .option('-u, --update <id> <values>', 'Atualiza os dados de um evento')
   .option('-d, --delete <id>', 'Deleta um evento')
-  .option('-f, --finished <id>', 'Marca um evento como concluido sem deleta-lo')
-  .option(
-    '-s, --search <searchEventOptions>',
-    'Atualiza os dados de uma reuniao',
-  )
-  .option('Usuarios: ')
-  .option('-cs, --createUser <values> <adminPassword>', 'Cria um novo usuario')
-  .option('-ru, --readUsers <adminPassword>', 'Mostra todas os usuarios')
-  .option(
-    '-uu, --updateUsers <values> <adminPassword>',
-    'Atualiza os dados de um usuario',
-  )
-  .option('-du, --deleteUsers <id> <adminPassword>', 'Deleta um usuario')
-  .option(
-    '-su, --searchUsers <searchUserOptions> <adminPassword>',
-    'Atualiza os dados de uma reuniao',
-  )
+  .option('-s, --search <searchEventValues>', 'Pesquisa por um evento')
+  .option('Usuarios (somente administrador): ')
+  .option('-cs, --createUser <values>', 'Cria um novo usuario')
+  .option('-ru, --readUsers', 'Mostra todas os usuarios')
+  .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados de um usuario')
+  .option('-du, --deleteUsers <id>', 'Deleta um usuario')
+  .option('-su, --searchUsers <searchUserValues>', 'Pesquisa por um usuario')
   .option('                                                ')
   .option('Legendas: ', '? --> campo opcional')
   .option(
@@ -40,15 +29,21 @@ program
   )
   .option(
     'Valores para cadastrar e pesquisar por usuarios (somente administrador): ',
-    'name, email, eventCreatorId',
+    'name, email',
   )
-  .option(
-    '-ca, --cadmin <password> <adminDeletePassword>',
-    'Cadastra o usuario administrador',
-  )
+  .option('-ca, --cadmin <password>', 'Cadastra o usuario administrador')
   .option(
     '-adel, --adminDelete <password> <adminDeletePassword>',
-    'Cadastra o usuario administrador',
+    'Deleta o usuario administrador',
+  )
+  .option('-ulog, --userlog <username> <password>', 'Login de usuarios')
+  .option(
+    '-alog, --adminlog <adminuser> <adminpassword>',
+    'Login de administrador',
+  )
+  .option(
+    '-ext, --exit',
+    'logout tanto para usuarios quanto para o administrador',
   )
   .parse(process.argv);
 
