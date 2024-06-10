@@ -111,14 +111,15 @@ export class UserAdmin {
   private async Create() {
     const admExists = this.findAdmin();
     if (admExists === null) {
-      const createAdmin = await prisma.adminLogin.create({
+      const createAdmin = await prisma.employee.create({
         data: {
-          adminUser: this.adminEmail,
-          adminPassword: this.adminPassword,
+          name: 'admin@User',
+          email: this.adminEmail,
+          password: this.adminPassword,
         },
       });
       console.log('Administrador criado: \n');
-      console.table(`${createAdmin.adminUser}`);
+      console.table(`${createAdmin.email}`);
     }
     return 'Admin já existente';
   }
@@ -146,11 +147,10 @@ export class UserAdmin {
         return console.log('Usuario ou senha invalidos');
       }
 
-      await prisma.employee.create({
+      await prisma.adminLogin.create({
         data: {
-          name: 'admin@User',
-          email: admin.adminEmail,
-          password: admin.adminPassword,
+          adminUser: admin.adminEmail,
+          adminPassword: admin.adminPassword,
         },
       });
     } else {
@@ -204,7 +204,7 @@ export class UserAdmin {
       });
 
       if (findAdminLogin <= 0) {
-        return console.log();
+        return console.log('Login do administrador necessario');
       }
     }
 
