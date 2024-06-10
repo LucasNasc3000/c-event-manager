@@ -1,3 +1,6 @@
+// import { Employee } from './EmployeeAbstract';
+// import { UserAdmin } from './EmployeeAbstract';
+
 export class UserFactory {
   constructor(
     private _name: string,
@@ -21,12 +24,12 @@ export class UserFactory {
     this._email = email;
   }
 
-  // UserClassesCall(): void {
-  //   if (
-  //     this._name !== process.env.ADMIN_USER &&
-  //     this._password !== process.env.ADMIN_PASS
-  //   ) {
-
-  //   }
-  // }
+  UserClassesCall(): void {
+    if (
+      this._name !== process.env.ADMIN_USER &&
+      this._password !== process.env.ADMIN_PASS
+    ) {
+      // const employee = new Employee(this._name, this.email, this._password);
+    }
+  }
 }

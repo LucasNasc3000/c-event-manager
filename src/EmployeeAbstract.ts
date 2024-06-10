@@ -1,6 +1,6 @@
 import { prisma } from '../lib/prisma';
 
-export abstract class Employee {
+export class Employee {
   protected _name: string;
   protected _email: string;
   protected _password: string;
@@ -85,14 +85,12 @@ export abstract class Employee {
 }
 
 export class UserAdmin {
-  private static adminExists: boolean;
   private adminEmail: string;
   private adminPassword: string;
 
-  constructor(adminEmail: string, adminPassword: string) {
+  private constructor(adminEmail: string, adminPassword: string) {
     this.adminEmail = adminEmail;
     this.adminPassword = adminPassword;
-    this.findAdmin();
   }
 
   private async findAdmin() {
@@ -104,11 +102,9 @@ export class UserAdmin {
     });
 
     if (admExists === null) {
-      UserAdmin.adminExists = false;
       return null;
     }
 
-    UserAdmin.adminExists = true;
     return admExists;
   }
 
@@ -127,15 +123,98 @@ export class UserAdmin {
     return 'Admin já existente';
   }
 
-  static async GetAdmin(adminEmail: string, adminPassword: string) {
+  static async CreateAdmin(adminEmail: string, adminPassword: string) {
     const admin = new UserAdmin(adminEmail, adminPassword);
     const admExists = await admin.findAdmin();
 
     if (admExists !== null) {
-      return admin.adminEmail;
+      return console.log(admin.adminEmail);
     }
 
     await admin.Create();
     return console.log('Administrador criado');
+  }
+
+  static async adminLogin(adminEmail: string, adminPassword: string) {
+    const admin = new UserAdmin(adminEmail, adminPassword);
+    const admExists = await admin.findAdmin();
+
+    if (admExists !== null) {
+      const verify = await admin.adminVerify();
+
+      if (verify === false) {
+        return console.log('Usuario ou senha invalidos');
+      }
+
+      await prisma.employee.create({
+        data: {
+          name: 'admin@User',
+          email: admin.adminEmail,
+          password: admin.adminPassword,
+        },
+      });
+    } else {
+      return console.log('O usuario administrador ainda nao foi criado');
+    }
+  }
+
+  static async adminLogout(adminEmail: string, adminPassword: string) {
+    const admin = new UserAdmin(adminEmail, adminPassword);
+    const admExists = await admin.findAdmin();
+
+    if (admExists !== null) {
+      const loggedAdmin = await prisma.adminLogin.count({
+        where: {
+          id: admExists.id,
+        },
+      });
+
+      if (loggedAdmin > 0) {
+        await prisma.adminLogin.delete({
+          where: {
+            id: admExists.id,
+          },
+        });
+      }
+    } else {
+      return console.log('O administrador nao foi cadastrado');
+    }
+  }
+
+  private async adminVerify() {
+    const admExists = await this.findAdmin();
+    if (
+      admExists?.email === process.env.ADMIN_USER &&
+      admExists?.password === process.env.ADMIN_PASS
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private async adminLoginVerify() {
+    const admExists = await this.findAdmin();
+
+    if (admExists !== null) {
+      const findAdminLogin = await prisma.adminLogin.count({
+        where: {
+          id: admExists.id,
+        },
+      });
+
+      if (findAdminLogin <= 0) {
+        return console.log();
+      }
+    }
+
+    if (
+      admExists?.email === process.env.ADMIN_USER &&
+      admExists?.password === process.env.ADMIN_PASS
+    ) {
+      return true;
+    } else {
+      false;
+    }
   }
 }
