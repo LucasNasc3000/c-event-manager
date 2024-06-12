@@ -44,7 +44,7 @@ class UserFactory {
     }
     // temporario
     async Logout() {
-        UserAdmin_1.UserAdmin.adminLogout('adm@mail.com', 'Dont_Forget_A_Senha!_');
+        UserAdmin_1.UserAdmin.adminLogout(this._name, this._password);
         console.log('Administrador deslogado');
     }
 }

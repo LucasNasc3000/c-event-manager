@@ -67,24 +67,22 @@ class UserAdmin {
         }
     }
     static async adminLogout(adminUsername, adminPassword) {
-        const admin = new UserAdmin(adminUsername, adminPassword);
-        const admExists = await admin.findAdmin();
-        if (admExists !== null) {
-            const loggedAdmin = await prisma_1.prisma.adminLogin.count({
-                where: {
-                    id: admExists.id,
-                },
-            });
-            if (loggedAdmin > 0) {
+        try {
+            const admin = new UserAdmin(adminUsername, adminPassword);
+            const admExists = await admin.findAdmin();
+            if (admExists !== null) {
                 await prisma_1.prisma.adminLogin.delete({
                     where: {
-                        id: admExists.id,
+                        adminUser: admExists.email,
                     },
                 });
             }
+            else {
+                return console.log('O administrador nao foi cadastrado');
+            }
         }
-        else {
-            return console.log('O administrador nao foi cadastrado');
+        catch (e) {
+            console.log(e);
         }
     }
     async adminVerify() {
