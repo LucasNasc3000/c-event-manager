@@ -41,6 +41,7 @@ model Employee {
   event Event[]
 
   @@unique([email])
+  @@unique([name])
   @@map("employees")
 }
 
@@ -48,10 +49,14 @@ model AdminLogin {
   id String @id @default(uuid())
   adminUser String @map("admin_user")
   adminPassword String @map("admin_password")
+
+  @@unique([adminUser])
 }
 
 model UserLogin {
   id String @id @default(uuid())
   userEmail String @map("user_email")
   userPassword String @map("user_password")
+
+  @@unique([userEmail])
 }
