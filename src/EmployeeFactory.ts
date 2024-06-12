@@ -41,5 +41,19 @@ export class UserFactory {
     return admin;
   }
 
-  async Login() {}
+  async Login() {
+    if (
+      this._name === 'adm@mail.com' &&
+      this._password === 'Dont_Forget_A_Senha!_'
+    ) {
+      UserAdmin.adminLogin(this._name, this._password);
+      return 'Administrador logado com sucesso';
+    }
+  }
+
+  // temporario
+  async Logout() {
+    UserAdmin.adminLogout('adm@mail.com', 'Dont_Forget_A_Senha!_');
+    console.log('Administrador deslogado');
+  }
 }

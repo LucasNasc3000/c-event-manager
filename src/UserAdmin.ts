@@ -102,9 +102,10 @@ export class UserAdmin {
 
   private async adminVerify() {
     const admExists = await this.findAdmin();
+    // temporario
     if (
-      admExists?.email === process.env.ADMIN_USER &&
-      admExists?.password === process.env.ADMIN_PASS
+      admExists?.email === 'adm@mail.com' &&
+      admExists?.password === 'Dont_Forget_A_Senha!_'
     ) {
       return true;
     } else {

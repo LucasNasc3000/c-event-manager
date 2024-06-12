@@ -35,5 +35,17 @@ class UserFactory {
         const admin = await UserAdmin_1.UserAdmin.CreateAdmin(this._name, this._password);
         return admin;
     }
+    async Login() {
+        if (this._name === 'adm@mail.com' &&
+            this._password === 'Dont_Forget_A_Senha!_') {
+            UserAdmin_1.UserAdmin.adminLogin(this._name, this._password);
+            return 'Administrador logado com sucesso';
+        }
+    }
+    // temporario
+    async Logout() {
+        UserAdmin_1.UserAdmin.adminLogout('adm@mail.com', 'Dont_Forget_A_Senha!_');
+        console.log('Administrador deslogado');
+    }
 }
 exports.UserFactory = UserFactory;

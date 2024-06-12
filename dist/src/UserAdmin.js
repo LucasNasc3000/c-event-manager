@@ -89,8 +89,9 @@ class UserAdmin {
     }
     async adminVerify() {
         const admExists = await this.findAdmin();
-        if ((admExists === null || admExists === void 0 ? void 0 : admExists.email) === process.env.ADMIN_USER &&
-            (admExists === null || admExists === void 0 ? void 0 : admExists.password) === process.env.ADMIN_PASS) {
+        // temporario
+        if ((admExists === null || admExists === void 0 ? void 0 : admExists.email) === 'adm@mail.com' &&
+            (admExists === null || admExists === void 0 ? void 0 : admExists.password) === 'Dont_Forget_A_Senha!_') {
             return true;
         }
         else {

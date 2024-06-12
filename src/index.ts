@@ -64,7 +64,17 @@ export async function Index() {
     const classes = await uf.UserClassesCall();
     return classes;
   }
-  return console.log(options, process.argv);
+  if (options.adminlog) {
+    const uf = new UserFactory(process.argv[3], process.argv[4]);
+    const adminLog = uf.Login();
+    return adminLog;
+  }
+  // temporario
+  if (options.exit) {
+    const uf = new UserFactory(process.argv[3], process.argv[4]);
+    const logout = uf.Logout();
+    return logout;
+  }
 }
 
-console.log(Index());
+Index();
