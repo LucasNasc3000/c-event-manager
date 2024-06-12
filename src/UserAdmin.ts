@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 import { prisma } from '../lib/prisma';
+
+dotenv.config();
 
 export class UserAdmin {
   private adminUsername: string;
@@ -100,8 +103,8 @@ export class UserAdmin {
     const admExists = await this.findAdmin();
     // temporario
     if (
-      admExists?.email === 'adm@mail.com' &&
-      admExists?.password === 'Dont_Forget_A_Senha!_'
+      admExists?.email === process.env.ADMIN_USER &&
+      admExists?.password === process.env.ADMIN_PASSWORD
     ) {
       return true;
     } else {

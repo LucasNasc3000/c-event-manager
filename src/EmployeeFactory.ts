@@ -1,6 +1,8 @@
-// import { options } from './index';
+import dotenv from 'dotenv';
 import { Employee } from './Employee';
 import { UserAdmin } from './UserAdmin';
+
+dotenv.config();
 
 export class UserFactory {
   constructor(
@@ -30,8 +32,8 @@ export class UserFactory {
 
   async UserClassesCall() {
     if (
-      this._name !== 'adm@mail.com' &&
-      this._password !== 'Dont_Forget_A_Senha!_'
+      this._name !== process.env.ADMIN_USER &&
+      this._password !== process.env.ADMIN_PASSWORD
     ) {
       const empl = new Employee(this._name, this.email, this._password);
       const emplCreate = await empl.Create();
@@ -43,15 +45,14 @@ export class UserFactory {
 
   async Login() {
     if (
-      this._name === 'adm@mail.com' &&
-      this._password === 'Dont_Forget_A_Senha!_'
+      this._name === process.env.ADMIN_USER &&
+      this._password === process.env.ADMIN_PASSWORD
     ) {
       UserAdmin.adminLogin(this._name, this._password);
       return 'Administrador logado com sucesso';
     }
   }
 
-  // temporario
   async Logout() {
     UserAdmin.adminLogout(this._name, this._password);
     console.log('Administrador deslogado');

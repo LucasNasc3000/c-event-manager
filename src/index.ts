@@ -1,6 +1,9 @@
+import dotenv from 'dotenv';
 import { Command } from 'commander';
 import figlet from 'figlet';
 import { UserFactory } from './EmployeeFactory';
+
+dotenv.config();
 
 export async function Index() {
   console.log(figlet.textSync('C-Event Manager\n'));
@@ -53,14 +56,15 @@ export async function Index() {
       '-ext, --exit',
       'logout tanto para usuarios quanto para o administrador',
     );
-
   program.parse(process.argv);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
   const options = program.opts();
 
   if (options.cadmin) {
-    const uf = new UserFactory('adm@mail.com', 'Dont_Forget_A_Senha!_');
+    const uf = new UserFactory(
+      process.env.ADMIN_USER as string,
+      process.env.ADMIN_USER as string,
+    );
     const classes = await uf.UserClassesCall();
     return classes;
   }
@@ -69,7 +73,6 @@ export async function Index() {
     const adminLog = uf.Login();
     return adminLog;
   }
-  // temporario
   if (options.exit) {
     const uf = new UserFactory(process.argv[3], process.argv[4]);
     const logout = uf.Logout();

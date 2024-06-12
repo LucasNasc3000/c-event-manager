@@ -1,4 +1,7 @@
+import dotenv from 'dotenv';
 import { prisma } from '../lib/prisma';
+
+dotenv.config();
 
 export class Employee {
   private _name: string;
@@ -30,7 +33,7 @@ export class Employee {
   private async adminLoginVerify() {
     const adminVerify = await prisma.employee.findUnique({
       where: {
-        name: 'adm@30001',
+        email: process.env.ADMIN_USER,
       },
     });
 
@@ -40,7 +43,7 @@ export class Employee {
 
     const adminLoginVerify = await prisma.adminLogin.findUnique({
       where: {
-        adminUser: 'adm@30001',
+        adminUser: process.env.ADMIN_USER,
       },
     });
 
