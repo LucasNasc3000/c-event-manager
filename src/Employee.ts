@@ -19,24 +19,20 @@ export class Employee {
   private async adminLoginVerify() {
     const adminVerify = await prisma.employee.findUnique({
       where: {
-        email: 'adm@mail.com',
+        name: 'adm@30001',
       },
     });
 
     const adminLoginVerify = await prisma.adminLogin.findUnique({
       where: {
-        adminUser: 'adm@mail.com',
+        adminUser: 'adm@30001',
       },
     });
 
     if (
-      adminVerify?.email !== 'adm@mail.com' ||
-      adminLoginVerify?.adminUser !== 'adm@mail.com'
+      adminVerify?.name === 'adm@30001' &&
+      adminLoginVerify?.adminUser === 'adm@30001'
     ) {
-      return console.log('O administrador nao esta logado ou nao existe');
-    }
-
-    if (adminVerify.email === adminLoginVerify?.adminUser) {
       return true;
     }
     return false;
@@ -62,7 +58,6 @@ export class Employee {
     }
   }
 
-  // Colocar a verificação de login em um método
   public async EmployeeList() {
     try {
       const admLoginVerify = await this.adminLoginVerify();

@@ -23,23 +23,17 @@ export class UserFactory {
       return console.log('Email, nome ou senha nao foram preenchidos');
     }
 
-    if (
-      this._name !== 'adm@mail.com' &&
-      this._password !== 'Dont_Forget_A_Senha!_'
-    ) {
+    if (this._name !== 'adm@30001') {
       const empl = new Employee(this._name, this._email, this._password);
       const emplCreate = await empl.Create();
       return emplCreate;
     }
-    const admin = await UserAdmin.CreateAdmin(this._name, this._password);
+    const admin = await UserAdmin.CreateAdmin(this._email, this._password);
     return admin;
   }
 
   public async Login() {
-    if (
-      this._name === 'adm@mail.com' &&
-      this._password === 'Dont_Forget_A_Senha!_'
-    ) {
+    if (this._name === 'adm@30001') {
       UserAdmin.adminLogin(this._name, this._password);
       return 'Administrador logado com sucesso';
     }

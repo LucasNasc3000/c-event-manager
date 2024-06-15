@@ -71,7 +71,7 @@ export class UserAdmin {
           },
         });
       } else {
-        return console.log('Usuario ou senha incorretos');
+        return 'Usuario ou senha incorretos';
       }
     } catch (e) {
       return console.log(e);
