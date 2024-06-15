@@ -40,8 +40,8 @@ export class UserFactory {
   }
 
   public async Logout() {
-    UserAdmin.adminLogout(this._name, this._password);
-    console.log('Administrador deslogado');
+    UserAdmin.adminLogout();
+    console.log('Usuario deslogado');
   }
 
   public async employeesList() {

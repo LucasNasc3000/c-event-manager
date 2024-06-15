@@ -8,14 +8,14 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const prisma_1 = require("../lib/prisma");
 dotenv_1.default.config();
 class UserAdmin {
-    constructor(adminUsername, adminPassword) {
-        this.adminUsername = adminUsername;
+    constructor(adminEmail, adminPassword) {
+        this.adminEmail = adminEmail;
         this.adminPassword = adminPassword;
     }
     async findAdmin() {
         const admExists = await prisma_1.prisma.employee.findUnique({
             where: {
-                email: this.adminUsername,
+                name: 'adm@30001',
                 password: this.adminPassword,
             },
         });
@@ -30,7 +30,7 @@ class UserAdmin {
             const createAdmin = await prisma_1.prisma.employee.create({
                 data: {
                     name: 'adm@30001',
-                    email: this.adminUsername,
+                    email: this.adminEmail,
                     password: this.adminPassword,
                 },
             });
@@ -38,9 +38,9 @@ class UserAdmin {
         }
         return 'Admin já existente';
     }
-    static async CreateAdmin(adminUsername, adminPassword) {
+    static async CreateAdmin(adminEmail, adminPassword) {
         try {
-            const admin = new UserAdmin(adminUsername, adminPassword);
+            const admin = new UserAdmin(adminEmail, adminPassword);
             const admExists = await admin.findAdmin();
             if (admExists !== null) {
                 return admExists.email;
@@ -52,39 +52,30 @@ class UserAdmin {
             console.log(e);
         }
     }
-    static async adminLogin(adminUsername, adminPassword) {
+    static async adminLogin(adminEmail, adminPassword) {
         try {
-            const admin = new UserAdmin(adminUsername, adminPassword);
+            const admin = new UserAdmin(adminEmail, adminPassword);
             const admExists = await admin.findAdmin();
             if (admExists !== null) {
-                const verify = await admin.adminVerify();
-                if (verify === false) {
-                    return console.log('Usuario ou senha invalidos');
-                }
                 await prisma_1.prisma.adminLogin.create({
                     data: {
-                        adminUser: admin.adminUsername,
-                        adminPassword: admin.adminPassword,
+                        adminUser: admExists.name,
+                        adminPassword: admExists.password,
                     },
                 });
             }
             else {
-                return console.log('O usuario administrador ainda nao foi criado');
+                return 'Usuario ou senha incorretos';
             }
         }
         catch (e) {
             return console.log(e);
         }
     }
-    static async adminLogout(adminUsername, adminPassword) {
+    static async adminLogout(adminEmail, adminPassword) {
         try {
-            const admin = new UserAdmin(adminUsername, adminPassword);
+            const admin = new UserAdmin(adminEmail, adminPassword);
             const adminData = await admin.findAdmin();
-            // Esta verificação (linha 93) é necessária?
-            if (adminUsername !== (adminData === null || adminData === void 0 ? void 0 : adminData.email) ||
-                adminPassword !== adminPassword) {
-                return console.log('Usuario ou senha incorretos');
-            }
             if (adminData !== null) {
                 await prisma_1.prisma.adminLogin.delete({
                     where: {
@@ -93,21 +84,11 @@ class UserAdmin {
                 });
             }
             else {
-                return console.log('O administrador nao foi cadastrado');
+                return console.log('Administrador nao logado');
             }
         }
         catch (e) {
             console.log(e);
-        }
-    }
-    async adminVerify() {
-        const admExists = await this.findAdmin();
-        if ((admExists === null || admExists === void 0 ? void 0 : admExists.email) === 'adm@mail.com' &&
-            (admExists === null || admExists === void 0 ? void 0 : admExists.password) === 'Dont_Forget_A_Senha!_') {
-            return true;
-        }
-        else {
-            return false;
         }
     }
 }

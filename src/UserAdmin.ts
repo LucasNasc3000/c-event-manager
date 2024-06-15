@@ -78,20 +78,13 @@ export class UserAdmin {
     }
   }
 
-  static async adminLogout(adminEmail: string, adminPassword: string) {
+  static async adminLogout() {
     try {
-      const admin = new UserAdmin(adminEmail, adminPassword);
-      const adminData = await admin.findAdmin();
-
-      if (adminData !== null) {
-        await prisma.adminLogin.delete({
-          where: {
-            adminUser: adminData.name,
-          },
-        });
-      } else {
-        return console.log('Administrador nao logado');
-      }
+      await prisma.adminLogin.delete({
+        where: {
+          adminUser: 'adm@30001',
+        },
+      });
     } catch (e) {
       console.log(e);
     }
