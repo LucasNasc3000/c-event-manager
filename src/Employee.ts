@@ -4,63 +4,50 @@ import { prisma } from '../lib/prisma';
 dotenv.config();
 
 export class Employee {
-  private _name: string;
-  private _email: string;
-  private _password: string;
+  private _name: string = '';
+  private _email: string = '';
+  private _password: string = '';
+  private errorMsg: string =
+    'Operacao nao autorizada. Login do administrador necessario';
 
-  constructor(name: string, email: string, password: string) {
+  constructor(name: string = '', email: string = '', password: string = '') {
     this._name = name;
     this._email = email;
     this._password = password;
   }
 
-  get name(): string {
-    return this._name;
-  }
-
-  get email(): string {
-    return this._email;
-  }
-
-  set name(name: string) {
-    this._name = name;
-  }
-
-  set email(email: string) {
-    this._email = email;
-  }
-
   private async adminLoginVerify() {
     const adminVerify = await prisma.employee.findUnique({
       where: {
-        email: process.env.ADMIN_USER,
+        email: 'adm@mail.com',
       },
     });
-
-    if (adminVerify === null) {
-      return false;
-    }
 
     const adminLoginVerify = await prisma.adminLogin.findUnique({
       where: {
-        adminUser: process.env.ADMIN_USER,
+        adminUser: 'adm@mail.com',
       },
     });
 
-    if (adminVerify.name === adminLoginVerify?.adminUser) {
+    if (
+      adminVerify?.email !== 'adm@mail.com' ||
+      adminLoginVerify?.adminUser !== 'adm@mail.com'
+    ) {
+      return console.log('O administrador nao esta logado ou nao existe');
+    }
+
+    if (adminVerify.email === adminLoginVerify?.adminUser) {
       return true;
     }
+    return false;
   }
 
   public async Create() {
     try {
       const admLoginVerify = await this.adminLoginVerify();
       if (admLoginVerify === false) {
-        return console.log(
-          'Operacao nao autorizada. Login do administrador necessario',
-        );
+        return console.log(this.errorMsg);
       }
-
       const createEmployee = await prisma.employee.create({
         data: {
           name: this._name,
@@ -75,8 +62,13 @@ export class Employee {
     }
   }
 
+  // Colocar a verificação de login em um método
   public async EmployeeList() {
     try {
+      const admLoginVerify = await this.adminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(this.errorMsg);
+      }
       const employeesList = await prisma.employee.findMany();
       return console.table(employeesList);
     } catch (e) {

@@ -59,36 +59,45 @@ export class UserAdmin {
   }
 
   static async adminLogin(adminUsername: string, adminPassword: string) {
-    const admin = new UserAdmin(adminUsername, adminPassword);
-    const admExists = await admin.findAdmin();
+    try {
+      const admin = new UserAdmin(adminUsername, adminPassword);
+      const admExists = await admin.findAdmin();
 
-    if (admExists !== null) {
-      const verify = await admin.adminVerify();
+      if (admExists !== null) {
+        const verify = await admin.adminVerify();
 
-      if (verify === false) {
-        return console.log('Usuario ou senha invalidos');
+        if (verify === false) {
+          return console.log('Usuario ou senha invalidos');
+        }
+
+        await prisma.adminLogin.create({
+          data: {
+            adminUser: admin.adminUsername,
+            adminPassword: admin.adminPassword,
+          },
+        });
+      } else {
+        return console.log('O usuario administrador ainda nao foi criado');
       }
-
-      await prisma.adminLogin.create({
-        data: {
-          adminUser: admin.adminUsername,
-          adminPassword: admin.adminPassword,
-        },
-      });
-    } else {
-      return console.log('O usuario administrador ainda nao foi criado');
+    } catch (e) {
+      return console.log(e);
     }
   }
 
   static async adminLogout(adminUsername: string, adminPassword: string) {
     try {
       const admin = new UserAdmin(adminUsername, adminPassword);
-      const admExists = await admin.findAdmin();
+      const admVerify = admin.adminVerify(adminUsername, adminPassword);
+      const adminData = await admin.findAdmin();
 
-      if (admExists !== null) {
+      if (admVerify !== true) {
+        return console.log('Usuario ou senha incorretos');
+      }
+
+      if (adminData !== null) {
         await prisma.adminLogin.delete({
           where: {
-            adminUser: admExists.email,
+            adminUser: adminData.email,
           },
         });
       } else {
@@ -99,12 +108,10 @@ export class UserAdmin {
     }
   }
 
-  private async adminVerify() {
-    const admExists = await this.findAdmin();
-    // temporario
+  private adminVerify(adminUsername: string, adminPassword: string): boolean {
     if (
-      admExists?.email === process.env.ADMIN_USER &&
-      admExists?.password === process.env.ADMIN_PASSWORD
+      adminUsername === 'adm@mail.com' &&
+      adminPassword === 'Dont_Forget_A_Senha!_'
     ) {
       return true;
     } else {

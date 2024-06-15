@@ -65,18 +65,33 @@ export async function Index() {
       process.env.ADMIN_USER as string,
       process.env.ADMIN_USER as string,
     );
-    const classes = await uf.UserClassesCall();
+    const classes = await uf.UserCreate();
     return classes;
   }
   if (options.adminlog) {
     const uf = new UserFactory(process.argv[3], process.argv[4]);
-    const adminLog = uf.Login();
+    const adminLog = await uf.Login();
     return adminLog;
   }
   if (options.exit) {
     const uf = new UserFactory(process.argv[3], process.argv[4]);
     const logout = uf.Logout();
     return logout;
+  }
+  if (options.createUser) {
+    const uf = new UserFactory(
+      process.argv[3],
+      process.argv[4],
+      process.argv[5],
+    );
+    const user = await uf.UserCreate();
+    return user;
+  }
+
+  if (options.readUsers) {
+    const uf = new UserFactory();
+    const list = await uf.employeesList();
+    return list;
   }
 }
 
