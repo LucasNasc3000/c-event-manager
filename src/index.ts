@@ -74,7 +74,7 @@ export async function Index() {
     return adminLog;
   }
   if (options.exit) {
-    const uf = new UserFactory(process.argv[3], process.argv[4]);
+    const uf = new UserFactory();
     const logout = uf.Logout();
     return logout;
   }
@@ -87,7 +87,6 @@ export async function Index() {
     const user = await uf.UserCreate();
     return user;
   }
-
   if (options.readUsers) {
     const uf = new UserFactory();
     const list = await uf.employeesList();

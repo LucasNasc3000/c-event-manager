@@ -10,7 +10,7 @@ const Employee_1 = require("./Employee");
 const UserAdmin_1 = require("./UserAdmin");
 dotenv_1.default.config();
 class UserFactory {
-    constructor(name = '', password = '', email = '') {
+    constructor(email = '', password = '', name = '') {
         this._name = '';
         this._password = '';
         this._email = '';
@@ -32,14 +32,15 @@ class UserFactory {
         return admin;
     }
     async Login() {
-        if (this._name === 'adm@30001') {
-            UserAdmin_1.UserAdmin.adminLogin(this._name, this._password);
-            return 'Administrador logado com sucesso';
+        if (this._email[0] === 'a' &&
+            this._email[1] === 'd' &&
+            this._email[2] === 'm') {
+            UserAdmin_1.UserAdmin.adminLogin(this._email, this._password);
         }
     }
     async Logout() {
-        UserAdmin_1.UserAdmin.adminLogout(this._name, this._password);
-        console.log('Administrador deslogado');
+        UserAdmin_1.UserAdmin.adminLogout();
+        console.log('Usuario deslogado');
     }
     async employeesList() {
         const empl = new Employee_1.Employee();

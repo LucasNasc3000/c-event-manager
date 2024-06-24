@@ -10,7 +10,7 @@ export class UserFactory {
   private _password: string = '';
   private _email: string = '';
 
-  constructor(name: string = '', password: string = '', email: string = '') {
+  constructor(email: string = '', password: string = '', name: string = '') {
     this._name = name;
     this._password = password;
     this._email = email;
@@ -33,9 +33,12 @@ export class UserFactory {
   }
 
   public async Login() {
-    if (this._name === 'adm@30001') {
-      UserAdmin.adminLogin(this._name, this._password);
-      return 'Administrador logado com sucesso';
+    if (
+      this._email[0] === 'a' &&
+      this._email[1] === 'd' &&
+      this._email[2] === 'm'
+    ) {
+      UserAdmin.adminLogin(this._email, this._password);
     }
   }
 

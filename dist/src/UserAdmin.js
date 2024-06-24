@@ -15,7 +15,7 @@ class UserAdmin {
     async findAdmin() {
         const admExists = await prisma_1.prisma.employee.findUnique({
             where: {
-                name: 'adm@30001',
+                email: this.adminEmail,
                 password: this.adminPassword,
             },
         });
@@ -59,10 +59,11 @@ class UserAdmin {
             if (admExists !== null) {
                 await prisma_1.prisma.adminLogin.create({
                     data: {
-                        adminUser: admExists.name,
+                        adminUser: admExists.email,
                         adminPassword: admExists.password,
                     },
                 });
+                return console.log('Administrador logado com sucesso');
             }
             else {
                 return 'Usuario ou senha incorretos';
@@ -72,20 +73,9 @@ class UserAdmin {
             return console.log(e);
         }
     }
-    static async adminLogout(adminEmail, adminPassword) {
+    static async adminLogout() {
         try {
-            const admin = new UserAdmin(adminEmail, adminPassword);
-            const adminData = await admin.findAdmin();
-            if (adminData !== null) {
-                await prisma_1.prisma.adminLogin.delete({
-                    where: {
-                        adminUser: adminData.email,
-                    },
-                });
-            }
-            else {
-                return console.log('Administrador nao logado');
-            }
+            await prisma_1.prisma.adminLogin.deleteMany();
         }
         catch (e) {
             console.log(e);

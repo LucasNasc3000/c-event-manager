@@ -50,7 +50,7 @@ async function Index() {
         return adminLog;
     }
     if (options.exit) {
-        const uf = new EmployeeFactory_1.UserFactory(process.argv[3], process.argv[4]);
+        const uf = new EmployeeFactory_1.UserFactory();
         const logout = uf.Logout();
         return logout;
     }

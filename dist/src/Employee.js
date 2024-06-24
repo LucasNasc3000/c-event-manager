@@ -18,18 +18,18 @@ class Employee {
         this._password = password;
     }
     async adminLoginVerify() {
+        const admLogin = await prisma_1.prisma.adminLogin.findMany();
+        if (admLogin.length <= 0)
+            return false;
+        const verifyAdminUser = admLogin.map((adm) => {
+            return adm.adminUser;
+        });
         const adminVerify = await prisma_1.prisma.employee.findUnique({
             where: {
-                name: 'adm@30001',
+                email: verifyAdminUser[0],
             },
         });
-        const adminLoginVerify = await prisma_1.prisma.adminLogin.findUnique({
-            where: {
-                adminUser: 'adm@30001',
-            },
-        });
-        if ((adminVerify === null || adminVerify === void 0 ? void 0 : adminVerify.name) === 'adm@30001' &&
-            (adminLoginVerify === null || adminLoginVerify === void 0 ? void 0 : adminLoginVerify.adminUser) === 'adm@30001') {
+        if (adminVerify !== null && adminVerify.email === verifyAdminUser[0]) {
             return true;
         }
         return false;

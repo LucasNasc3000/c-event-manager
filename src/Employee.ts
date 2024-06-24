@@ -17,22 +17,21 @@ export class Employee {
   }
 
   private async adminLoginVerify() {
+    const admLogin = await prisma.adminLogin.findMany();
+
+    if (admLogin.length <= 0) return false;
+
+    const verifyAdminUser = admLogin.map((adm) => {
+      return adm.adminUser;
+    });
+
     const adminVerify = await prisma.employee.findUnique({
       where: {
-        name: 'adm@30001',
+        email: verifyAdminUser[0],
       },
     });
 
-    const adminLoginVerify = await prisma.adminLogin.findUnique({
-      where: {
-        adminUser: 'adm@30001',
-      },
-    });
-
-    if (
-      adminVerify?.name === 'adm@30001' &&
-      adminLoginVerify?.adminUser === 'adm@30001'
-    ) {
+    if (adminVerify !== null && adminVerify.email === verifyAdminUser[0]) {
       return true;
     }
     return false;
