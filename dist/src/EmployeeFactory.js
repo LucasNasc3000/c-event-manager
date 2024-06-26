@@ -22,7 +22,7 @@ class UserFactory {
     }
     async UserCreate() {
         const fieldsCheck = this.fieldsCheck();
-        if (fieldsCheck === true) {
+        if (fieldsCheck === false) {
             return console.log('Email, nome ou senha nao foram preenchidos');
         }
         if (this._name !== 'adm@30001') {
@@ -58,6 +58,10 @@ class UserFactory {
         const empl = new Employee_1.Employee();
         const emplUpdate = await empl.Update(this._id, data);
         return emplUpdate;
+    }
+    async Delete(id) {
+        const empl = new Employee_1.Employee();
+        await empl.Delete(id);
     }
     async searchById(id) {
         const empl = new Employee_1.Employee();

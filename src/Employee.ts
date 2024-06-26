@@ -52,7 +52,7 @@ export class Employee {
         },
       });
 
-      return createEmployee;
+      return console.table(createEmployee);
     } catch (e) {
       console.log(e);
     }

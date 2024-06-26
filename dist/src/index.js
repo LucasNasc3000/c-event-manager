@@ -70,6 +70,10 @@ async function Index() {
         data.push(process.argv[4], process.argv[5]);
         await uf.employeeUpdate(data);
     }
+    if (options.deleteUsers) {
+        const uf = new EmployeeFactory_1.UserFactory();
+        await uf.Delete(process.argv[3]);
+    }
     if (options.searchUsers) {
         const uf = new EmployeeFactory_1.UserFactory();
         const findById = uf.searchById(process.argv[3]);

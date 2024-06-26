@@ -100,6 +100,10 @@ export async function Index() {
 
     await uf.employeeUpdate(data);
   }
+  if (options.deleteUsers) {
+    const uf = new UserFactory();
+    await uf.Delete(process.argv[3]);
+  }
   if (options.searchUsers) {
     const uf = new UserFactory();
     const findById = uf.searchById(process.argv[3]);

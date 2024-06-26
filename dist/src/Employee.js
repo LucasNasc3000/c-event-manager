@@ -47,7 +47,7 @@ class Employee {
                     password: this._password,
                 },
             });
-            return createEmployee;
+            return console.table(createEmployee);
         }
         catch (e) {
             console.log(e);

@@ -26,7 +26,7 @@ export class UserFactory {
   public async UserCreate() {
     const fieldsCheck = this.fieldsCheck();
 
-    if (fieldsCheck === true) {
+    if (fieldsCheck === false) {
       return console.log('Email, nome ou senha nao foram preenchidos');
     }
 
@@ -71,6 +71,11 @@ export class UserFactory {
     const empl = new Employee();
     const emplUpdate = await empl.Update(this._id, data);
     return emplUpdate;
+  }
+
+  public async Delete(id: string) {
+    const empl = new Employee();
+    await empl.Delete(id);
   }
 
   public async searchById(id: string) {
