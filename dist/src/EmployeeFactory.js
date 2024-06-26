@@ -10,13 +10,15 @@ const Employee_1 = require("./Employee");
 const UserAdmin_1 = require("./UserAdmin");
 dotenv_1.default.config();
 class UserFactory {
-    constructor(email = '', password = '', name = '') {
+    constructor(email = '', password = '', name = '', id = '') {
         this._name = '';
         this._password = '';
         this._email = '';
-        this._name = name;
-        this._password = password;
+        this._id = '';
         this._email = email;
+        this._password = password;
+        this._name = name;
+        this._id = id;
     }
     async UserCreate() {
         const fieldsCheck = this.fieldsCheck();
@@ -46,6 +48,21 @@ class UserFactory {
         const empl = new Employee_1.Employee();
         const emplList = await empl.EmployeeList();
         return emplList;
+    }
+    async employeeUpdate(data) {
+        if (typeof this._id === 'undefined' ||
+            this._id === '' ||
+            this._id === null) {
+            return 'id nao informado';
+        }
+        const empl = new Employee_1.Employee();
+        const emplUpdate = await empl.Update(this._id, data);
+        return emplUpdate;
+    }
+    async searchById(id) {
+        const empl = new Employee_1.Employee();
+        const findById = empl.searchById(id);
+        return findById;
     }
     fieldsCheck() {
         const fields = [this._name, this._email, this._password];

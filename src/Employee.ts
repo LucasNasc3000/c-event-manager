@@ -16,7 +16,7 @@ export class Employee {
     this._password = password;
   }
 
-  private async adminLoginVerify() {
+  public async adminLoginVerify() {
     const admLogin = await prisma.adminLogin.findMany();
 
     if (admLogin.length <= 0) return false;
@@ -43,6 +43,7 @@ export class Employee {
       if (admLoginVerify === false) {
         return console.log(this.errorMsg);
       }
+
       const createEmployee = await prisma.employee.create({
         data: {
           name: this._name,
@@ -63,6 +64,7 @@ export class Employee {
       if (admLoginVerify === false) {
         return console.log(this.errorMsg);
       }
+
       const employeesList = await prisma.employee.findMany();
       return console.table(employeesList);
     } catch (e) {
@@ -70,7 +72,12 @@ export class Employee {
     }
   }
 
-  public async Update(id: string) {
+  public async Update(id: string, data: string[]) {
+    const admLoginVerify = await this.adminLoginVerify();
+    if (admLoginVerify === false) {
+      return console.log(this.errorMsg);
+    }
+
     const findEmployee = await prisma.employee.findUnique({
       where: {
         id: id,
@@ -81,20 +88,21 @@ export class Employee {
       return console.log(`Funcionario ${id} nao encontrado`);
     }
 
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
     const udpateEmployee = await prisma.employee.update({
       where: {
         id: id,
       },
 
       data: {
-        email: this._email,
-        name: this._name,
+        email: data[0],
+        name: data[1],
       },
     });
 
-    return console.table(
-      `Dados do funcionario ${id} atualizados: \n${udpateEmployee}`,
-    );
+    const updateCheck = await this.searchById(id);
+
+    return updateCheck;
   }
 
   public async Delete(id: string) {
@@ -105,5 +113,24 @@ export class Employee {
     });
 
     return console.log(`Funcionario ${deleteEmployee.id} deletado`);
+  }
+
+  public async searchById(id: string) {
+    const admLoginVerify = await this.adminLoginVerify();
+    if (admLoginVerify === false) {
+      return console.log(this.errorMsg);
+    }
+
+    const findEmployee = await prisma.employee.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (!findEmployee) {
+      return console.log(`Funcionario ${id} nao encontrado`);
+    }
+
+    return console.table(findEmployee);
   }
 }

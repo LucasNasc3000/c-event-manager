@@ -64,6 +64,17 @@ async function Index() {
         const list = await uf.employeesList();
         return list;
     }
+    if (options.updateUsers) {
+        const data = [];
+        const uf = new EmployeeFactory_1.UserFactory('', '', '', process.argv[3]);
+        data.push(process.argv[4], process.argv[5]);
+        await uf.employeeUpdate(data);
+    }
+    if (options.searchUsers) {
+        const uf = new EmployeeFactory_1.UserFactory();
+        const findById = uf.searchById(process.argv[3]);
+        return findById;
+    }
 }
 exports.Index = Index;
 Index();

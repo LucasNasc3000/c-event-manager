@@ -66,7 +66,11 @@ class Employee {
             console.log(e);
         }
     }
-    async Update(id) {
+    async Update(id, data) {
+        const admLoginVerify = await this.adminLoginVerify();
+        if (admLoginVerify === false) {
+            return console.log(this.errorMsg);
+        }
         const findEmployee = await prisma_1.prisma.employee.findUnique({
             where: {
                 id: id,
@@ -75,16 +79,18 @@ class Employee {
         if (!findEmployee) {
             return console.log(`Funcionario ${id} nao encontrado`);
         }
+        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
         const udpateEmployee = await prisma_1.prisma.employee.update({
             where: {
                 id: id,
             },
             data: {
-                email: this._email,
-                name: this._name,
+                email: data[0],
+                name: data[1],
             },
         });
-        return console.table(`Dados do funcionario ${id} atualizados: \n${udpateEmployee}`);
+        const updateCheck = await this.searchById(id);
+        return updateCheck;
     }
     async Delete(id) {
         const deleteEmployee = await prisma_1.prisma.employee.delete({
@@ -93,6 +99,21 @@ class Employee {
             },
         });
         return console.log(`Funcionario ${deleteEmployee.id} deletado`);
+    }
+    async searchById(id) {
+        const admLoginVerify = await this.adminLoginVerify();
+        if (admLoginVerify === false) {
+            return console.log(this.errorMsg);
+        }
+        const findEmployee = await prisma_1.prisma.employee.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        if (!findEmployee) {
+            return console.log(`Funcionario ${id} nao encontrado`);
+        }
+        return console.table(findEmployee);
     }
 }
 exports.Employee = Employee;

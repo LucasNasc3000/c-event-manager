@@ -9,11 +9,18 @@ export class UserFactory {
   private _name: string = '';
   private _password: string = '';
   private _email: string = '';
+  private _id: string = '';
 
-  constructor(email: string = '', password: string = '', name: string = '') {
-    this._name = name;
-    this._password = password;
+  constructor(
+    email: string = '',
+    password: string = '',
+    name: string = '',
+    id: string = '',
+  ) {
     this._email = email;
+    this._password = password;
+    this._name = name;
+    this._id = id;
   }
 
   public async UserCreate() {
@@ -51,6 +58,25 @@ export class UserFactory {
     const empl = new Employee();
     const emplList = await empl.EmployeeList();
     return emplList;
+  }
+
+  public async employeeUpdate(data: string[]) {
+    if (
+      typeof this._id === 'undefined' ||
+      this._id === '' ||
+      this._id === null
+    ) {
+      return 'id nao informado';
+    }
+    const empl = new Employee();
+    const emplUpdate = await empl.Update(this._id, data);
+    return emplUpdate;
+  }
+
+  public async searchById(id: string) {
+    const empl = new Employee();
+    const findById = empl.searchById(id);
+    return findById;
   }
 
   private fieldsCheck(): boolean {
