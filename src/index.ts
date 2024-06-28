@@ -59,6 +59,7 @@ export async function Index() {
   program.parse(process.argv);
 
   const options = program.opts();
+  const uf = new UserFactory();
 
   if (options.cadmin) {
     const uf = new UserFactory(
@@ -68,16 +69,18 @@ export async function Index() {
     const classes = await uf.UserCreate();
     return classes;
   }
+
   if (options.adminlog) {
     const uf = new UserFactory(process.argv[3], process.argv[4]);
     const adminLog = await uf.Login();
     return adminLog;
   }
+
   if (options.exit) {
-    const uf = new UserFactory();
     const logout = uf.Logout();
     return logout;
   }
+
   if (options.createUser) {
     const uf = new UserFactory(
       process.argv[3],
@@ -87,11 +90,12 @@ export async function Index() {
     const user = await uf.UserCreate();
     return user;
   }
+
   if (options.readUsers) {
-    const uf = new UserFactory();
     const list = await uf.employeesList();
     return list;
   }
+
   if (options.updateUsers) {
     const data: string[] = [];
     const uf = new UserFactory('', '', '', process.argv[3]);
@@ -100,12 +104,12 @@ export async function Index() {
 
     await uf.employeeUpdate(data);
   }
+
   if (options.deleteUsers) {
-    const uf = new UserFactory();
     await uf.Delete(process.argv[3]);
   }
+
   if (options.searchUsers) {
-    const uf = new UserFactory();
     const findById = uf.searchById(process.argv[3]);
     return findById;
   }
