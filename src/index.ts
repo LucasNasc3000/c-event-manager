@@ -28,7 +28,18 @@ export async function Index() {
       'Atualiza os dados de um usuario',
     )
     .option('-du, --deleteUsers <id>', 'Deleta um usuario')
-    .option('-su, --searchUsers <searchUserValues>', 'Pesquisa por um usuario')
+    .option(
+      '-sid, --searchUsersId <searchUserValues>',
+      'Pesquisa por um usuario pelo id',
+    )
+    .option(
+      '-sbm, --searchUsersEmail <searchUserValues>',
+      'Pesquisa por um usuario pelo email',
+    )
+    .option(
+      '-sbn, --searchUsersName <searchUserValues>',
+      'Pesquisa por um usuario pelo nome',
+    )
     .option('                                                ')
     .option('Legendas: ', '? --> campo opcional')
     .option(
@@ -109,9 +120,19 @@ export async function Index() {
     await uf.Delete(process.argv[3]);
   }
 
-  if (options.searchUsers) {
-    const findById = uf.searchById(process.argv[3]);
-    return findById;
+  if (options.searchUsersId) {
+    const EmployeeFinder = uf.Search(process.argv[3]);
+    return EmployeeFinder;
+  }
+
+  if (options.searchUsersEmail) {
+    const EmployeeFinder = uf.Search(process.argv[3]);
+    return EmployeeFinder;
+  }
+
+  if (options.searchUsersName) {
+    const EmployeeFinder = uf.Search(process.argv[3]);
+    return EmployeeFinder;
   }
 }
 

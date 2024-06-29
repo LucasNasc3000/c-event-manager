@@ -111,7 +111,37 @@ class Employee {
             },
         });
         if (!findEmployee) {
-            return console.log(`Funcionario ${id} nao encontrado`);
+            return null;
+        }
+        return console.table(findEmployee);
+    }
+    async searchByEmail(email) {
+        const admLoginVerify = await this.adminLoginVerify();
+        if (admLoginVerify === false) {
+            return console.log(this.errorMsg);
+        }
+        const findEmployee = await prisma_1.prisma.employee.findUnique({
+            where: {
+                email: email,
+            },
+        });
+        if (!findEmployee) {
+            return console.log(`Funcionario ${email} nao encontrado`);
+        }
+        return console.table(findEmployee);
+    }
+    async searchByName(name) {
+        const admLoginVerify = await this.adminLoginVerify();
+        if (admLoginVerify === false) {
+            return console.log(this.errorMsg);
+        }
+        const findEmployee = await prisma_1.prisma.employee.findUnique({
+            where: {
+                name: name,
+            },
+        });
+        if (!findEmployee) {
+            return console.log(`Funcionario ${name} nao encontrado`);
         }
         return console.table(findEmployee);
     }

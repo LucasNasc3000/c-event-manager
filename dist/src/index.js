@@ -27,7 +27,9 @@ async function Index() {
         .option('-ru, --readUsers', 'Mostra todas os usuarios')
         .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados de um usuario')
         .option('-du, --deleteUsers <id>', 'Deleta um usuario')
-        .option('-su, --searchUsers <searchUserValues>', 'Pesquisa por um usuario')
+        .option('-sid, --searchUsersId <searchUserValues>', 'Pesquisa por um usuario pelo id')
+        .option('-sbm, --searchUsersEmail <searchUserValues>', 'Pesquisa por um usuario pelo email')
+        .option('-sbn, --searchUsersName <searchUserValues>', 'Pesquisa por um usuario pelo nome')
         .option('                                                ')
         .option('Legendas: ', '? --> campo opcional')
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
@@ -39,6 +41,7 @@ async function Index() {
         .option('-ext, --exit', 'logout tanto para usuarios quanto para o administrador');
     program.parse(process.argv);
     const options = program.opts();
+    const uf = new EmployeeFactory_1.UserFactory();
     if (options.cadmin) {
         const uf = new EmployeeFactory_1.UserFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
         const classes = await uf.UserCreate();
@@ -50,7 +53,6 @@ async function Index() {
         return adminLog;
     }
     if (options.exit) {
-        const uf = new EmployeeFactory_1.UserFactory();
         const logout = uf.Logout();
         return logout;
     }
@@ -60,7 +62,6 @@ async function Index() {
         return user;
     }
     if (options.readUsers) {
-        const uf = new EmployeeFactory_1.UserFactory();
         const list = await uf.employeesList();
         return list;
     }
@@ -71,13 +72,19 @@ async function Index() {
         await uf.employeeUpdate(data);
     }
     if (options.deleteUsers) {
-        const uf = new EmployeeFactory_1.UserFactory();
         await uf.Delete(process.argv[3]);
     }
-    if (options.searchUsers) {
-        const uf = new EmployeeFactory_1.UserFactory();
-        const findById = uf.searchById(process.argv[3]);
-        return findById;
+    if (options.searchUsersId) {
+        const EmployeeFinder = uf.Search(process.argv[3]);
+        return EmployeeFinder;
+    }
+    if (options.searchUsersEmail) {
+        const EmployeeFinder = uf.Search(process.argv[3]);
+        return EmployeeFinder;
+    }
+    if (options.searchUsersName) {
+        const EmployeeFinder = uf.Search(process.argv[3]);
+        return EmployeeFinder;
     }
 }
 exports.Index = Index;

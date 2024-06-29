@@ -78,10 +78,26 @@ export class UserFactory {
     await empl.Delete(id);
   }
 
-  public async searchById(id: string) {
+  public async Search(searchValue: string) {
     const empl = new Employee();
-    const findById = empl.searchById(id);
-    return findById;
+    const alphabetRegex = /^[a-zA-Z]+$/;
+    if (searchValue === '') {
+      return console.log('Dado nao informado');
+    }
+
+    if (searchValue.includes('@') || searchValue.includes('.com')) {
+      await empl.searchByEmail(searchValue);
+    } else if (alphabetRegex.test(searchValue)) {
+      await empl.searchByName(searchValue);
+    } else {
+      const searchId = await empl.searchById(searchValue);
+
+      if (searchId === null) {
+        return console.log(
+          `Funcionario de id: ${searchValue} inexistente ou o dado de busca foi informado incorretamente.`,
+        );
+      }
+    }
   }
 
   private fieldsCheck(): boolean {
