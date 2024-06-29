@@ -11,8 +11,8 @@ export async function Index() {
   const program = new Command();
 
   program
-    .name('Exemplo ---> npm run execute')
-    .usage('-u u13o12i3kf49 hour 15:30')
+    .name('Exemplo ---> npm node dist/src/index.js')
+    .usage('-uu u13o12i3kf49 Joao')
     .description('Programa feito para gerenciar eventos de uma empresa')
     .option('Eventos: ')
     .option('-c, --create <values>', 'Cria um novo evento')
