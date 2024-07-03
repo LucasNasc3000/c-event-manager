@@ -10,6 +10,7 @@ export class UserFactory {
   private _password: string = '';
   private _email: string = '';
   private _id: string = '';
+  private empl: Employee = new Employee();
 
   constructor(
     email: string = '',
@@ -48,8 +49,8 @@ export class UserFactory {
       UserAdmin.adminLogin(this._email, this._password);
     }
 
-    const empl = new Employee();
-    const employeeLogin = empl.Login(this._email, this._password);
+    const empl = new Employee('', this._email, this._password);
+    const employeeLogin = empl.Login();
     return employeeLogin;
   }
 
@@ -58,13 +59,12 @@ export class UserFactory {
   }
 
   public async employeeLogout() {
-    const empl = new Employee();
-    return empl.Logout(this._email);
+    const empl = new Employee('', this._email);
+    return empl.Logout();
   }
 
   public async employeesList() {
-    const empl = new Employee();
-    const emplList = await empl.EmployeeList();
+    const emplList = await this.empl.EmployeeList();
     return emplList;
   }
 
@@ -76,29 +76,26 @@ export class UserFactory {
     ) {
       return 'id nao informado';
     }
-    const empl = new Employee();
-    const emplUpdate = await empl.Update(this._id, data);
+    const emplUpdate = await this.empl.Update(this._id, data);
     return emplUpdate;
   }
 
   public async Delete(id: string) {
-    const empl = new Employee();
-    await empl.Delete(id);
+    await this.empl.Delete(id);
   }
 
   public async Search(searchValue: string) {
-    const empl = new Employee();
     const alphabetRegex = /^[a-zA-Z]+$/;
     if (searchValue === '') {
       return console.log('Dado nao informado');
     }
 
     if (searchValue.includes('@') || searchValue.includes('.com')) {
-      await empl.searchByEmail(searchValue);
+      await this.empl.searchByEmail(searchValue);
     } else if (alphabetRegex.test(searchValue)) {
-      await empl.searchByName(searchValue);
+      await this.empl.searchByName(searchValue);
     } else {
-      const searchId = await empl.searchById(searchValue);
+      const searchId = await this.empl.searchById(searchValue);
 
       if (searchId === null) {
         return console.log(

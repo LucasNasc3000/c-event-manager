@@ -191,28 +191,28 @@ export class Employee {
     }
   }
 
-  public async Login(email: string, password: string) {
+  public async Login() {
     try {
       await prisma.userLogin.create({
         data: {
-          userEmail: email,
-          userPassword: password,
+          userEmail: this._email,
+          userPassword: this._password,
         },
       });
-      return console.log(`Funcionario ${email} logado com sucesso.`);
+      return console.log(`Funcionario ${this._email} logado com sucesso.`);
     } catch (e) {
       return console.log(e);
     }
   }
 
-  public async Logout(email: string) {
+  public async Logout() {
     try {
       await prisma.userLogin.delete({
         where: {
-          userEmail: email,
+          userEmail: this._email,
         },
       });
-      return console.log(`Funcionario ${email} deslogado.`);
+      return console.log(`Funcionario ${this._email} deslogado.`);
     } catch (e) {
       return console.log(e);
     }
