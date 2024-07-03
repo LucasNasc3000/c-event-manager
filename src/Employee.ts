@@ -73,102 +73,148 @@ export class Employee {
   }
 
   public async Update(id: string, data: string[]) {
-    const admLoginVerify = await this.adminLoginVerify();
-    if (admLoginVerify === false) {
-      return console.log(this.errorMsg);
+    try {
+      const admLoginVerify = await this.adminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(this.errorMsg);
+      }
+
+      const findEmployee = await prisma.employee.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!findEmployee) {
+        return console.log(`Funcionario ${id} nao encontrado`);
+      }
+
+      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+      const udpateEmployee = await prisma.employee.update({
+        where: {
+          id: id,
+        },
+
+        data: {
+          email: data[0],
+          name: data[1],
+        },
+      });
+
+      const updateCheck = await this.searchById(id);
+
+      return updateCheck;
+    } catch (e) {
+      return console.log(e);
     }
-
-    const findEmployee = await prisma.employee.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!findEmployee) {
-      return console.log(`Funcionario ${id} nao encontrado`);
-    }
-
-    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    const udpateEmployee = await prisma.employee.update({
-      where: {
-        id: id,
-      },
-
-      data: {
-        email: data[0],
-        name: data[1],
-      },
-    });
-
-    const updateCheck = await this.searchById(id);
-
-    return updateCheck;
   }
 
   public async Delete(id: string) {
-    const deleteEmployee = await prisma.employee.delete({
-      where: {
-        id: id,
-      },
-    });
-
-    return console.log(`Funcionario ${deleteEmployee.id} deletado`);
+    try {
+      const deleteEmployee = await prisma.employee.delete({
+        where: {
+          id: id,
+        },
+      });
+      return console.log(`Funcionario ${deleteEmployee.id} deletado`);
+    } catch (e) {
+      return console.log(e);
+    }
   }
 
   public async searchById(id: string) {
-    const admLoginVerify = await this.adminLoginVerify();
-    if (admLoginVerify === false) {
-      return console.log(this.errorMsg);
+    try {
+      const admLoginVerify = await this.adminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(this.errorMsg);
+      }
+
+      const findEmployee = await prisma.employee.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!findEmployee) {
+        return null;
+      }
+
+      return console.table(findEmployee);
+    } catch (e) {
+      console.log(e);
     }
-
-    const findEmployee = await prisma.employee.findUnique({
-      where: {
-        id: id,
-      },
-    });
-
-    if (!findEmployee) {
-      return null;
-    }
-
-    return console.table(findEmployee);
   }
 
   public async searchByEmail(email: string) {
-    const admLoginVerify = await this.adminLoginVerify();
-    if (admLoginVerify === false) {
-      return console.log(this.errorMsg);
+    try {
+      const admLoginVerify = await this.adminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(this.errorMsg);
+      }
+
+      const findEmployee = await prisma.employee.findUnique({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!findEmployee) {
+        return console.log(`Funcionario ${email} nao encontrado`);
+      }
+
+      return console.table(findEmployee);
+    } catch (e) {
+      return console.log(e);
     }
-
-    const findEmployee = await prisma.employee.findUnique({
-      where: {
-        email: email,
-      },
-    });
-
-    if (!findEmployee) {
-      return console.log(`Funcionario ${email} nao encontrado`);
-    }
-
-    return console.table(findEmployee);
   }
 
   public async searchByName(name: string) {
-    const admLoginVerify = await this.adminLoginVerify();
-    if (admLoginVerify === false) {
-      return console.log(this.errorMsg);
+    try {
+      const admLoginVerify = await this.adminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(this.errorMsg);
+      }
+
+      const findEmployee = await prisma.employee.findUnique({
+        where: {
+          name: name,
+        },
+      });
+
+      if (!findEmployee) {
+        return console.log(`Funcionario ${name} nao encontrado`);
+      }
+
+      return console.table(findEmployee);
+    } catch (e) {
+      return console.log(e);
     }
+  }
 
-    const findEmployee = await prisma.employee.findUnique({
-      where: {
-        name: name,
-      },
-    });
-
-    if (!findEmployee) {
-      return console.log(`Funcionario ${name} nao encontrado`);
+  public async Login(email: string, password: string) {
+    try {
+      await prisma.userLogin.create({
+        data: {
+          userEmail: email,
+          userPassword: password,
+        },
+      });
+      return console.log(`Funcionario ${email} logado com sucesso.`);
+    } catch (e) {
+      return console.log(e);
     }
+  }
 
-    return console.table(findEmployee);
+  public async Logout(email: string) {
+    try {
+      await prisma.userLogin.delete({
+        where: {
+          userEmail: email,
+        },
+      });
+      return console.log(`Funcionario ${email} deslogado.`);
+    } catch (e) {
+      return console.log(e);
+    }
   }
 }

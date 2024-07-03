@@ -67,83 +67,135 @@ class Employee {
         }
     }
     async Update(id, data) {
-        const admLoginVerify = await this.adminLoginVerify();
-        if (admLoginVerify === false) {
-            return console.log(this.errorMsg);
+        try {
+            const admLoginVerify = await this.adminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log(this.errorMsg);
+            }
+            const findEmployee = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+            if (!findEmployee) {
+                return console.log(`Funcionario ${id} nao encontrado`);
+            }
+            // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+            const udpateEmployee = await prisma_1.prisma.employee.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    email: data[0],
+                    name: data[1],
+                },
+            });
+            const updateCheck = await this.searchById(id);
+            return updateCheck;
         }
-        const findEmployee = await prisma_1.prisma.employee.findUnique({
-            where: {
-                id: id,
-            },
-        });
-        if (!findEmployee) {
-            return console.log(`Funcionario ${id} nao encontrado`);
+        catch (e) {
+            return console.log(e);
         }
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-        const udpateEmployee = await prisma_1.prisma.employee.update({
-            where: {
-                id: id,
-            },
-            data: {
-                email: data[0],
-                name: data[1],
-            },
-        });
-        const updateCheck = await this.searchById(id);
-        return updateCheck;
     }
     async Delete(id) {
-        const deleteEmployee = await prisma_1.prisma.employee.delete({
-            where: {
-                id: id,
-            },
-        });
-        return console.log(`Funcionario ${deleteEmployee.id} deletado`);
+        try {
+            const deleteEmployee = await prisma_1.prisma.employee.delete({
+                where: {
+                    id: id,
+                },
+            });
+            return console.log(`Funcionario ${deleteEmployee.id} deletado`);
+        }
+        catch (e) {
+            return console.log(e);
+        }
     }
     async searchById(id) {
-        const admLoginVerify = await this.adminLoginVerify();
-        if (admLoginVerify === false) {
-            return console.log(this.errorMsg);
+        try {
+            const admLoginVerify = await this.adminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log(this.errorMsg);
+            }
+            const findEmployee = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+            if (!findEmployee) {
+                return null;
+            }
+            return console.table(findEmployee);
         }
-        const findEmployee = await prisma_1.prisma.employee.findUnique({
-            where: {
-                id: id,
-            },
-        });
-        if (!findEmployee) {
-            return null;
+        catch (e) {
+            console.log(e);
         }
-        return console.table(findEmployee);
     }
     async searchByEmail(email) {
-        const admLoginVerify = await this.adminLoginVerify();
-        if (admLoginVerify === false) {
-            return console.log(this.errorMsg);
+        try {
+            const admLoginVerify = await this.adminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log(this.errorMsg);
+            }
+            const findEmployee = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    email: email,
+                },
+            });
+            if (!findEmployee) {
+                return console.log(`Funcionario ${email} nao encontrado`);
+            }
+            return console.table(findEmployee);
         }
-        const findEmployee = await prisma_1.prisma.employee.findUnique({
-            where: {
-                email: email,
-            },
-        });
-        if (!findEmployee) {
-            return console.log(`Funcionario ${email} nao encontrado`);
+        catch (e) {
+            return console.log(e);
         }
-        return console.table(findEmployee);
     }
     async searchByName(name) {
-        const admLoginVerify = await this.adminLoginVerify();
-        if (admLoginVerify === false) {
-            return console.log(this.errorMsg);
+        try {
+            const admLoginVerify = await this.adminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log(this.errorMsg);
+            }
+            const findEmployee = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    name: name,
+                },
+            });
+            if (!findEmployee) {
+                return console.log(`Funcionario ${name} nao encontrado`);
+            }
+            return console.table(findEmployee);
         }
-        const findEmployee = await prisma_1.prisma.employee.findUnique({
-            where: {
-                name: name,
-            },
-        });
-        if (!findEmployee) {
-            return console.log(`Funcionario ${name} nao encontrado`);
+        catch (e) {
+            return console.log(e);
         }
-        return console.table(findEmployee);
+    }
+    async Login(email, password) {
+        try {
+            await prisma_1.prisma.userLogin.create({
+                data: {
+                    userEmail: email,
+                    userPassword: password,
+                },
+            });
+            return console.log(`Funcionario ${email} logado com sucesso.`);
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
+    async Logout(email) {
+        try {
+            await prisma_1.prisma.userLogin.delete({
+                where: {
+                    userEmail: email,
+                },
+            });
+            return console.log(`Funcionario ${email} deslogado.`);
+        }
+        catch (e) {
+            return console.log(e);
+        }
     }
 }
 exports.Employee = Employee;

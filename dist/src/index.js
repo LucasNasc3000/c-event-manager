@@ -35,10 +35,11 @@ async function Index() {
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
         .option('Valores para cadastrar e pesquisar por usuarios (somente administrador): ', 'name, email')
         .option('-ca, --cadmin <adminUsername> <password>', 'Cadastra o usuario administrador')
-        .option('-adel, --adminDelete <password> <adminDeletePassword>', 'Deleta o usuario administrador')
-        .option('-ulog, --userlog <username> <password>', 'Login de usuarios')
+        .option('-adel, --adminDelete <password>', 'Deleta o usuario administrador')
+        .option('-elog, --emplog <username> <password>', 'Login de usuarios')
         .option('-alog, --adminlog <adminuser> <adminpassword>', 'Login de administrador')
-        .option('-ext, --exit', 'logout tanto para usuarios quanto para o administrador');
+        .option('-eout, --elogout <email>', 'Logout para usuarios')
+        .option('-out, --logout', 'Logout para o administrador');
     program.parse(process.argv);
     const options = program.opts();
     const uf = new EmployeeFactory_1.UserFactory();
@@ -52,8 +53,18 @@ async function Index() {
         const adminLog = await uf.Login();
         return adminLog;
     }
-    if (options.exit) {
-        const logout = uf.Logout();
+    if (options.emplog) {
+        const uf = new EmployeeFactory_1.UserFactory(process.argv[3], process.argv[4]);
+        const employeeLogin = await uf.Login();
+        return employeeLogin;
+    }
+    if (options.logout) {
+        const adminLogout = uf.adminLogout();
+        return adminLogout;
+    }
+    if (options.elogout) {
+        const uf = new EmployeeFactory_1.UserFactory(process.argv[3]);
+        const logout = uf.employeeLogout();
         return logout;
     }
     if (options.createUser) {
@@ -88,4 +99,6 @@ async function Index() {
     }
 }
 exports.Index = Index;
+// passar email e senha no construtor
+// deixar a instanciação como atributo
 Index();

@@ -39,10 +39,16 @@ class UserFactory {
             this._email[2] === 'm') {
             UserAdmin_1.UserAdmin.adminLogin(this._email, this._password);
         }
+        const empl = new Employee_1.Employee();
+        const employeeLogin = empl.Login(this._email, this._password);
+        return employeeLogin;
     }
-    async Logout() {
+    async adminLogout() {
         UserAdmin_1.UserAdmin.adminLogout();
-        console.log('Usuario deslogado');
+    }
+    async employeeLogout() {
+        const empl = new Employee_1.Employee();
+        return empl.Logout(this._email);
     }
     async employeesList() {
         const empl = new Employee_1.Employee();

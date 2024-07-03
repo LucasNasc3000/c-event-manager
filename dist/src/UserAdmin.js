@@ -76,6 +76,7 @@ class UserAdmin {
     static async adminLogout() {
         try {
             await prisma_1.prisma.adminLogin.deleteMany();
+            return console.log('Administrador deslogado');
         }
         catch (e) {
             console.log(e);

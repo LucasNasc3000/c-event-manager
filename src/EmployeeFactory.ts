@@ -47,11 +47,19 @@ export class UserFactory {
     ) {
       UserAdmin.adminLogin(this._email, this._password);
     }
+
+    const empl = new Employee();
+    const employeeLogin = empl.Login(this._email, this._password);
+    return employeeLogin;
   }
 
-  public async Logout() {
+  public async adminLogout() {
     UserAdmin.adminLogout();
-    console.log('Usuario deslogado');
+  }
+
+  public async employeeLogout() {
+    const empl = new Employee();
+    return empl.Logout(this._email);
   }
 
   public async employeesList() {
