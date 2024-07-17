@@ -15,6 +15,7 @@ class UserFactory {
         this._password = '';
         this._email = '';
         this._id = '';
+        this.empl = new Employee_1.Employee();
         this._email = email;
         this._password = password;
         this._name = name;
@@ -38,21 +39,21 @@ class UserFactory {
             this._email[1] === 'd' &&
             this._email[2] === 'm') {
             UserAdmin_1.UserAdmin.adminLogin(this._email, this._password);
+            return;
         }
-        const empl = new Employee_1.Employee();
-        const employeeLogin = empl.Login(this._email, this._password);
+        const empl = new Employee_1.Employee('', this._email, this._password);
+        const employeeLogin = empl.Login();
         return employeeLogin;
     }
     async adminLogout() {
         UserAdmin_1.UserAdmin.adminLogout();
     }
     async employeeLogout() {
-        const empl = new Employee_1.Employee();
-        return empl.Logout(this._email);
+        const empl = new Employee_1.Employee('', this._email);
+        return empl.Logout();
     }
     async employeesList() {
-        const empl = new Employee_1.Employee();
-        const emplList = await empl.EmployeeList();
+        const emplList = await this.empl.EmployeeList();
         return emplList;
     }
     async employeeUpdate(data) {
@@ -61,28 +62,25 @@ class UserFactory {
             this._id === null) {
             return 'id nao informado';
         }
-        const empl = new Employee_1.Employee();
-        const emplUpdate = await empl.Update(this._id, data);
+        const emplUpdate = await this.empl.Update(this._id, data);
         return emplUpdate;
     }
     async Delete(id) {
-        const empl = new Employee_1.Employee();
-        await empl.Delete(id);
+        await this.empl.Delete(id);
     }
     async Search(searchValue) {
-        const empl = new Employee_1.Employee();
         const alphabetRegex = /^[a-zA-Z]+$/;
         if (searchValue === '') {
             return console.log('Dado nao informado');
         }
         if (searchValue.includes('@') || searchValue.includes('.com')) {
-            await empl.searchByEmail(searchValue);
+            await this.empl.searchByEmail(searchValue);
         }
         else if (alphabetRegex.test(searchValue)) {
-            await empl.searchByName(searchValue);
+            await this.empl.searchByName(searchValue);
         }
         else {
-            const searchId = await empl.searchById(searchValue);
+            const searchId = await this.empl.searchById(searchValue);
             if (searchId === null) {
                 return console.log(`Funcionario de id: ${searchValue} inexistente ou o dado de busca foi informado incorretamente.`);
             }

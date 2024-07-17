@@ -193,6 +193,13 @@ export class Employee {
 
   public async Login() {
     try {
+      const admLoginVerify = await this.adminLoginVerify();
+      if (admLoginVerify === true) {
+        return console.log(
+          'Login nao autorizado enquanto o administrador estiver logado',
+        );
+      }
+
       await prisma.userLogin.create({
         data: {
           userEmail: this._email,

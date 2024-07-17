@@ -47,6 +47,7 @@ export class UserFactory {
       this._email[2] === 'm'
     ) {
       UserAdmin.adminLogin(this._email, this._password);
+      return;
     }
 
     const empl = new Employee('', this._email, this._password);

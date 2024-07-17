@@ -170,28 +170,32 @@ class Employee {
             return console.log(e);
         }
     }
-    async Login(email, password) {
+    async Login() {
         try {
+            const admLoginVerify = await this.adminLoginVerify();
+            if (admLoginVerify === true) {
+                return console.log('Login nao autorizado enquanto o administrador estiver logado');
+            }
             await prisma_1.prisma.userLogin.create({
                 data: {
-                    userEmail: email,
-                    userPassword: password,
+                    userEmail: this._email,
+                    userPassword: this._password,
                 },
             });
-            return console.log(`Funcionario ${email} logado com sucesso.`);
+            return console.log(`Funcionario ${this._email} logado com sucesso.`);
         }
         catch (e) {
             return console.log(e);
         }
     }
-    async Logout(email) {
+    async Logout() {
         try {
             await prisma_1.prisma.userLogin.delete({
                 where: {
-                    userEmail: email,
+                    userEmail: this._email,
                 },
             });
-            return console.log(`Funcionario ${email} deslogado.`);
+            return console.log(`Funcionario ${this._email} deslogado.`);
         }
         catch (e) {
             return console.log(e);
