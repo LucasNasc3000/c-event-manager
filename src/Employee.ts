@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import { prisma } from '../lib/prisma';
+import { DateTime } from './utils/DateTime';
+import { Logs } from './Logs';
 
 dotenv.config();
 
@@ -206,6 +208,9 @@ export class Employee {
           userPassword: this._password,
         },
       });
+
+      const logLogin = new Logs(this._email, DateTime());
+      await logLogin.CreateLogin();
       return console.log(`Funcionario ${this._email} logado com sucesso.`);
     } catch (e) {
       return console.log(e);
@@ -219,6 +224,9 @@ export class Employee {
           userEmail: this._email,
         },
       });
+
+      const logLogout = new Logs(this._email, DateTime());
+      await logLogout.CreateLogout();
       return console.log(`Funcionario ${this._email} deslogado.`);
     } catch (e) {
       return console.log(e);

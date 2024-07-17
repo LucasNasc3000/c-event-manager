@@ -1,5 +1,7 @@
 import dotenv from 'dotenv';
 import { prisma } from '../lib/prisma';
+import { DateTime } from './utils/DateTime';
+import { Logs } from './Logs';
 
 dotenv.config();
 
@@ -70,6 +72,9 @@ export class UserAdmin {
             adminPassword: admExists.password,
           },
         });
+
+        const logLogin = new Logs(admExists.email, DateTime());
+        await logLogin.CreateLogin();
         return console.log('Administrador logado com sucesso');
       } else {
         return 'Usuario ou senha incorretos';

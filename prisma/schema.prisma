@@ -60,3 +60,21 @@ model UserLogin {
 
   @@unique([userEmail])
 }
+
+model LogsLogin {
+  id String @id @default(uuid())
+  email String
+  loginDate String
+  loginHour String
+
+  @@map("logsLogin")
+}
+
+model LogsLogout {
+  id String @id @default(uuid())
+  email String
+  logoutDate String
+  logoutHour String
+
+  @@map("logsLoguts")
+}

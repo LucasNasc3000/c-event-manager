@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserAdmin = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const prisma_1 = require("../lib/prisma");
+const DateTime_1 = require("./utils/DateTime");
+const Logs_1 = require("./Logs");
 dotenv_1.default.config();
 class UserAdmin {
     constructor(adminEmail, adminPassword) {
@@ -63,6 +65,8 @@ class UserAdmin {
                         adminPassword: admExists.password,
                     },
                 });
+                const logLogin = new Logs_1.Logs(admExists.email, (0, DateTime_1.DateTime)());
+                await logLogin.CreateLogin();
                 return console.log('Administrador logado com sucesso');
             }
             else {

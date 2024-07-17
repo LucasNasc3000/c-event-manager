@@ -143,7 +143,12 @@ export async function Index() {
   }
 }
 
-// passar email e senha no construtor
-// deixar a instanciação como atributo
+// Mais de um funcionário poderá logar por vez. Todos deverão fazer logout depois de terminarem
+// suas atividades
+// Criar classes com funções comuns entre as classes UserAdmin e Employee?
+// Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)
+// Se existir, verificar se os mesmos estão na tabela de funcionários
+// Enxugar o código
+// Tratar erros
 
 Index();

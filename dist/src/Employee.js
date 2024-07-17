@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Employee = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const prisma_1 = require("../lib/prisma");
+const DateTime_1 = require("./utils/DateTime");
+const Logs_1 = require("./Logs");
 dotenv_1.default.config();
 class Employee {
     constructor(name = '', email = '', password = '') {
@@ -182,6 +184,8 @@ class Employee {
                     userPassword: this._password,
                 },
             });
+            const logLogin = new Logs_1.Logs(this._email, (0, DateTime_1.DateTime)());
+            await logLogin.CreateLogin();
             return console.log(`Funcionario ${this._email} logado com sucesso.`);
         }
         catch (e) {
@@ -195,6 +199,8 @@ class Employee {
                     userEmail: this._email,
                 },
             });
+            const logLogout = new Logs_1.Logs(this._email, (0, DateTime_1.DateTime)());
+            await logLogout.CreateLogout();
             return console.log(`Funcionario ${this._email} deslogado.`);
         }
         catch (e) {
