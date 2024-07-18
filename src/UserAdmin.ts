@@ -30,18 +30,21 @@ export class UserAdmin {
   }
 
   private async Create() {
-    const admExists = await this.findAdmin();
-    if (admExists === null) {
-      const createAdmin = await prisma.employee.create({
-        data: {
-          name: 'adm@30001',
-          email: this.adminEmail,
-          password: this.adminPassword,
-        },
-      });
-      return createAdmin;
+    try {
+      const admExists = await this.findAdmin();
+      if (admExists === null) {
+        await prisma.employee.create({
+          data: {
+            name: 'adm@30001',
+            email: this.adminEmail,
+            password: this.adminPassword,
+          },
+        });
+      }
+      return console.log('Administrador ja cadastrado');
+    } catch (e) {
+      return console.log(e);
     }
-    return 'Admin já existente';
   }
 
   static async CreateAdmin(adminEmail: string, adminPassword: string) {
@@ -76,9 +79,8 @@ export class UserAdmin {
         const logLogin = new Logs(admExists.email, DateTime());
         await logLogin.CreateLogin();
         return console.log('Administrador logado com sucesso');
-      } else {
-        return 'Usuario ou senha incorretos';
       }
+      return console.log('Usuario ou senha incorretos');
     } catch (e) {
       return console.log(e);
     }

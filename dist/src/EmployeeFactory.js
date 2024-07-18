@@ -4,6 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserFactory = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 const dotenv_1 = __importDefault(require("dotenv"));
 const Employee_1 = require("./Employee");
@@ -20,6 +22,18 @@ class UserFactory {
         this._password = password;
         this._name = name;
         this._id = id;
+    }
+    Create() {
+        throw new Error('Method not implemented.');
+    }
+    List() {
+        throw new Error('Method not implemented.');
+    }
+    Update(id, data) {
+        throw new Error('Method not implemented.');
+    }
+    Logout() {
+        throw new Error('Method not implemented.');
     }
     async UserCreate() {
         const fieldsCheck = this.fieldsCheck();
@@ -38,8 +52,7 @@ class UserFactory {
         if (this._email[0] === 'a' &&
             this._email[1] === 'd' &&
             this._email[2] === 'm') {
-            UserAdmin_1.UserAdmin.adminLogin(this._email, this._password);
-            return;
+            return UserAdmin_1.UserAdmin.adminLogin(this._email, this._password);
         }
         const empl = new Employee_1.Employee('', this._email, this._password);
         const employeeLogin = empl.Login();
@@ -53,16 +66,14 @@ class UserFactory {
         return empl.Logout();
     }
     async employeesList() {
-        const emplList = await this.empl.EmployeeList();
+        const emplList = await this.empl.List();
         return emplList;
     }
-    async employeeUpdate(data) {
-        if (typeof this._id === 'undefined' ||
-            this._id === '' ||
-            this._id === null) {
+    async employeeUpdate(id, data) {
+        if (typeof id === 'undefined' || id === '' || id === null) {
             return 'id nao informado';
         }
-        const emplUpdate = await this.empl.Update(this._id, data);
+        const emplUpdate = await this.empl.Update(id, data);
         return emplUpdate;
     }
     async Delete(id) {

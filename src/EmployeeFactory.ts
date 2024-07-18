@@ -1,11 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 import dotenv from 'dotenv';
 import { Employee } from './Employee';
 import { UserAdmin } from './UserAdmin';
+import { UserAbstract } from './interfaces/UserAbstract';
 
 dotenv.config();
 
-export class UserFactory {
+export class UserFactory implements UserAbstract {
   private _name: string = '';
   private _password: string = '';
   private _email: string = '';
@@ -22,6 +25,18 @@ export class UserFactory {
     this._password = password;
     this._name = name;
     this._id = id;
+  }
+  Create(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  List(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  Update(id: string, data: string[]): Promise<void | null> {
+    throw new Error('Method not implemented.');
+  }
+  Logout(): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 
   public async UserCreate() {
@@ -46,8 +61,7 @@ export class UserFactory {
       this._email[1] === 'd' &&
       this._email[2] === 'm'
     ) {
-      UserAdmin.adminLogin(this._email, this._password);
-      return;
+      return UserAdmin.adminLogin(this._email, this._password);
     }
 
     const empl = new Employee('', this._email, this._password);
@@ -65,19 +79,15 @@ export class UserFactory {
   }
 
   public async employeesList() {
-    const emplList = await this.empl.EmployeeList();
+    const emplList = await this.empl.List();
     return emplList;
   }
 
-  public async employeeUpdate(data: string[]) {
-    if (
-      typeof this._id === 'undefined' ||
-      this._id === '' ||
-      this._id === null
-    ) {
+  public async employeeUpdate(id: string, data: string[]) {
+    if (typeof id === 'undefined' || id === '' || id === null) {
       return 'id nao informado';
     }
-    const emplUpdate = await this.empl.Update(this._id, data);
+    const emplUpdate = await this.empl.Update(id, data);
     return emplUpdate;
   }
 

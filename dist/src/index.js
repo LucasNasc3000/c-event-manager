@@ -43,6 +43,7 @@ async function Index() {
     program.parse(process.argv);
     const options = program.opts();
     const uf = new EmployeeFactory_1.UserFactory();
+    console.log(options);
     if (options.cadmin) {
         const uf = new EmployeeFactory_1.UserFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
         const classes = await uf.UserCreate();
@@ -78,9 +79,8 @@ async function Index() {
     }
     if (options.updateUsers) {
         const data = [];
-        const uf = new EmployeeFactory_1.UserFactory('', '', '', process.argv[3]);
         data.push(process.argv[4], process.argv[5]);
-        await uf.employeeUpdate(data);
+        await uf.employeeUpdate(process.argv[3], data);
     }
     if (options.deleteUsers) {
         await uf.Delete(process.argv[3]);
@@ -99,8 +99,6 @@ async function Index() {
     }
 }
 exports.Index = Index;
-// Mais de um funcionário poderá logar por vez. Todos deverão fazer logout depois de terminarem
-// suas atividades
 // Criar classes com funções comuns entre as classes UserAdmin e Employee?
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)
 // Se existir, verificar se os mesmos estão na tabela de funcionários

@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
 import { prisma } from '../lib/prisma';
+import { UserAbstract } from './interfaces/UserAbstract';
 import { DateTime } from './utils/DateTime';
 import { Logs } from './Logs';
 
 dotenv.config();
 
-export class Employee {
+export class Employee implements UserAbstract {
   private _name: string = '';
   private _email: string = '';
   private _password: string = '';
@@ -42,9 +43,7 @@ export class Employee {
   public async Create() {
     try {
       const admLoginVerify = await this.adminLoginVerify();
-      if (admLoginVerify === false) {
-        return console.log(this.errorMsg);
-      }
+      if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const createEmployee = await prisma.employee.create({
         data: {
@@ -60,12 +59,10 @@ export class Employee {
     }
   }
 
-  public async EmployeeList() {
+  public async List() {
     try {
       const admLoginVerify = await this.adminLoginVerify();
-      if (admLoginVerify === false) {
-        return console.log(this.errorMsg);
-      }
+      if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const employeesList = await prisma.employee.findMany();
       return console.table(employeesList);
@@ -77,9 +74,7 @@ export class Employee {
   public async Update(id: string, data: string[]) {
     try {
       const admLoginVerify = await this.adminLoginVerify();
-      if (admLoginVerify === false) {
-        return console.log(this.errorMsg);
-      }
+      if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -127,9 +122,7 @@ export class Employee {
   public async searchById(id: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify();
-      if (admLoginVerify === false) {
-        return console.log(this.errorMsg);
-      }
+      if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -150,9 +143,7 @@ export class Employee {
   public async searchByEmail(email: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify();
-      if (admLoginVerify === false) {
-        return console.log(this.errorMsg);
-      }
+      if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -173,9 +164,7 @@ export class Employee {
   public async searchByName(name: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify();
-      if (admLoginVerify === false) {
-        return console.log(this.errorMsg);
-      }
+      if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
