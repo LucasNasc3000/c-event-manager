@@ -1,7 +1,8 @@
+/* eslint-disable no-case-declarations */
 import dotenv from 'dotenv';
 import { Command } from 'commander';
 import figlet from 'figlet';
-import { UserFactory } from './EmployeeFactory';
+import { Decisions } from './Decisions';
 
 dotenv.config();
 
@@ -65,84 +66,11 @@ export async function Index() {
   program.parse(process.argv);
 
   const options = program.opts();
-  const uf = new UserFactory();
-  console.log(options);
 
-  if (options.cadmin) {
-    const uf = new UserFactory(
-      process.env.ADMIN_USER as string,
-      process.env.ADMIN_USER as string,
-    );
-    const classes = await uf.UserCreate();
-    return classes;
-  }
-
-  if (options.adminlog) {
-    const uf = new UserFactory(process.argv[3], process.argv[4]);
-    const adminLog = await uf.Login();
-    return adminLog;
-  }
-
-  if (options.emplog) {
-    const uf = new UserFactory(process.argv[3], process.argv[4]);
-    const employeeLogin = await uf.Login();
-    return employeeLogin;
-  }
-
-  if (options.logout) {
-    const adminLogout = uf.adminLogout();
-    return adminLogout;
-  }
-
-  if (options.elogout) {
-    const uf = new UserFactory(process.argv[3]);
-    const logout = uf.employeeLogout();
-    return logout;
-  }
-
-  if (options.createUser) {
-    const uf = new UserFactory(
-      process.argv[3],
-      process.argv[4],
-      process.argv[5],
-    );
-    const user = await uf.UserCreate();
-    return user;
-  }
-
-  if (options.readUsers) {
-    const list = await uf.employeesList();
-    return list;
-  }
-
-  if (options.updateUsers) {
-    const data: string[] = [];
-
-    data.push(process.argv[4], process.argv[5]);
-
-    await uf.employeeUpdate(process.argv[3], data);
-  }
-
-  if (options.deleteUsers) {
-    await uf.Delete(process.argv[3]);
-  }
-
-  if (options.searchUsersId) {
-    const EmployeeFinder = uf.Search(process.argv[3]);
-    return EmployeeFinder;
-  }
-
-  if (options.searchUsersEmail) {
-    const EmployeeFinder = uf.Search(process.argv[3]);
-    return EmployeeFinder;
-  }
-
-  if (options.searchUsersName) {
-    const EmployeeFinder = uf.Search(process.argv[3]);
-    return EmployeeFinder;
-  }
+  Decisions(options);
 }
 
+// funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Criar classes com funções comuns entre as classes UserAdmin e Employee?
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)
 // Se existir, verificar se os mesmos estão na tabela de funcionários

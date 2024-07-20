@@ -4,10 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Index = void 0;
+/* eslint-disable no-case-declarations */
 const dotenv_1 = __importDefault(require("dotenv"));
 const commander_1 = require("commander");
 const figlet_1 = __importDefault(require("figlet"));
-const EmployeeFactory_1 = require("./EmployeeFactory");
+const Decisions_1 = require("./Decisions");
 dotenv_1.default.config();
 async function Index() {
     console.log(figlet_1.default.textSync('C-Event Manager\n'));
@@ -42,63 +43,10 @@ async function Index() {
         .option('-out, --logout', 'Logout para o administrador');
     program.parse(process.argv);
     const options = program.opts();
-    const uf = new EmployeeFactory_1.UserFactory();
-    console.log(options);
-    if (options.cadmin) {
-        const uf = new EmployeeFactory_1.UserFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
-        const classes = await uf.UserCreate();
-        return classes;
-    }
-    if (options.adminlog) {
-        const uf = new EmployeeFactory_1.UserFactory(process.argv[3], process.argv[4]);
-        const adminLog = await uf.Login();
-        return adminLog;
-    }
-    if (options.emplog) {
-        const uf = new EmployeeFactory_1.UserFactory(process.argv[3], process.argv[4]);
-        const employeeLogin = await uf.Login();
-        return employeeLogin;
-    }
-    if (options.logout) {
-        const adminLogout = uf.adminLogout();
-        return adminLogout;
-    }
-    if (options.elogout) {
-        const uf = new EmployeeFactory_1.UserFactory(process.argv[3]);
-        const logout = uf.employeeLogout();
-        return logout;
-    }
-    if (options.createUser) {
-        const uf = new EmployeeFactory_1.UserFactory(process.argv[3], process.argv[4], process.argv[5]);
-        const user = await uf.UserCreate();
-        return user;
-    }
-    if (options.readUsers) {
-        const list = await uf.employeesList();
-        return list;
-    }
-    if (options.updateUsers) {
-        const data = [];
-        data.push(process.argv[4], process.argv[5]);
-        await uf.employeeUpdate(process.argv[3], data);
-    }
-    if (options.deleteUsers) {
-        await uf.Delete(process.argv[3]);
-    }
-    if (options.searchUsersId) {
-        const EmployeeFinder = uf.Search(process.argv[3]);
-        return EmployeeFinder;
-    }
-    if (options.searchUsersEmail) {
-        const EmployeeFinder = uf.Search(process.argv[3]);
-        return EmployeeFinder;
-    }
-    if (options.searchUsersName) {
-        const EmployeeFinder = uf.Search(process.argv[3]);
-        return EmployeeFinder;
-    }
+    (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Criar classes com funções comuns entre as classes UserAdmin e Employee?
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)
 // Se existir, verificar se os mesmos estão na tabela de funcionários
