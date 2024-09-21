@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.test = exports.Decisions = void 0;
+exports.Decisions = void 0;
 const EmployeeFactory_1 = require("./EmployeeFactory");
 async function Decisions(options) {
     const uf = new EmployeeFactory_1.UserFactory();
@@ -20,12 +20,12 @@ async function Decisions(options) {
         return employeeLogin;
     }
     if (options.logout) {
-        const adminLogout = uf.adminLogout();
+        const adminLogout = uf.AdminLogout();
         return adminLogout;
     }
     if (options.elogout) {
         const uf = new EmployeeFactory_1.UserFactory(process.argv[3]);
-        const logout = uf.employeeLogout();
+        const logout = uf.EmployeeLogout();
         return logout;
     }
     if (options.createUser) {
@@ -34,13 +34,13 @@ async function Decisions(options) {
         return user;
     }
     if (options.readUsers) {
-        const list = await uf.employeesList();
+        const list = await uf.EmployeesList();
         return list;
     }
     if (options.updateUsers) {
         const data = [];
         data.push(process.argv[4], process.argv[5]);
-        await uf.employeeUpdate(process.argv[3], data);
+        await uf.EmployeeUpdate(process.argv[3], data);
     }
     if (options.deleteUsers) {
         await uf.Delete(process.argv[3]);
@@ -59,11 +59,10 @@ async function Decisions(options) {
     }
 }
 exports.Decisions = Decisions;
-function test(arg1, whichData) {
-    switch (whichData) {
-        case 'name':
-            const fbn = new EmployeeFactory_1.UserFactory('', '', arg1);
-            return fbn;
-    }
-}
-exports.test = test;
+// export function test(arg1: string, whichData: string) {
+//   switch (whichData) {
+//     case 'name':
+//       const fbn = new UserFactory('', '', arg1);
+//       return fbn;
+//   }
+// }

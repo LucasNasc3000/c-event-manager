@@ -19,7 +19,7 @@ export class Employee implements UserAbstract {
     this._password = password;
   }
 
-  public async adminLoginVerify() {
+  public async AdminLoginVerify() {
     const admLogin = await prisma.adminLogin.findMany();
 
     if (admLogin.length <= 0) return false;
@@ -42,7 +42,7 @@ export class Employee implements UserAbstract {
 
   public async Create() {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const createEmployee = await prisma.employee.create({
@@ -61,7 +61,7 @@ export class Employee implements UserAbstract {
 
   public async List() {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const employeesList = await prisma.employee.findMany();
@@ -73,7 +73,7 @@ export class Employee implements UserAbstract {
 
   public async Update(id: string, data: string[]) {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
@@ -98,7 +98,7 @@ export class Employee implements UserAbstract {
         },
       });
 
-      const updateCheck = await this.searchById(id);
+      const updateCheck = await this.SearchById(id);
 
       return updateCheck;
     } catch (e) {
@@ -119,9 +119,9 @@ export class Employee implements UserAbstract {
     }
   }
 
-  public async searchById(id: string) {
+  public async SearchById(id: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
@@ -140,9 +140,9 @@ export class Employee implements UserAbstract {
     }
   }
 
-  public async searchByEmail(email: string) {
+  public async SearchByEmail(email: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
@@ -161,9 +161,9 @@ export class Employee implements UserAbstract {
     }
   }
 
-  public async searchByName(name: string) {
+  public async SearchByName(name: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
@@ -184,7 +184,7 @@ export class Employee implements UserAbstract {
 
   public async Login() {
     try {
-      const admLoginVerify = await this.adminLoginVerify();
+      const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === true) {
         return console.log(
           'Login nao autorizado enquanto o administrador estiver logado',

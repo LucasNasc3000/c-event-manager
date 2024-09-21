@@ -67,7 +67,7 @@ export async function Index() {
   Decisions(options);
 }
 
-// verificar se o admin ja esta logado ao tentar logar como admin
+// listar e pesquisar logs?
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Criar classes com funções comuns entre as classes UserAdmin e Employee?
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)

@@ -14,7 +14,7 @@ class UserAdmin {
         this.adminEmail = adminEmail;
         this.adminPassword = adminPassword;
     }
-    async findAdmin() {
+    async FindAdmin() {
         const admExists = await prisma_1.prisma.employee.findUnique({
             where: {
                 email: this.adminEmail,
@@ -26,9 +26,21 @@ class UserAdmin {
         }
         return admExists;
     }
+    async IsLogged() {
+        const admExists = await prisma_1.prisma.adminLogin.findUnique({
+            where: {
+                adminUser: this.adminEmail,
+                adminPassword: this.adminPassword,
+            },
+        });
+        if (admExists === null) {
+            return null;
+        }
+        return admExists;
+    }
     async Create() {
         try {
-            const admExists = await this.findAdmin();
+            const admExists = await this.FindAdmin();
             if (admExists === null) {
                 await prisma_1.prisma.employee.create({
                     data: {
@@ -47,7 +59,7 @@ class UserAdmin {
     static async CreateAdmin(adminEmail, adminPassword) {
         try {
             const admin = new UserAdmin(adminEmail, adminPassword);
-            const admExists = await admin.findAdmin();
+            const admExists = await admin.FindAdmin();
             if (admExists !== null) {
                 return admExists.email;
             }
@@ -58,11 +70,15 @@ class UserAdmin {
             console.log(e);
         }
     }
-    static async adminLogin(adminEmail, adminPassword) {
+    static async AdminLogin(adminEmail, adminPassword) {
         try {
             const admin = new UserAdmin(adminEmail, adminPassword);
-            const admExists = await admin.findAdmin();
+            const admExists = await admin.FindAdmin();
+            const isLogged = await admin.IsLogged();
             if (admExists !== null) {
+                if (isLogged !== null) {
+                    return console.log('Administrador com login ja ativo');
+                }
                 await prisma_1.prisma.adminLogin.create({
                     data: {
                         adminUser: admExists.email,
@@ -79,7 +95,7 @@ class UserAdmin {
             return console.log(e);
         }
     }
-    static async adminLogout() {
+    static async AdminLogout() {
         try {
             await prisma_1.prisma.adminLogin.deleteMany();
             return console.log('Administrador deslogado');

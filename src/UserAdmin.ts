@@ -14,7 +14,7 @@ export class UserAdmin {
     this.adminPassword = adminPassword;
   }
 
-  private async findAdmin() {
+  private async FindAdmin() {
     const admExists = await prisma.employee.findUnique({
       where: {
         email: this.adminEmail,
@@ -29,9 +29,24 @@ export class UserAdmin {
     return admExists;
   }
 
+  private async IsLogged() {
+    const admExists = await prisma.adminLogin.findUnique({
+      where: {
+        adminUser: this.adminEmail,
+        adminPassword: this.adminPassword,
+      },
+    });
+
+    if (admExists === null) {
+      return null;
+    }
+
+    return admExists;
+  }
+
   private async Create() {
     try {
-      const admExists = await this.findAdmin();
+      const admExists = await this.FindAdmin();
       if (admExists === null) {
         await prisma.employee.create({
           data: {
@@ -50,7 +65,7 @@ export class UserAdmin {
   static async CreateAdmin(adminEmail: string, adminPassword: string) {
     try {
       const admin = new UserAdmin(adminEmail, adminPassword);
-      const admExists = await admin.findAdmin();
+      const admExists = await admin.FindAdmin();
 
       if (admExists !== null) {
         return admExists.email;
@@ -63,12 +78,17 @@ export class UserAdmin {
     }
   }
 
-  static async adminLogin(adminEmail: string, adminPassword: string) {
+  static async AdminLogin(adminEmail: string, adminPassword: string) {
     try {
       const admin = new UserAdmin(adminEmail, adminPassword);
-      const admExists = await admin.findAdmin();
+      const admExists = await admin.FindAdmin();
+      const isLogged = await admin.IsLogged();
 
       if (admExists !== null) {
+        if (isLogged !== null) {
+          return console.log('Administrador com login ja ativo');
+        }
+
         await prisma.adminLogin.create({
           data: {
             adminUser: admExists.email,
@@ -86,7 +106,7 @@ export class UserAdmin {
     }
   }
 
-  static async adminLogout() {
+  static async AdminLogout() {
     try {
       await prisma.adminLogin.deleteMany();
       return console.log('Administrador deslogado');

@@ -3,7 +3,7 @@ import { OptionValues } from 'commander';
 import { UserFactory } from './EmployeeFactory';
 
 export async function Decisions(options: OptionValues) {
-  const uf = new UserFactory();
+  const uf: UserFactory = new UserFactory();
 
   if (options.cadmin) {
     const uf = new UserFactory(
@@ -27,13 +27,13 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.logout) {
-    const adminLogout = uf.adminLogout();
+    const adminLogout = uf.AdminLogout();
     return adminLogout;
   }
 
   if (options.elogout) {
     const uf = new UserFactory(process.argv[3]);
-    const logout = uf.employeeLogout();
+    const logout = uf.EmployeeLogout();
     return logout;
   }
 
@@ -48,7 +48,7 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.readUsers) {
-    const list = await uf.employeesList();
+    const list = await uf.EmployeesList();
     return list;
   }
 
@@ -57,7 +57,7 @@ export async function Decisions(options: OptionValues) {
 
     data.push(process.argv[4], process.argv[5]);
 
-    await uf.employeeUpdate(process.argv[3], data);
+    await uf.EmployeeUpdate(process.argv[3], data);
   }
 
   if (options.deleteUsers) {
@@ -80,10 +80,10 @@ export async function Decisions(options: OptionValues) {
   }
 }
 
-export function test(arg1: string, whichData: string) {
-  switch (whichData) {
-    case 'name':
-      const fbn = new UserFactory('', '', arg1);
-      return fbn;
-  }
-}
+// export function test(arg1: string, whichData: string) {
+//   switch (whichData) {
+//     case 'name':
+//       const fbn = new UserFactory('', '', arg1);
+//       return fbn;
+//   }
+// }

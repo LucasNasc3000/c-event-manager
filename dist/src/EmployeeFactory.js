@@ -36,7 +36,7 @@ class UserFactory {
         throw new Error('Method not implemented.');
     }
     async UserCreate() {
-        const fieldsCheck = this.fieldsCheck();
+        const fieldsCheck = this.FieldsCheck();
         if (fieldsCheck === false) {
             return console.log('Email, nome ou senha nao foram preenchidos');
         }
@@ -52,24 +52,24 @@ class UserFactory {
         if (this._email[0] === 'a' &&
             this._email[1] === 'd' &&
             this._email[2] === 'm') {
-            return UserAdmin_1.UserAdmin.adminLogin(this._email, this._password);
+            return UserAdmin_1.UserAdmin.AdminLogin(this._email, this._password);
         }
         const empl = new Employee_1.Employee('', this._email, this._password);
         const employeeLogin = empl.Login();
         return employeeLogin;
     }
-    async adminLogout() {
-        UserAdmin_1.UserAdmin.adminLogout();
+    async AdminLogout() {
+        UserAdmin_1.UserAdmin.AdminLogout();
     }
-    async employeeLogout() {
+    async EmployeeLogout() {
         const empl = new Employee_1.Employee('', this._email);
         return empl.Logout();
     }
-    async employeesList() {
+    async EmployeesList() {
         const emplList = await this.empl.List();
         return emplList;
     }
-    async employeeUpdate(id, data) {
+    async EmployeeUpdate(id, data) {
         if (typeof id === 'undefined' || id === '' || id === null) {
             return 'id nao informado';
         }
@@ -85,19 +85,19 @@ class UserFactory {
             return console.log('Dado nao informado');
         }
         if (searchValue.includes('@') || searchValue.includes('.com')) {
-            await this.empl.searchByEmail(searchValue);
+            await this.empl.SearchByEmail(searchValue);
         }
         else if (alphabetRegex.test(searchValue)) {
-            await this.empl.searchByName(searchValue);
+            await this.empl.SearchByName(searchValue);
         }
         else {
-            const searchId = await this.empl.searchById(searchValue);
+            const searchId = await this.empl.SearchById(searchValue);
             if (searchId === null) {
                 return console.log(`Funcionario de id: ${searchValue} inexistente ou o dado de busca foi informado incorretamente.`);
             }
         }
     }
-    fieldsCheck() {
+    FieldsCheck() {
         const fields = [this._name, this._email, this._password];
         for (let i = 0; i < fields.length; i++) {
             if (fields[i] !== '') {

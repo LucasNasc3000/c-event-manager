@@ -40,7 +40,7 @@ export class UserFactory implements UserAbstract {
   }
 
   public async UserCreate() {
-    const fieldsCheck = this.fieldsCheck();
+    const fieldsCheck = this.FieldsCheck();
 
     if (fieldsCheck === false) {
       return console.log('Email, nome ou senha nao foram preenchidos');
@@ -61,7 +61,7 @@ export class UserFactory implements UserAbstract {
       this._email[1] === 'd' &&
       this._email[2] === 'm'
     ) {
-      return UserAdmin.adminLogin(this._email, this._password);
+      return UserAdmin.AdminLogin(this._email, this._password);
     }
 
     const empl = new Employee('', this._email, this._password);
@@ -69,21 +69,21 @@ export class UserFactory implements UserAbstract {
     return employeeLogin;
   }
 
-  public async adminLogout() {
-    UserAdmin.adminLogout();
+  public async AdminLogout() {
+    UserAdmin.AdminLogout();
   }
 
-  public async employeeLogout() {
+  public async EmployeeLogout() {
     const empl = new Employee('', this._email);
     return empl.Logout();
   }
 
-  public async employeesList() {
+  public async EmployeesList() {
     const emplList = await this.empl.List();
     return emplList;
   }
 
-  public async employeeUpdate(id: string, data: string[]) {
+  public async EmployeeUpdate(id: string, data: string[]) {
     if (typeof id === 'undefined' || id === '' || id === null) {
       return 'id nao informado';
     }
@@ -102,11 +102,11 @@ export class UserFactory implements UserAbstract {
     }
 
     if (searchValue.includes('@') || searchValue.includes('.com')) {
-      await this.empl.searchByEmail(searchValue);
+      await this.empl.SearchByEmail(searchValue);
     } else if (alphabetRegex.test(searchValue)) {
-      await this.empl.searchByName(searchValue);
+      await this.empl.SearchByName(searchValue);
     } else {
-      const searchId = await this.empl.searchById(searchValue);
+      const searchId = await this.empl.SearchById(searchValue);
 
       if (searchId === null) {
         return console.log(
@@ -116,7 +116,7 @@ export class UserFactory implements UserAbstract {
     }
   }
 
-  private fieldsCheck(): boolean {
+  private FieldsCheck(): boolean {
     const fields: string[] = [this._name, this._email, this._password];
 
     for (let i = 0; i < fields.length; i++) {
