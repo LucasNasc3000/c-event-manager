@@ -18,34 +18,35 @@ async function Index() {
         .usage('-uu u13o12i3kf49 Joao')
         .description('Programa feito para gerenciar eventos de uma empresa')
         .option('Eventos: ')
-        .option('-c, --create <values>', 'Cria um novo evento')
-        .option('-r, --read', 'Mostra todas os eventos')
-        .option('-u, --update <id> <values>', 'Atualiza os dados de um evento')
-        .option('-d, --delete <id>', 'Deleta um evento')
-        .option('-s, --search <searchEventValues>', 'Pesquisa por um evento')
+        .option('-ce, --create <values>', 'Cria um novo evento')
+        .option('-re, --read', 'Mostra todas os eventos')
+        .option('-ue, --update <id> <values>', 'Atualiza os dados de um evento')
+        .option('-de, --delete <id>', 'Deleta um evento')
+        .option('-se, --search <searchEventValues>', 'Pesquisa por um evento')
         .option('Usuarios (somente administrador): ')
         .option('-cs, --createUser <values>', 'Cria um novo usuario')
-        .option('-ru, --readUsers', 'Mostra todas os usuarios')
-        .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados de um usuario')
+        .option('-ru, --readUsers', 'Mostra todos os usuarios')
+        .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados do usuario')
         .option('-du, --deleteUsers <id>', 'Deleta um usuario')
-        .option('-sid, --searchUsersId <searchUserValues>', 'Pesquisa por um usuario pelo id')
-        .option('-sbm, --searchUsersEmail <searchUserValues>', 'Pesquisa por um usuario pelo email')
+        .option('-sid, --searchUsersId <searchUserValues>', 'Pesquisa um usuario pelo id')
+        .option('-sbm, --searchUsersEmail <searchUserValues>', 'Pesquisa um usuario pelo email')
         .option('-sbn, --searchUsersName <searchUserValues>', 'Pesquisa por um usuario pelo nome')
         .option('                                                ')
         .option('Legendas: ', '? --> campo opcional')
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
         .option('Valores para cadastrar e pesquisar por usuarios (somente administrador): ', 'name, email')
-        .option('-ca, --cadmin <adminUsername> <password>', 'Cadastra o usuario administrador')
-        .option('-adel, --adminDelete <password>', 'Deleta o usuario administrador')
+        .option('-ca, --cadmin <adminUsername> <password>', 'Cadastra o administrador')
+        .option('-adel, --adminDelete <password>', 'Deleta o administrador')
         .option('-elog, --emplog <username> <password>', 'Login de usuarios')
         .option('-alog, --adminlog <adminuser> <adminpassword>', 'Login de administrador')
         .option('-eout, --elogout <email>', 'Logout para usuarios')
-        .option('-out, --logout', 'Logout para o administrador');
+        .option('-out, --logout', 'Logout do administrador');
     program.parse(process.argv);
     const options = program.opts();
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// verificar se o admin ja esta logado ao tentar logar como admin
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Criar classes com funções comuns entre as classes UserAdmin e Employee?
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)

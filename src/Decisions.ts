@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { OptionValues } from 'commander';
 import { UserFactory } from './EmployeeFactory';
 
@@ -76,5 +77,13 @@ export async function Decisions(options: OptionValues) {
   if (options.searchUsersName) {
     const EmployeeFinder = uf.Search(process.argv[3]);
     return EmployeeFinder;
+  }
+}
+
+export function test(arg1: string, whichData: string) {
+  switch (whichData) {
+    case 'name':
+      const fbn = new UserFactory('', '', arg1);
+      return fbn;
   }
 }

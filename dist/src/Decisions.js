@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Decisions = void 0;
+exports.test = exports.Decisions = void 0;
 const EmployeeFactory_1 = require("./EmployeeFactory");
 async function Decisions(options) {
     const uf = new EmployeeFactory_1.UserFactory();
@@ -59,3 +59,11 @@ async function Decisions(options) {
     }
 }
 exports.Decisions = Decisions;
+function test(arg1, whichData) {
+    switch (whichData) {
+        case 'name':
+            const fbn = new EmployeeFactory_1.UserFactory('', '', arg1);
+            return fbn;
+    }
+}
+exports.test = test;
