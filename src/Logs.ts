@@ -5,13 +5,21 @@ export class Logs {
   private dateTime: string[] = [];
   private email: string;
 
-  constructor(email: string, dateTime: string[] = []) {
+  constructor(email: string = '', dateTime: string[] = []) {
     this.dateTime = dateTime;
     this.email = email;
   }
 
   public async CreateLogin() {
     try {
+      if (!this.email || this.email === '') {
+        return console.log('Email não enviado');
+      }
+
+      if (!this.dateTime || this.dateTime.length < 1) {
+        return console.log('Data e hora não foram enviadas');
+      }
+
       await prisma.logsLogin.create({
         data: {
           email: this.email,
@@ -26,6 +34,14 @@ export class Logs {
 
   public async CreateLogout() {
     try {
+      if (!this.email || this.email === '') {
+        return console.log('Email não enviado');
+      }
+
+      if (!this.dateTime || this.dateTime.length < 1) {
+        return console.log('Data e hora não foram enviadas');
+      }
+
       await prisma.logsLogout.create({
         data: {
           email: this.email,
@@ -67,6 +83,90 @@ export class Logs {
 
       const logsList = await prisma.logsLogout.findMany();
       return console.table(logsList);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
+  public async LogSearchEmail(password: string, emailSearchValue: string) {
+    try {
+      const emp = new Employee('', this.email, password);
+      const admLoginVerify = await emp.AdminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(
+          'Operacao nao autorizada. Login do administrador necessario',
+        );
+      }
+
+      const findLog = await prisma.logsLogin.findMany({
+        where: {
+          email: emailSearchValue,
+        },
+      });
+
+      if (findLog.length < 1) {
+        return console.log(
+          `Logs do funcionário ${emailSearchValue} nao encontrados`,
+        );
+      }
+
+      return console.table(findLog);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
+  public async LogSearchDate(password: string, dateSearchValue: string) {
+    try {
+      const emp = new Employee('', this.email, password);
+      const admLoginVerify = await emp.AdminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(
+          'Operacao nao autorizada. Login do administrador necessario',
+        );
+      }
+
+      const findLog = await prisma.logsLogin.findMany({
+        where: {
+          loginDate: {
+            startsWith: dateSearchValue,
+          },
+        },
+      });
+
+      if (findLog.length < 1) {
+        return console.log(`Logs da data ${dateSearchValue} nao encontrados`);
+      }
+
+      return console.table(findLog);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
+  public async LogSearchHour(password: string, hourSearchValue: string) {
+    try {
+      const emp = new Employee('', this.email, password);
+      const admLoginVerify = await emp.AdminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(
+          'Operacao nao autorizada. Login do administrador necessario',
+        );
+      }
+
+      const findLog = await prisma.logsLogin.findMany({
+        where: {
+          loginHour: {
+            startsWith: hourSearchValue,
+          },
+        },
+      });
+
+      if (findLog.length < 1) {
+        return console.log(`Logs da data ${hourSearchValue} nao encontrados`);
+      }
+
+      return console.table(findLog);
     } catch (e) {
       return console.log(e);
     }

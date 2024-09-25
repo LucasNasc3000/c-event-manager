@@ -40,6 +40,9 @@ export async function Index() {
     )
     .option('-list, --logsList', 'Lista todos os registro de login')
     .option('-outs, --logoutsList', 'Lista todos os registro de logout')
+    .option('-lms, --logsEmailSearch', 'Pesquisa um log por email')
+    .option('-lds, --logsDateSearch', 'Pesquisa um log por data')
+    .option('-lhs, --logsHourSearch', 'Pesquisa um log por hora')
     .option('                                                ')
     .option('Legendas: ', '? --> campo opcional')
     .option(
@@ -69,11 +72,10 @@ export async function Index() {
   Decisions(options);
 }
 
-// eliminar retornos em uf nos metodos que colocam diretamente os dados no console table
+// adicionar startsWith e .length < 1 para findMany
+// atributos instanciando as classes (para as classes mais usadas em EmployeeFactory)
 // tratamento de erros
-// listar e pesquisar logs?
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
-// Criar classes com funções comuns entre as classes UserAdmin e Employee?
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)
 // Se existir, verificar se os mesmos estão na tabela de funcionários
 // Enxugar o código

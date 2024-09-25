@@ -14,6 +14,7 @@ export class EmployeeFactory implements UserAbstract {
   private _password: string = '';
   private _email: string = '';
   private empl: Employee = new Employee();
+  private log: Logs = new Logs();
 
   constructor(email: string = '', password: string = '', name: string = '') {
     this._email = email;
@@ -106,14 +107,24 @@ export class EmployeeFactory implements UserAbstract {
     }
   }
 
+  public async LogSearchEmail(emailSearchValue: string) {
+    this.log.LogSearchEmail(this._password, emailSearchValue);
+  }
+
+  public async LogSearchDate(dateSearchValue: string) {
+    this.log.LogSearchDate(this._password, dateSearchValue);
+  }
+
+  public async LogSearchHour(hourSearchValue: string) {
+    this.log.LogSearchHour(this._password, hourSearchValue);
+  }
+
   public async LogsList() {
-    const logs = new Logs(this._email);
-    logs.ListLogins(this._password);
+    this.log.ListLogins(this._password);
   }
 
   public async LogoutsList() {
-    const logs = new Logs(this._email);
-    logs.ListLogouts(this._password);
+    this.log.ListLogouts(this._password);
   }
 
   private FieldsCheck(): boolean {

@@ -56,6 +56,12 @@ async function Decisions(options) {
         await uf.EmployeesList();
     if (options.deleteUsers)
         await uf.Delete(process.argv[3]);
+    if (options.logsEmailSearch)
+        await uf.LogSearchEmail(process.argv[3]);
+    if (options.logsDateSearch)
+        await uf.LogSearchDate(process.argv[3]);
+    if (options.logsHourSearch)
+        await uf.LogSearchHour(process.argv[3]);
 }
 exports.Decisions = Decisions;
 // export function test(arg1: string, whichData: string) {
