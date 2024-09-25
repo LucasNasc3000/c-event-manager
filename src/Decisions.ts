@@ -1,27 +1,26 @@
 /* eslint-disable no-case-declarations */
 import { OptionValues } from 'commander';
-import { UserFactory } from './EmployeeFactory';
+import { EmployeeFactory } from './EmployeeFactory';
 
 export async function Decisions(options: OptionValues) {
-  const uf: UserFactory = new UserFactory();
+  const uf: EmployeeFactory = new EmployeeFactory();
 
   if (options.cadmin) {
-    const uf = new UserFactory(
+    const uf = new EmployeeFactory(
       process.env.ADMIN_USER as string,
       process.env.ADMIN_USER as string,
     );
-    const classes = await uf.UserCreate();
-    return classes;
+    await uf.UserCreate();
   }
 
   if (options.adminlog) {
-    const uf = new UserFactory(process.argv[3], process.argv[4]);
+    const uf = new EmployeeFactory(process.argv[3], process.argv[4]);
     const adminLog = await uf.Login();
     return adminLog;
   }
 
   if (options.emplog) {
-    const uf = new UserFactory(process.argv[3], process.argv[4]);
+    const uf = new EmployeeFactory(process.argv[3], process.argv[4]);
     const employeeLogin = await uf.Login();
     return employeeLogin;
   }
@@ -32,13 +31,12 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.elogout) {
-    const uf = new UserFactory(process.argv[3]);
-    const logout = uf.EmployeeLogout();
-    return logout;
+    const uf = new EmployeeFactory(process.argv[3]);
+    uf.EmployeeLogout();
   }
 
   if (options.createUser) {
-    const uf = new UserFactory(
+    const uf = new EmployeeFactory(
       process.argv[3],
       process.argv[4],
       process.argv[5],
@@ -47,21 +45,12 @@ export async function Decisions(options: OptionValues) {
     return user;
   }
 
-  if (options.readUsers) {
-    const list = await uf.EmployeesList();
-    return list;
-  }
-
   if (options.updateUsers) {
     const data: string[] = [];
 
     data.push(process.argv[4], process.argv[5]);
 
     await uf.EmployeeUpdate(process.argv[3], data);
-  }
-
-  if (options.deleteUsers) {
-    await uf.Delete(process.argv[3]);
   }
 
   if (options.searchUsersId) {
@@ -82,12 +71,16 @@ export async function Decisions(options: OptionValues) {
   if (options.logsList) uf.LogsList();
 
   if (options.logoutsList) uf.LogoutsList();
+
+  if (options.readUsers) await uf.EmployeesList();
+
+  if (options.deleteUsers) await uf.Delete(process.argv[3]);
 }
 
 // export function test(arg1: string, whichData: string) {
 //   switch (whichData) {
 //     case 'name':
-//       const fbn = new UserFactory('', '', arg1);
+//       const fbn = new EmployeeFactory('', '', arg1);
 //       return fbn;
 //   }
 // }

@@ -9,23 +9,16 @@ import { Logs } from './Logs';
 
 dotenv.config();
 
-export class UserFactory implements UserAbstract {
+export class EmployeeFactory implements UserAbstract {
   private _name: string = '';
   private _password: string = '';
   private _email: string = '';
-  private _id: string = '';
   private empl: Employee = new Employee();
 
-  constructor(
-    email: string = '',
-    password: string = '',
-    name: string = '',
-    id: string = '',
-  ) {
+  constructor(email: string = '', password: string = '', name: string = '') {
     this._email = email;
     this._password = password;
     this._name = name;
-    this._id = id;
   }
   Create(): Promise<void> {
     throw new Error('Method not implemented.');
@@ -49,11 +42,9 @@ export class UserFactory implements UserAbstract {
 
     if (this._name !== 'adm@30001') {
       const empl = new Employee(this._name, this._email, this._password);
-      const emplCreate = await empl.Create();
-      return emplCreate;
+      await empl.Create();
     }
-    const admin = await UserAdmin.CreateAdmin(this._email, this._password);
-    return admin;
+    await UserAdmin.CreateAdmin(this._email, this._password);
   }
 
   public async Login() {
@@ -76,20 +67,18 @@ export class UserFactory implements UserAbstract {
 
   public async EmployeeLogout() {
     const empl = new Employee('', this._email);
-    return empl.Logout();
+    empl.Logout();
   }
 
   public async EmployeesList() {
-    const emplList = await this.empl.List();
-    return emplList;
+    await this.empl.List();
   }
 
   public async EmployeeUpdate(id: string, data: string[]) {
     if (typeof id === 'undefined' || id === '' || id === null) {
       return 'id nao informado';
     }
-    const emplUpdate = await this.empl.Update(id, data);
-    return emplUpdate;
+    await this.empl.Update(id, data);
   }
 
   public async Delete(id: string) {

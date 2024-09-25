@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserFactory = void 0;
+exports.EmployeeFactory = void 0;
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
@@ -12,17 +12,15 @@ const Employee_1 = require("./Employee");
 const UserAdmin_1 = require("./UserAdmin");
 const Logs_1 = require("./Logs");
 dotenv_1.default.config();
-class UserFactory {
-    constructor(email = '', password = '', name = '', id = '') {
+class EmployeeFactory {
+    constructor(email = '', password = '', name = '') {
         this._name = '';
         this._password = '';
         this._email = '';
-        this._id = '';
         this.empl = new Employee_1.Employee();
         this._email = email;
         this._password = password;
         this._name = name;
-        this._id = id;
     }
     Create() {
         throw new Error('Method not implemented.');
@@ -43,11 +41,9 @@ class UserFactory {
         }
         if (this._name !== 'adm@30001') {
             const empl = new Employee_1.Employee(this._name, this._email, this._password);
-            const emplCreate = await empl.Create();
-            return emplCreate;
+            await empl.Create();
         }
-        const admin = await UserAdmin_1.UserAdmin.CreateAdmin(this._email, this._password);
-        return admin;
+        await UserAdmin_1.UserAdmin.CreateAdmin(this._email, this._password);
     }
     async Login() {
         if (this._email[0] === 'a' &&
@@ -64,18 +60,16 @@ class UserFactory {
     }
     async EmployeeLogout() {
         const empl = new Employee_1.Employee('', this._email);
-        return empl.Logout();
+        empl.Logout();
     }
     async EmployeesList() {
-        const emplList = await this.empl.List();
-        return emplList;
+        await this.empl.List();
     }
     async EmployeeUpdate(id, data) {
         if (typeof id === 'undefined' || id === '' || id === null) {
             return 'id nao informado';
         }
-        const emplUpdate = await this.empl.Update(id, data);
-        return emplUpdate;
+        await this.empl.Update(id, data);
     }
     async Delete(id) {
         await this.empl.Delete(id);
@@ -122,4 +116,4 @@ class UserFactory {
         return false;
     }
 }
-exports.UserFactory = UserFactory;
+exports.EmployeeFactory = EmployeeFactory;
