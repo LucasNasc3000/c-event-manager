@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { Employee } from './Employee';
 import { UserAdmin } from './UserAdmin';
 import { UserAbstract } from './interfaces/UserAbstract';
+import { Logs } from './Logs';
 
 dotenv.config();
 
@@ -114,6 +115,16 @@ export class UserFactory implements UserAbstract {
         );
       }
     }
+  }
+
+  public async LogsList() {
+    const logs = new Logs(this._email);
+    logs.ListLogins(this._password);
+  }
+
+  public async LogoutsList() {
+    const logs = new Logs(this._email);
+    logs.ListLogouts(this._password);
   }
 
   private FieldsCheck(): boolean {

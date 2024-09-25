@@ -38,6 +38,8 @@ export async function Index() {
       '-sbn, --searchUsersName <searchUserValues>',
       'Pesquisa por um usuario pelo nome',
     )
+    .option('-list, --logsList', 'Lista todos os registro de login')
+    .option('-outs, --logoutsList', 'Lista todos os registro de logout')
     .option('                                                ')
     .option('Legendas: ', '? --> campo opcional')
     .option(
@@ -67,6 +69,8 @@ export async function Index() {
   Decisions(options);
 }
 
+// eliminar retornos em uf nos metodos que colocam diretamente os dados no console table
+// tratamento de erros
 // listar e pesquisar logs?
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Criar classes com funções comuns entre as classes UserAdmin e Employee?

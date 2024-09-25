@@ -78,6 +78,10 @@ export async function Decisions(options: OptionValues) {
     const EmployeeFinder = uf.Search(process.argv[3]);
     return EmployeeFinder;
   }
+
+  if (options.logsList) uf.LogsList();
+
+  if (options.logoutsList) uf.LogoutsList();
 }
 
 // export function test(arg1: string, whichData: string) {

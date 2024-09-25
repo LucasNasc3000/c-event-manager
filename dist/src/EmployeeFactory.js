@@ -10,6 +10,7 @@ exports.UserFactory = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const Employee_1 = require("./Employee");
 const UserAdmin_1 = require("./UserAdmin");
+const Logs_1 = require("./Logs");
 dotenv_1.default.config();
 class UserFactory {
     constructor(email = '', password = '', name = '', id = '') {
@@ -96,6 +97,14 @@ class UserFactory {
                 return console.log(`Funcionario de id: ${searchValue} inexistente ou o dado de busca foi informado incorretamente.`);
             }
         }
+    }
+    async LogsList() {
+        const logs = new Logs_1.Logs(this._email);
+        logs.ListLogins(this._password);
+    }
+    async LogoutsList() {
+        const logs = new Logs_1.Logs(this._email);
+        logs.ListLogouts(this._password);
     }
     FieldsCheck() {
         const fields = [this._name, this._email, this._password];
