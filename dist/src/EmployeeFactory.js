@@ -102,6 +102,15 @@ class EmployeeFactory {
     async LogSearchHour(hourSearchValue) {
         this.log.LogSearchHour(this._password, hourSearchValue);
     }
+    async LogoutSearchEmail(emailSearchValue) {
+        this.log.LogoutSearchEmail(this._password, emailSearchValue);
+    }
+    async LogoutSearchDate(dateSearchValue) {
+        this.log.LogoutSearchDate(this._password, dateSearchValue);
+    }
+    async LogoutSearchHour(hourSearchValue) {
+        this.log.LogoutSearchHour(this._password, hourSearchValue);
+    }
     async LogsList() {
         this.log.ListLogins(this._password);
     }

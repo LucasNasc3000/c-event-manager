@@ -144,5 +144,72 @@ class Logs {
             return console.log(e);
         }
     }
+    async LogoutSearchEmail(password, emailSearchValue) {
+        try {
+            const emp = new Employee_1.Employee('', this.email, password);
+            const admLoginVerify = await emp.AdminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log('Operacao nao autorizada. Login do administrador necessario');
+            }
+            const findLogout = await prisma_1.prisma.logsLogout.findMany({
+                where: {
+                    email: emailSearchValue,
+                },
+            });
+            if (findLogout.length < 1) {
+                return console.log(`Logouts do funcionário ${emailSearchValue} nao encontrados`);
+            }
+            return console.table(findLogout);
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
+    async LogoutSearchDate(password, dateSearchValue) {
+        try {
+            const emp = new Employee_1.Employee('', this.email, password);
+            const admLoginVerify = await emp.AdminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log('Operacao nao autorizada. Login do administrador necessario');
+            }
+            const findLog = await prisma_1.prisma.logsLogout.findMany({
+                where: {
+                    logoutDate: {
+                        startsWith: dateSearchValue,
+                    },
+                },
+            });
+            if (findLog.length < 1) {
+                return console.log(`Logouts da data ${dateSearchValue} nao encontrados`);
+            }
+            return console.table(findLog);
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
+    async LogoutSearchHour(password, hourSearchValue) {
+        try {
+            const emp = new Employee_1.Employee('', this.email, password);
+            const admLoginVerify = await emp.AdminLoginVerify();
+            if (admLoginVerify === false) {
+                return console.log('Operacao nao autorizada. Login do administrador necessario');
+            }
+            const findLog = await prisma_1.prisma.logsLogout.findMany({
+                where: {
+                    logoutHour: {
+                        startsWith: hourSearchValue,
+                    },
+                },
+            });
+            if (findLog.length < 1) {
+                return console.log(`Logouts da data ${hourSearchValue} nao encontrados`);
+            }
+            return console.table(findLog);
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
 }
 exports.Logs = Logs;

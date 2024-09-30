@@ -43,6 +43,9 @@ export async function Index() {
     .option('-lms, --logsEmailSearch', 'Pesquisa um log por email')
     .option('-lds, --logsDateSearch', 'Pesquisa um log por data')
     .option('-lhs, --logsHourSearch', 'Pesquisa um log por hora')
+    .option('-loms, --logoutsEmailSearch', 'Pesquisa um logout por email')
+    .option('-lods, --logoutsDateSearch', 'Pesquisa um logout por data')
+    .option('-lohs, --logoutsHourSearch', 'Pesquisa um logout por hora')
     .option('                                                ')
     .option('Legendas: ', '? --> campo opcional')
     .option(
@@ -72,6 +75,7 @@ export async function Index() {
   Decisions(options);
 }
 
+// adicionar pesquisas para os logouts tambem
 // adicionar startsWith e .length < 1 para findMany
 // atributos instanciando as classes (para as classes mais usadas em EmployeeFactory)
 // tratamento de erros

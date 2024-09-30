@@ -62,6 +62,12 @@ async function Decisions(options) {
         await uf.LogSearchDate(process.argv[3]);
     if (options.logsHourSearch)
         await uf.LogSearchHour(process.argv[3]);
+    if (options.logoutsEmailSearch)
+        await uf.LogoutSearchEmail(process.argv[3]);
+    if (options.logoutsDateSearch)
+        await uf.LogoutSearchDate(process.argv[3]);
+    if (options.logoutsHourSearch)
+        await uf.LogoutSearchHour(process.argv[3]);
 }
 exports.Decisions = Decisions;
 // export function test(arg1: string, whichData: string) {

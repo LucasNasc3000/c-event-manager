@@ -171,4 +171,92 @@ export class Logs {
       return console.log(e);
     }
   }
+
+  public async LogoutSearchEmail(password: string, emailSearchValue: string) {
+    try {
+      const emp = new Employee('', this.email, password);
+      const admLoginVerify = await emp.AdminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(
+          'Operacao nao autorizada. Login do administrador necessario',
+        );
+      }
+
+      const findLogout = await prisma.logsLogout.findMany({
+        where: {
+          email: emailSearchValue,
+        },
+      });
+
+      if (findLogout.length < 1) {
+        return console.log(
+          `Logouts do funcionário ${emailSearchValue} nao encontrados`,
+        );
+      }
+
+      return console.table(findLogout);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
+  public async LogoutSearchDate(password: string, dateSearchValue: string) {
+    try {
+      const emp = new Employee('', this.email, password);
+      const admLoginVerify = await emp.AdminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(
+          'Operacao nao autorizada. Login do administrador necessario',
+        );
+      }
+
+      const findLog = await prisma.logsLogout.findMany({
+        where: {
+          logoutDate: {
+            startsWith: dateSearchValue,
+          },
+        },
+      });
+
+      if (findLog.length < 1) {
+        return console.log(
+          `Logouts da data ${dateSearchValue} nao encontrados`,
+        );
+      }
+
+      return console.table(findLog);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
+  public async LogoutSearchHour(password: string, hourSearchValue: string) {
+    try {
+      const emp = new Employee('', this.email, password);
+      const admLoginVerify = await emp.AdminLoginVerify();
+      if (admLoginVerify === false) {
+        return console.log(
+          'Operacao nao autorizada. Login do administrador necessario',
+        );
+      }
+
+      const findLog = await prisma.logsLogout.findMany({
+        where: {
+          logoutHour: {
+            startsWith: hourSearchValue,
+          },
+        },
+      });
+
+      if (findLog.length < 1) {
+        return console.log(
+          `Logouts da data ${hourSearchValue} nao encontrados`,
+        );
+      }
+
+      return console.table(findLog);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
 }

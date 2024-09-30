@@ -119,6 +119,18 @@ export class EmployeeFactory implements UserAbstract {
     this.log.LogSearchHour(this._password, hourSearchValue);
   }
 
+  public async LogoutSearchEmail(emailSearchValue: string) {
+    this.log.LogoutSearchEmail(this._password, emailSearchValue);
+  }
+
+  public async LogoutSearchDate(dateSearchValue: string) {
+    this.log.LogoutSearchDate(this._password, dateSearchValue);
+  }
+
+  public async LogoutSearchHour(hourSearchValue: string) {
+    this.log.LogoutSearchHour(this._password, hourSearchValue);
+  }
+
   public async LogsList() {
     this.log.ListLogins(this._password);
   }
