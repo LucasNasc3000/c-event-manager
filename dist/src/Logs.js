@@ -57,6 +57,9 @@ class Logs {
                 return console.log('Operacao nao autorizada. Login do administrador necessario');
             }
             const logsList = await prisma_1.prisma.logsLogin.findMany();
+            if (logsList.length < 1) {
+                return console.log('Ocorreu um erro ou não há loginsregistrados');
+            }
             return console.table(logsList);
         }
         catch (e) {
@@ -71,6 +74,9 @@ class Logs {
                 return console.log('Operacao nao autorizada. Login do administrador necessario');
             }
             const logsList = await prisma_1.prisma.logsLogout.findMany();
+            if (logsList.length < 1) {
+                return console.log('Ocorreu um erro ou não há logouts registrados');
+            }
             return console.table(logsList);
         }
         catch (e) {

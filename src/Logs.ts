@@ -65,6 +65,11 @@ export class Logs {
       }
 
       const logsList = await prisma.logsLogin.findMany();
+
+      if (logsList.length < 1) {
+        return console.log('Ocorreu um erro ou não há loginsregistrados');
+      }
+
       return console.table(logsList);
     } catch (e) {
       return console.log(e);
@@ -82,6 +87,11 @@ export class Logs {
       }
 
       const logsList = await prisma.logsLogout.findMany();
+
+      if (logsList.length < 1) {
+        return console.log('Ocorreu um erro ou não há logouts registrados');
+      }
+
       return console.table(logsList);
     } catch (e) {
       return console.log(e);

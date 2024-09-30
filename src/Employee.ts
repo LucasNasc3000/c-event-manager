@@ -65,6 +65,13 @@ export class Employee implements UserAbstract {
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const employeesList = await prisma.employee.findMany();
+
+      if (employeesList.length < 1) {
+        return console.log(
+          'Ocorreu um erro ou não há funcionários cadastrados',
+        );
+      }
+
       return console.table(employeesList);
     } catch (e) {
       console.log(e);
@@ -131,7 +138,7 @@ export class Employee implements UserAbstract {
       });
 
       if (!findEmployee) {
-        return null;
+        return console.log('Funcionário não encontrado');
       }
 
       return console.table(findEmployee);
@@ -152,7 +159,7 @@ export class Employee implements UserAbstract {
       });
 
       if (!findEmployee) {
-        return console.log(`Funcionario ${email} nao encontrado`);
+        return console.log(`Funcionario com email "${email}" nao encontrado`);
       }
 
       return console.table(findEmployee);
@@ -166,14 +173,16 @@ export class Employee implements UserAbstract {
       const admLoginVerify = await this.AdminLoginVerify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
-      const findEmployee = await prisma.employee.findUnique({
+      const findEmployee = await prisma.employee.findMany({
         where: {
-          name: name,
+          name: {
+            startsWith: name,
+          },
         },
       });
 
-      if (!findEmployee) {
-        return console.log(`Funcionario ${name} nao encontrado`);
+      if (findEmployee.length < 1) {
+        return console.log(`Funcionarios com o nome "${name}" nao encontrados`);
       }
 
       return console.table(findEmployee);

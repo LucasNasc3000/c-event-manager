@@ -75,9 +75,6 @@ export async function Index() {
   Decisions(options);
 }
 
-// adicionar pesquisas para os logouts tambem
-// adicionar startsWith e .length < 1 para findMany
-// atributos instanciando as classes (para as classes mais usadas em EmployeeFactory)
 // tratamento de erros
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)

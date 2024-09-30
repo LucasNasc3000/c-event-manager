@@ -60,6 +60,9 @@ class Employee {
             if (admLoginVerify === false)
                 return console.log(this.errorMsg);
             const employeesList = await prisma_1.prisma.employee.findMany();
+            if (employeesList.length < 1) {
+                return console.log('Ocorreu um erro ou não há funcionários cadastrados');
+            }
             return console.table(employeesList);
         }
         catch (e) {
@@ -120,7 +123,7 @@ class Employee {
                 },
             });
             if (!findEmployee) {
-                return null;
+                return console.log('Funcionário não encontrado');
             }
             return console.table(findEmployee);
         }
@@ -139,7 +142,7 @@ class Employee {
                 },
             });
             if (!findEmployee) {
-                return console.log(`Funcionario ${email} nao encontrado`);
+                return console.log(`Funcionario com email "${email}" nao encontrado`);
             }
             return console.table(findEmployee);
         }
@@ -152,13 +155,15 @@ class Employee {
             const admLoginVerify = await this.AdminLoginVerify();
             if (admLoginVerify === false)
                 return console.log(this.errorMsg);
-            const findEmployee = await prisma_1.prisma.employee.findUnique({
+            const findEmployee = await prisma_1.prisma.employee.findMany({
                 where: {
-                    name: name,
+                    name: {
+                        startsWith: name,
+                    },
                 },
             });
-            if (!findEmployee) {
-                return console.log(`Funcionario ${name} nao encontrado`);
+            if (findEmployee.length < 1) {
+                return console.log(`Funcionarios com o nome "${name}" nao encontrados`);
             }
             return console.table(findEmployee);
         }
