@@ -16,8 +16,8 @@ datasource db {
 model Event {
   id String @id @default(uuid())
   eventCreator String @map("event_creator")
-  date DateTime
-  hour DateTime
+  date String
+  hour String
   name String
   hosts String
   modality String

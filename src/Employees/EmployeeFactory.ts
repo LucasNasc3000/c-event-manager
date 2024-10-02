@@ -4,8 +4,8 @@
 import dotenv from 'dotenv';
 import { Employee } from './Employee';
 import { UserAdmin } from './UserAdmin';
-import { UserAbstract } from './interfaces/UserAbstract';
-import { Logs } from './Logs';
+import { UserAbstract } from '../interfaces/UserAbstract';
+import { Logs } from '../Logs/Logs';
 
 dotenv.config();
 

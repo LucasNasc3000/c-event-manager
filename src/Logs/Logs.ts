@@ -1,5 +1,5 @@
 import { prisma } from '../lib/prisma';
-import { Employee } from './Employee';
+import { Employee } from './Employees/Employee';
 
 export class Logs {
   private dateTime: string[] = [];

@@ -1,8 +1,8 @@
 import dotenv from 'dotenv';
-import { prisma } from '../lib/prisma';
-import { UserAbstract } from './interfaces/UserAbstract';
-import { DateTime } from './utils/DateTime';
-import { Logs } from './Logs';
+import { prisma } from '../../lib/prisma';
+import { UserAbstract } from '../interfaces/UserAbstract';
+import { DateTime } from '../utils/DateTime';
+import { Logs } from '../Logs/Logs';
 
 dotenv.config();
 
