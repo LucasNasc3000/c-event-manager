@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Decisions = void 0;
-const EmployeeFactory_1 = require("./EmployeeFactory");
+const EmployeeFactory_1 = require("./Employees/EmployeeFactory");
+const Event_1 = require("./Events/Event");
 async function Decisions(options) {
     const uf = new EmployeeFactory_1.EmployeeFactory();
+    const event = new Event_1.Event();
     if (options.cadmin) {
         const uf = new EmployeeFactory_1.EmployeeFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
         await uf.UserCreate();
@@ -68,6 +70,13 @@ async function Decisions(options) {
         await uf.LogoutSearchDate(process.argv[3]);
     if (options.logoutsHourSearch)
         await uf.LogoutSearchHour(process.argv[3]);
+    if (options.createEvent) {
+        const event = new Event_1.Event(process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7], process.argv[8], process.argv[9], process.argv[10], process.argv[11], process.argv[12], process.argv[13]);
+        const create = event.Create();
+        return create;
+    }
+    if (options.readEvent)
+        await event.List();
 }
 exports.Decisions = Decisions;
 // export function test(arg1: string, whichData: string) {

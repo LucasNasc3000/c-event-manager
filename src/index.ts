@@ -16,11 +16,14 @@ export async function Index() {
     .usage('-uu u13o12i3kf49 Joao')
     .description('Programa feito para gerenciar eventos de uma empresa')
     .option('Eventos: ')
-    .option('-ce, --create <values>', 'Cria um novo evento')
-    .option('-re, --read', 'Mostra todas os eventos')
-    .option('-ue, --update <id> <values>', 'Atualiza os dados de um evento')
-    .option('-de, --delete <id>', 'Deleta um evento')
-    .option('-se, --search <searchEventValues>', 'Pesquisa por um evento')
+    .option('-ce, --createEvent <values>', 'Cria um novo evento')
+    .option('-re, --readEvent', 'Mostra todas os eventos')
+    .option(
+      '-ue, --updateEvent <id> <values>',
+      'Atualiza os dados de um evento',
+    )
+    .option('-de, --deleteEvent <id>', 'Deleta um evento')
+    .option('-se, --searchEvent <searchEventValues>', 'Pesquisa por um evento')
     .option('Usuarios (somente administrador): ')
     .option('-cs, --createUser <values>', 'Cria um novo usuario')
     .option('-ru, --readUsers', 'Mostra todos os usuarios')
@@ -75,6 +78,8 @@ export async function Index() {
   Decisions(options);
 }
 
+// hash para senhas
+// colocar busca por senha no where do adminloginverify
 // tratamento de erros
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)

@@ -23,7 +23,6 @@ model Event {
   modality String
   location String?
   plattform String?
-  slug String @unique
   eventCreatorId String @map("event_creator_id")
 
   employee Employee @relation(fields: [eventCreatorId], references: [id], onDelete: Cascade)

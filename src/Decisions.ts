@@ -1,9 +1,11 @@
 /* eslint-disable no-case-declarations */
 import { OptionValues } from 'commander';
-import { EmployeeFactory } from './EmployeeFactory';
+import { EmployeeFactory } from './Employees/EmployeeFactory';
+import { Event } from './Events/Event';
 
 export async function Decisions(options: OptionValues) {
   const uf: EmployeeFactory = new EmployeeFactory();
+  const event: Event = new Event();
 
   if (options.cadmin) {
     const uf = new EmployeeFactory(
@@ -87,6 +89,27 @@ export async function Decisions(options: OptionValues) {
   if (options.logoutsDateSearch) await uf.LogoutSearchDate(process.argv[3]);
 
   if (options.logoutsHourSearch) await uf.LogoutSearchHour(process.argv[3]);
+
+  if (options.createEvent) {
+    const event = new Event(
+      process.argv[3],
+      process.argv[4],
+      process.argv[5],
+      process.argv[6],
+      process.argv[7],
+      process.argv[8],
+      process.argv[9],
+      process.argv[10],
+      process.argv[11],
+      process.argv[12],
+      process.argv[13],
+    );
+
+    const create = event.Create();
+    return create;
+  }
+
+  if (options.readEvent) await event.List();
 }
 
 // export function test(arg1: string, whichData: string) {
