@@ -54,6 +54,7 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// verificação de existencia do funcionario no bd antes de logar
 // hash para senhas
 // colocar busca por senha no where do adminloginverify
 // tratamento de erros

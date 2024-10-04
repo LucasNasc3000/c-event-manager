@@ -18,15 +18,34 @@ export class Event {
 
   async EmployeeLoginVerify() {
     try {
-      const employeeVerify = await prisma.userLogin.findUnique({
+      const employeeLogin = await prisma.userLogin.findMany();
+      const empData: string[] = [];
+
+      if (employeeLogin.length <= 0) return false;
+
+      employeeLogin.map((employee) => {
+        empData.push(employee.userEmail, employee.userPassword);
+      });
+
+      const employeeLoginVerify = await prisma.employee.findUnique({
         where: {
-          userEmail: this.email,
-          userPassword: this.password,
+          email: empData[0],
+          password: empData[1],
         },
       });
 
-      if (employeeVerify) return true;
+      if (!employeeLoginVerify) {
+        return console.log(
+          `Erro ao validar login do funcionário: ${empData[0]}`,
+        );
+      }
 
+      if (
+        employeeLoginVerify.email === empData[0] &&
+        employeeLoginVerify.password === empData[1]
+      ) {
+        return true;
+      }
       return false;
     } catch (e) {
       return console.log(e);

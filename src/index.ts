@@ -78,6 +78,7 @@ export async function Index() {
   Decisions(options);
 }
 
+// verificação de existencia do funcionario no bd antes de logar
 // hash para senhas
 // colocar busca por senha no where do adminloginverify
 // tratamento de erros
