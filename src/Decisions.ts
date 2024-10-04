@@ -101,8 +101,6 @@ export async function Decisions(options: OptionValues) {
       process.argv[9],
       process.argv[10],
       process.argv[11],
-      process.argv[12],
-      process.argv[13],
     );
 
     const create = event.Create();

@@ -200,6 +200,18 @@ export class Employee implements UserAbstract {
         );
       }
 
+      const employeeVerify = await prisma.employee.findUnique({
+        where: {
+          email: this._email,
+        },
+      });
+
+      if (!employeeVerify) return console.log('Funcionario não registrado');
+
+      if (employeeVerify?.password !== this._password) {
+        return console.log('Senha incorreta');
+      }
+
       await prisma.userLogin.create({
         data: {
           userEmail: this._email,

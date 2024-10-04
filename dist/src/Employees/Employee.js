@@ -177,6 +177,16 @@ class Employee {
             if (admLoginVerify === true) {
                 return console.log('Login nao autorizado enquanto o administrador estiver logado');
             }
+            const employeeVerify = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    email: this._email,
+                },
+            });
+            if (!employeeVerify)
+                return console.log('Funcionario não registrado');
+            if ((employeeVerify === null || employeeVerify === void 0 ? void 0 : employeeVerify.password) !== this._password) {
+                return console.log('Senha incorreta');
+            }
             await prisma_1.prisma.userLogin.create({
                 data: {
                     userEmail: this._email,

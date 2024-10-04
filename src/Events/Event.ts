@@ -12,8 +12,6 @@ export class Event {
     private location: string = '',
     private plattform: string = '',
     private eventCreatorId: string = '',
-    private email: string = '',
-    private password: string = '',
   ) {}
 
   async EmployeeLoginVerify() {

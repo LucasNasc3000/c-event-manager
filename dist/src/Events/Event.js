@@ -4,7 +4,7 @@ exports.Event = void 0;
 /* eslint-disable no-unused-vars */
 const prisma_1 = require("../../lib/prisma");
 class Event {
-    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '', email = '', password = '') {
+    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '') {
         this.eventCreator = eventCreator;
         this.date = date;
         this.hour = hour;
@@ -14,8 +14,6 @@ class Event {
         this.location = location;
         this.plattform = plattform;
         this.eventCreatorId = eventCreatorId;
-        this.email = email;
-        this.password = password;
     }
     async EmployeeLoginVerify() {
         try {
