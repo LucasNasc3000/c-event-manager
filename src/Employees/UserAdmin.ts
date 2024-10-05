@@ -15,33 +15,41 @@ export class UserAdmin {
   }
 
   private async FindAdmin() {
-    const admExists = await prisma.employee.findUnique({
-      where: {
-        email: this.adminEmail,
-        password: this.adminPassword,
-      },
-    });
+    try {
+      const admExists = await prisma.employee.findUnique({
+        where: {
+          email: this.adminEmail,
+          password: this.adminPassword,
+        },
+      });
 
-    if (admExists === null) {
-      return console.log('Administrador não encontrado');
+      if (admExists === null) {
+        return console.log('Administrador não encontrado');
+      }
+
+      return admExists;
+    } catch (e) {
+      return console.log(e);
     }
-
-    return admExists;
   }
 
   private async IsLogged() {
-    const admExists = await prisma.adminLogin.findUnique({
-      where: {
-        adminUser: this.adminEmail,
-        adminPassword: this.adminPassword,
-      },
-    });
+    try {
+      const admExists = await prisma.adminLogin.findUnique({
+        where: {
+          adminUser: this.adminEmail,
+          adminPassword: this.adminPassword,
+        },
+      });
 
-    if (admExists === null) {
-      return null;
+      if (admExists === null) {
+        return null;
+      }
+
+      return admExists;
+    } catch (e) {
+      return console.log(e);
     }
-
-    return admExists;
   }
 
   private async Create() {
@@ -85,6 +93,10 @@ export class UserAdmin {
       if (admExists) {
         if (isLogged !== null) {
           return console.log('Administrador com login ja ativo');
+        }
+
+        if (admExists.password !== adminPassword) {
+          return console.log('Senha incorreta');
         }
 
         await prisma.adminLogin.create({
