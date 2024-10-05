@@ -19,7 +19,7 @@ export class Employee implements UserAbstract {
     this._password = password;
   }
 
-  private async AdminLoginVerify() {
+  public async AdminLoginVerify() {
     try {
       const admLogin = await prisma.adminLogin.findMany();
       const adminData: string[] = [];
@@ -55,7 +55,23 @@ export class Employee implements UserAbstract {
     }
   }
 
-  private async EmployeeLoginVerify() {}
+  private async EmployeeLoginVerify() {
+    try {
+      const empLogin = await prisma.userLogin.findMany();
+
+      if (empLogin.length > 0) {
+        const employeeLoginVerify = empLogin.map((emp) => {
+          return emp.userEmail;
+        });
+
+        return employeeLoginVerify[0];
+      }
+
+      return false;
+    } catch (e) {
+      return console.log(e);
+    }
+  }
 
   public async Create() {
     try {
@@ -211,9 +227,16 @@ export class Employee implements UserAbstract {
   public async Login() {
     try {
       const admLoginVerify = await this.AdminLoginVerify();
+      const employeeLoginVerify = await this.EmployeeLoginVerify();
       if (admLoginVerify === true) {
         return console.log(
           'Login nao autorizado enquanto o administrador estiver logado',
+        );
+      }
+
+      if (typeof employeeLoginVerify === 'string') {
+        return console.log(
+          `Erro: o funcionário ${employeeLoginVerify} já está logado`,
         );
       }
 

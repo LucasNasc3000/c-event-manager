@@ -20,21 +20,47 @@ class Employee {
         this._password = password;
     }
     async AdminLoginVerify() {
-        const admLogin = await prisma_1.prisma.adminLogin.findMany();
-        if (admLogin.length <= 0)
+        try {
+            const admLogin = await prisma_1.prisma.adminLogin.findMany();
+            const adminData = [];
+            if (admLogin.length <= 0)
+                return false;
+            admLogin.map((adm) => {
+                adminData.push(adm.adminUser, adm.adminPassword);
+            });
+            const adminVerify = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    email: adminData[0],
+                    password: adminData[1],
+                },
+            });
+            if (!adminVerify) {
+                return console.log(`Erro ao validar login do administrador ${admLogin[0]}`);
+            }
+            if (adminVerify.email === adminData[0] &&
+                adminVerify.password === adminData[1]) {
+                return true;
+            }
             return false;
-        const verifyAdminUser = admLogin.map((adm) => {
-            return adm.adminUser;
-        });
-        const adminVerify = await prisma_1.prisma.employee.findUnique({
-            where: {
-                email: verifyAdminUser[0],
-            },
-        });
-        if (adminVerify !== null && adminVerify.email === verifyAdminUser[0]) {
-            return true;
         }
-        return false;
+        catch (e) {
+            return console.log(e);
+        }
+    }
+    async EmployeeLoginVerify() {
+        try {
+            const empLogin = await prisma_1.prisma.userLogin.findMany();
+            if (empLogin.length > 0) {
+                const employeeLoginVerify = empLogin.map((emp) => {
+                    return emp.userEmail;
+                });
+                return employeeLoginVerify[0];
+            }
+            return false;
+        }
+        catch (e) {
+            return console.log(e);
+        }
     }
     async Create() {
         try {
@@ -174,8 +200,12 @@ class Employee {
     async Login() {
         try {
             const admLoginVerify = await this.AdminLoginVerify();
+            const employeeLoginVerify = await this.EmployeeLoginVerify();
             if (admLoginVerify === true) {
                 return console.log('Login nao autorizado enquanto o administrador estiver logado');
+            }
+            if (typeof employeeLoginVerify === 'string') {
+                return console.log(`Erro: o funcionário ${employeeLoginVerify} já está logado`);
             }
             const employeeVerify = await prisma_1.prisma.employee.findUnique({
                 where: {

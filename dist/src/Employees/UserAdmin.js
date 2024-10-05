@@ -15,28 +15,36 @@ class UserAdmin {
         this.adminPassword = adminPassword;
     }
     async FindAdmin() {
-        const admExists = await prisma_1.prisma.employee.findUnique({
-            where: {
-                email: this.adminEmail,
-                password: this.adminPassword,
-            },
-        });
-        if (admExists === null) {
-            return null;
+        try {
+            const admExists = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    email: this.adminEmail,
+                },
+            });
+            if (admExists === null) {
+                return console.log('Administrador não encontrado');
+            }
+            return admExists;
         }
-        return admExists;
+        catch (e) {
+            return console.log(e);
+        }
     }
     async IsLogged() {
-        const admExists = await prisma_1.prisma.adminLogin.findUnique({
-            where: {
-                adminUser: this.adminEmail,
-                adminPassword: this.adminPassword,
-            },
-        });
-        if (admExists === null) {
-            return null;
+        try {
+            const admExists = await prisma_1.prisma.adminLogin.findUnique({
+                where: {
+                    adminUser: this.adminEmail,
+                },
+            });
+            if (admExists === null) {
+                return null;
+            }
+            return admExists;
         }
-        return admExists;
+        catch (e) {
+            return console.log(e);
+        }
     }
     async Create() {
         try {
@@ -60,9 +68,8 @@ class UserAdmin {
         try {
             const admin = new UserAdmin(adminEmail, adminPassword);
             const admExists = await admin.FindAdmin();
-            if (admExists !== null) {
+            if (admExists)
                 return admExists.email;
-            }
             await admin.Create();
             return 'Administrador criado';
         }
@@ -75,9 +82,12 @@ class UserAdmin {
             const admin = new UserAdmin(adminEmail, adminPassword);
             const admExists = await admin.FindAdmin();
             const isLogged = await admin.IsLogged();
-            if (admExists !== null) {
+            if (admExists) {
                 if (isLogged !== null) {
                     return console.log('Administrador com login ja ativo');
+                }
+                if (admExists.password !== adminPassword) {
+                    return console.log('Senha incorreta');
                 }
                 await prisma_1.prisma.adminLogin.create({
                     data: {
@@ -89,7 +99,6 @@ class UserAdmin {
                 await logLogin.CreateLogin();
                 return console.log('Administrador logado com sucesso');
             }
-            return console.log('Usuario ou senha incorretos');
         }
         catch (e) {
             return console.log(e);

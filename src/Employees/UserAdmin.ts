@@ -19,7 +19,6 @@ export class UserAdmin {
       const admExists = await prisma.employee.findUnique({
         where: {
           email: this.adminEmail,
-          password: this.adminPassword,
         },
       });
 
@@ -38,7 +37,6 @@ export class UserAdmin {
       const admExists = await prisma.adminLogin.findUnique({
         where: {
           adminUser: this.adminEmail,
-          adminPassword: this.adminPassword,
         },
       });
 
@@ -110,7 +108,6 @@ export class UserAdmin {
         await logLogin.CreateLogin();
         return console.log('Administrador logado com sucesso');
       }
-      return console.log('Usuario ou senha incorretos');
     } catch (e) {
       return console.log(e);
     }
