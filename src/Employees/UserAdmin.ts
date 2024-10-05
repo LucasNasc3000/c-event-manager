@@ -23,7 +23,7 @@ export class UserAdmin {
     });
 
     if (admExists === null) {
-      return null;
+      return console.log('Administrador não encontrado');
     }
 
     return admExists;
@@ -67,9 +67,7 @@ export class UserAdmin {
       const admin = new UserAdmin(adminEmail, adminPassword);
       const admExists = await admin.FindAdmin();
 
-      if (admExists !== null) {
-        return admExists.email;
-      }
+      if (admExists) return admExists.email;
 
       await admin.Create();
       return 'Administrador criado';
@@ -84,7 +82,7 @@ export class UserAdmin {
       const admExists = await admin.FindAdmin();
       const isLogged = await admin.IsLogged();
 
-      if (admExists !== null) {
+      if (admExists) {
         if (isLogged !== null) {
           return console.log('Administrador com login ja ativo');
         }

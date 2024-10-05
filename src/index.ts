@@ -78,6 +78,7 @@ export async function Index() {
   Decisions(options);
 }
 
+// logar um funcionario por vez
 // hash para senhas
 // colocar busca por senha no where do adminloginverify
 // tratamento de erros

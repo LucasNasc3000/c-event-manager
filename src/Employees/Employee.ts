@@ -21,20 +21,31 @@ export class Employee implements UserAbstract {
 
   public async AdminLoginVerify() {
     const admLogin = await prisma.adminLogin.findMany();
+    const adminData: string[] = [];
 
     if (admLogin.length <= 0) return false;
 
-    const verifyAdminUser = admLogin.map((adm) => {
-      return adm.adminUser;
+    admLogin.map((adm) => {
+      adminData.push(adm.adminUser, adm.adminPassword);
     });
 
     const adminVerify = await prisma.employee.findUnique({
       where: {
-        email: verifyAdminUser[0],
+        email: adminData[0],
+        password: adminData[1],
       },
     });
 
-    if (adminVerify !== null && adminVerify.email === verifyAdminUser[0]) {
+    if (!adminVerify) {
+      return console.log(
+        `Erro ao validar login do administrador ${admLogin[0]}`,
+      );
+    }
+
+    if (
+      adminVerify.email === adminData[0] &&
+      adminVerify.password === adminData[1]
+    ) {
       return true;
     }
     return false;
