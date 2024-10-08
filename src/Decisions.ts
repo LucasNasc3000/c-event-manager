@@ -108,6 +108,21 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.readEvent) await event.List();
+
+  if (options.updateEvent) {
+    const data: string[] = [
+      process.argv[4],
+      process.argv[5],
+      process.argv[6],
+      process.argv[7],
+      process.argv[8],
+      process.argv[9],
+      process.argv[10],
+      process.argv[11],
+    ];
+
+    await event.Update(process.argv[3], data);
+  }
 }
 
 // export function test(arg1: string, whichData: string) {

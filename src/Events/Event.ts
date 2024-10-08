@@ -12,6 +12,7 @@ export class Event {
     private location: string = '',
     private plattform: string = '',
     private eventCreatorId: string = '',
+    private errorMsg: string = 'Operação não autorizada, login de funcionário necessário',
   ) {}
 
   async EmployeeLoginVerify() {
@@ -53,11 +54,7 @@ export class Event {
   async Create() {
     try {
       const employeeVerify = await this.EmployeeLoginVerify();
-      if (employeeVerify === false) {
-        return console.log(
-          'Operação não autorizada, login de funcionário necessário',
-        );
-      }
+      if (employeeVerify === false) return console.log(this.errorMsg);
 
       if (!employeeVerify) return console.log('Erro desconhecido');
 
@@ -84,11 +81,7 @@ export class Event {
   async List() {
     try {
       const employeeVerify = await this.EmployeeLoginVerify();
-      if (employeeVerify === false) {
-        return console.log(
-          'Operação não autorizada, login de funcionário necessário',
-        );
-      }
+      if (employeeVerify === false) return console.log(this.errorMsg);
 
       if (!employeeVerify) return console.log('Erro desconhecido');
 
@@ -101,6 +94,63 @@ export class Event {
       return console.table(eventsList);
     } catch (e) {
       return console.log(e);
+    }
+  }
+
+  public async Update(id: string, data: string[]) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      const findEvent = await prisma.event.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!findEvent) return console.log(`Evento ${id} nao encontrado`);
+
+      await prisma.event.update({
+        where: {
+          id: id,
+        },
+
+        data: {
+          eventCreator: data[0],
+          date: data[1],
+          hour: data[2],
+          name: data[3],
+          hosts: data[4],
+          modality: data[5],
+          location: data[6],
+          plattform: data[7],
+        },
+      });
+
+      const updateCheck = await this.SearchById(id);
+
+      return updateCheck;
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
+  public async SearchById(id: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      const findEvent = await prisma.event.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!findEvent) return console.log(`Evento ${id} nao encontrado`);
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
     }
   }
 }

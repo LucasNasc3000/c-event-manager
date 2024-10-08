@@ -126,8 +126,7 @@ export class Employee implements UserAbstract {
         return console.log(`Funcionario ${id} nao encontrado`);
       }
 
-      // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-      const udpateEmployee = await prisma.employee.update({
+      await prisma.employee.update({
         where: {
           id: id,
         },

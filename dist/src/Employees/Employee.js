@@ -108,8 +108,7 @@ class Employee {
             if (!findEmployee) {
                 return console.log(`Funcionario ${id} nao encontrado`);
             }
-            // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-            const udpateEmployee = await prisma_1.prisma.employee.update({
+            await prisma_1.prisma.employee.update({
                 where: {
                     id: id,
                 },

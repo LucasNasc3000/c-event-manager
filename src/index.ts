@@ -78,9 +78,8 @@ export async function Index() {
   Decisions(options);
 }
 
-// logar um funcionario por vez
+// administrador poder acessar os eventos
 // hash para senhas
-// colocar busca por senha no where do adminloginverify
 // tratamento de erros
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)

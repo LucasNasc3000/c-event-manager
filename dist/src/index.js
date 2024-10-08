@@ -54,9 +54,7 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// logar um funcionario por vez
 // hash para senhas
-// colocar busca por senha no where do adminloginverify
 // tratamento de erros
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
 // Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)

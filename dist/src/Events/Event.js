@@ -4,7 +4,7 @@ exports.Event = void 0;
 /* eslint-disable no-unused-vars */
 const prisma_1 = require("../../lib/prisma");
 class Event {
-    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '') {
+    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '', errorMsg = 'Operação não autorizada, login de funcionário necessário') {
         this.eventCreator = eventCreator;
         this.date = date;
         this.hour = hour;
@@ -14,6 +14,7 @@ class Event {
         this.location = location;
         this.plattform = plattform;
         this.eventCreatorId = eventCreatorId;
+        this.errorMsg = errorMsg;
     }
     async EmployeeLoginVerify() {
         try {
@@ -46,9 +47,8 @@ class Event {
     async Create() {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false) {
-                return console.log('Operação não autorizada, login de funcionário necessário');
-            }
+            if (employeeVerify === false)
+                return console.log(this.errorMsg);
             if (!employeeVerify)
                 return console.log('Erro desconhecido');
             const event = await prisma_1.prisma.event.create({
@@ -73,9 +73,8 @@ class Event {
     async List() {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false) {
-                return console.log('Operação não autorizada, login de funcionário necessário');
-            }
+            if (employeeVerify === false)
+                return console.log(this.errorMsg);
             if (!employeeVerify)
                 return console.log('Erro desconhecido');
             const eventsList = await prisma_1.prisma.event.findMany();
@@ -86,6 +85,58 @@ class Event {
         }
         catch (e) {
             return console.log(e);
+        }
+    }
+    async Update(id, data) {
+        try {
+            const employeeVerify = await this.EmployeeLoginVerify();
+            if (employeeVerify === false)
+                return console.log(this.errorMsg);
+            const findEvent = await prisma_1.prisma.event.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+            if (!findEvent)
+                return console.log(`Evento ${id} nao encontrado`);
+            await prisma_1.prisma.event.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    eventCreator: data[0],
+                    date: data[1],
+                    hour: data[2],
+                    name: data[3],
+                    hosts: data[4],
+                    modality: data[5],
+                    location: data[6],
+                    plattform: data[7],
+                },
+            });
+            const updateCheck = await this.SearchById(id);
+            return updateCheck;
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
+    async SearchById(id) {
+        try {
+            const employeeVerify = await this.EmployeeLoginVerify();
+            if (employeeVerify === false)
+                return console.log(this.errorMsg);
+            const findEvent = await prisma_1.prisma.event.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+            if (!findEvent)
+                return console.log(`Evento ${id} nao encontrado`);
+            return console.table(findEvent);
+        }
+        catch (e) {
+            console.log(e);
         }
     }
 }
