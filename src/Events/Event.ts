@@ -269,4 +269,104 @@ export class Event {
       console.log(e);
     }
   }
+
+  public async SearchByHosts(hostsParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          hosts: hostsParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(
+          `Eventos com os anfitrioes: ${hostsParam} nao encontrados`,
+        );
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByLocation(locationParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          location: locationParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(
+          `Eventos no local: ${locationParam} nao encontrados`,
+        );
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByPlattform(plattformParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          plattform: plattformParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(
+          `Eventos na plataforma: ${plattformParam} nao encontrados`,
+        );
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByEventCreatorId(eventCreatorIdParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          eventCreatorId: eventCreatorIdParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(
+          `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`,
+        );
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
