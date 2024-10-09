@@ -54,6 +54,7 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// administrador poder acessar os eventos
 // hash para senhas
 // tratamento de erros
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch

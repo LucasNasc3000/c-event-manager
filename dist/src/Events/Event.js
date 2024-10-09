@@ -121,6 +121,19 @@ class Event {
             return console.log(e);
         }
     }
+    async Delete(id) {
+        try {
+            const deleteEvent = await prisma_1.prisma.event.delete({
+                where: {
+                    id: id,
+                },
+            });
+            return console.log(`Evento ${deleteEvent.id} deletado`);
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
     async SearchById(id) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();

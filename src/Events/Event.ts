@@ -135,6 +135,19 @@ export class Event {
     }
   }
 
+  public async Delete(id: string) {
+    try {
+      const deleteEvent = await prisma.event.delete({
+        where: {
+          id: id,
+        },
+      });
+      return console.log(`Evento ${deleteEvent.id} deletado`);
+    } catch (e) {
+      return console.log(e);
+    }
+  }
+
   public async SearchById(id: string) {
     try {
       const employeeVerify = await this.EmployeeLoginVerify();

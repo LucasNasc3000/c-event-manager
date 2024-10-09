@@ -123,6 +123,8 @@ export async function Decisions(options: OptionValues) {
 
     await event.Update(process.argv[3], data);
   }
+
+  if (options.deleteEvent) await event.Delete(process.argv[3]);
 }
 
 // export function test(arg1: string, whichData: string) {

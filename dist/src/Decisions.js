@@ -90,6 +90,8 @@ async function Decisions(options) {
         ];
         await event.Update(process.argv[3], data);
     }
+    if (options.deleteEvent)
+        await event.Delete(process.argv[3]);
 }
 exports.Decisions = Decisions;
 // export function test(arg1: string, whichData: string) {
