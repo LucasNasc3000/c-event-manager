@@ -78,6 +78,7 @@ export async function Index() {
   Decisions(options);
 }
 
+// criar interface event para dividir a atual classe Evento em EventoCRUD e EventoSearch
 // administrador poder acessar os eventos
 // hash para senhas
 // tratamento de erros

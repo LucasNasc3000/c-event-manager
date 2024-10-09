@@ -13,6 +13,7 @@ export class Event {
     private plattform: string = '',
     private eventCreatorId: string = '',
     private errorMsg: string = 'Operação não autorizada, login de funcionário necessário',
+    private employeeVerify = this.EmployeeLoginVerify(),
   ) {}
 
   async EmployeeLoginVerify() {
@@ -102,6 +103,8 @@ export class Event {
       const employeeVerify = await this.EmployeeLoginVerify();
       if (employeeVerify === false) return console.log(this.errorMsg);
 
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
       const findEvent = await prisma.event.findUnique({
         where: {
           id: id,
@@ -137,6 +140,11 @@ export class Event {
 
   public async Delete(id: string) {
     try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
       const deleteEvent = await prisma.event.delete({
         where: {
           id: id,
@@ -153,6 +161,8 @@ export class Event {
       const employeeVerify = await this.EmployeeLoginVerify();
       if (employeeVerify === false) return console.log(this.errorMsg);
 
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
       const findEvent = await prisma.event.findUnique({
         where: {
           id: id,
@@ -160,6 +170,54 @@ export class Event {
       });
 
       if (!findEvent) return console.log(`Evento ${id} nao encontrado`);
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByEventCreator(eventCreatorParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          eventCreator: eventCreatorParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(
+          `Eventos criados por: ${eventCreatorParam} nao encontrados`,
+        );
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByDate(dateParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          date: dateParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(`Eventos do dia: ${dateParam} nao encontrado`);
+      }
 
       return console.table(findEvent);
     } catch (e) {
