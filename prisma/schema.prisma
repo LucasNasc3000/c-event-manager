@@ -27,6 +27,7 @@ model Event {
 
   employee Employee @relation(fields: [eventCreatorId], references: [id], onDelete: Cascade)
 
+  @@unique([name])
   @@map("events")
 }
 

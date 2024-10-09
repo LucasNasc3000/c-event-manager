@@ -13,7 +13,6 @@ export class Event {
     private plattform: string = '',
     private eventCreatorId: string = '',
     private errorMsg: string = 'Operação não autorizada, login de funcionário necessário',
-    private employeeVerify = this.EmployeeLoginVerify(),
   ) {}
 
   async EmployeeLoginVerify() {
@@ -217,6 +216,52 @@ export class Event {
 
       if (!findEvent) {
         return console.log(`Eventos do dia: ${dateParam} nao encontrado`);
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByHour(hourParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findMany({
+        where: {
+          hour: hourParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(`Eventos da hora: ${hourParam} nao encontrados`);
+      }
+
+      return console.table(findEvent);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  public async SearchByName(nameParam: string) {
+    try {
+      const employeeVerify = await this.EmployeeLoginVerify();
+      if (employeeVerify === false) return console.log(this.errorMsg);
+
+      if (!employeeVerify) return console.log('Erro desconhecido');
+
+      const findEvent = await prisma.event.findUnique({
+        where: {
+          name: nameParam,
+        },
+      });
+
+      if (!findEvent) {
+        return console.log(`Evento: ${nameParam} nao encontrado`);
       }
 
       return console.table(findEvent);
