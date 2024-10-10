@@ -3,8 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Event = void 0;
 /* eslint-disable no-unused-vars */
 const prisma_1 = require("../../lib/prisma");
+const EventSearch_1 = require("./EventSearch");
 class Event {
-    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '', errorMsg = 'Operação não autorizada, login de funcionário necessário') {
+    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '', errorMsg = 'Operação não autorizada, login de funcionário necessário', eventSearch = new EventSearch_1.EventSearch()) {
         this.eventCreator = eventCreator;
         this.date = date;
         this.hour = hour;
@@ -15,6 +16,7 @@ class Event {
         this.plattform = plattform;
         this.eventCreatorId = eventCreatorId;
         this.errorMsg = errorMsg;
+        this.eventSearch = eventSearch;
     }
     async EmployeeLoginVerify() {
         try {
@@ -92,6 +94,8 @@ class Event {
             const employeeVerify = await this.EmployeeLoginVerify();
             if (employeeVerify === false)
                 return console.log(this.errorMsg);
+            if (!employeeVerify)
+                return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findUnique({
                 where: {
                     id: id,
@@ -114,7 +118,7 @@ class Event {
                     plattform: data[7],
                 },
             });
-            const updateCheck = await this.SearchById(id);
+            const updateCheck = await this.eventSearch.SearchById(id);
             return updateCheck;
         }
         catch (e) {
@@ -123,6 +127,11 @@ class Event {
     }
     async Delete(id) {
         try {
+            const employeeVerify = await this.EmployeeLoginVerify();
+            if (employeeVerify === false)
+                return console.log(this.errorMsg);
+            if (!employeeVerify)
+                return console.log('Erro desconhecido');
             const deleteEvent = await prisma_1.prisma.event.delete({
                 where: {
                     id: id,
@@ -132,24 +141,6 @@ class Event {
         }
         catch (e) {
             return console.log(e);
-        }
-    }
-    async SearchById(id) {
-        try {
-            const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
-                return console.log(this.errorMsg);
-            const findEvent = await prisma_1.prisma.event.findUnique({
-                where: {
-                    id: id,
-                },
-            });
-            if (!findEvent)
-                return console.log(`Evento ${id} nao encontrado`);
-            return console.table(findEvent);
-        }
-        catch (e) {
-            console.log(e);
         }
     }
 }

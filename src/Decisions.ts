@@ -2,6 +2,7 @@
 import { OptionValues } from 'commander';
 import { EmployeeFactory } from './Employees/EmployeeFactory';
 import { Event } from './Events/Event';
+import { EventSearchFilter } from './Events/EventSearchFilter';
 
 export async function Decisions(options: OptionValues) {
   const uf: EmployeeFactory = new EmployeeFactory();
@@ -125,6 +126,11 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.deleteEvent) await event.Delete(process.argv[3]);
+
+  if (options.searchEvent) {
+    const filter = new EventSearchFilter(process.argv[3], process.argv[4]);
+    await filter.Filter();
+  }
 }
 
 // export function test(arg1: string, whichData: string) {

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Decisions = void 0;
 const EmployeeFactory_1 = require("./Employees/EmployeeFactory");
 const Event_1 = require("./Events/Event");
+const EventSearchFilter_1 = require("./Events/EventSearchFilter");
 async function Decisions(options) {
     const uf = new EmployeeFactory_1.EmployeeFactory();
     const event = new Event_1.Event();
@@ -92,6 +93,10 @@ async function Decisions(options) {
     }
     if (options.deleteEvent)
         await event.Delete(process.argv[3]);
+    if (options.searchEvent) {
+        const filter = new EventSearchFilter_1.EventSearchFilter(process.argv[3], process.argv[4]);
+        await filter.Filter();
+    }
 }
 exports.Decisions = Decisions;
 // export function test(arg1: string, whichData: string) {
