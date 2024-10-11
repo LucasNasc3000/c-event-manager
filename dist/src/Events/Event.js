@@ -18,6 +18,34 @@ class Event {
         this.errorMsg = errorMsg;
         this.eventSearch = eventSearch;
     }
+    async AdminLoginVerify() {
+        try {
+            const admLogin = await prisma_1.prisma.adminLogin.findMany();
+            const adminData = [];
+            if (admLogin.length <= 0)
+                return false;
+            admLogin.map((adm) => {
+                adminData.push(adm.adminUser, adm.adminPassword);
+            });
+            const adminVerify = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    email: adminData[0],
+                    password: adminData[1],
+                },
+            });
+            if (!adminVerify) {
+                return console.log(`Erro ao validar login do administrador ${admLogin[0]}`);
+            }
+            if (adminVerify.email === adminData[0] &&
+                adminVerify.password === adminData[1]) {
+                return true;
+            }
+            return false;
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
     async EmployeeLoginVerify() {
         try {
             const employeeLogin = await prisma_1.prisma.userLogin.findMany();
@@ -49,10 +77,13 @@ class Event {
     async Create() {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify) {
                 return console.log('Erro desconhecido');
+            }
             const event = await prisma_1.prisma.event.create({
                 data: {
                     eventCreator: this.eventCreator,
@@ -75,10 +106,14 @@ class Event {
     async List() {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            console.log(employeeVerify);
+            if (!employeeVerify && !adminVerify) {
                 return console.log('Erro desconhecido');
+            }
             const eventsList = await prisma_1.prisma.event.findMany();
             if (eventsList.length < 1) {
                 return console.log('Ocorreu um erro ou não há eventos cadastrados');
@@ -92,10 +127,13 @@ class Event {
     async Update(id, data) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify) {
                 return console.log('Erro desconhecido');
+            }
             const findEvent = await prisma_1.prisma.event.findUnique({
                 where: {
                     id: id,
@@ -128,10 +166,13 @@ class Event {
     async Delete(id) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify) {
                 return console.log('Erro desconhecido');
+            }
             const deleteEvent = await prisma_1.prisma.event.delete({
                 where: {
                     id: id,
