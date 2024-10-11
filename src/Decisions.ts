@@ -49,10 +49,7 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.updateUsers) {
-    const data: string[] = [];
-
-    data.push(process.argv[4], process.argv[5]);
-
+    const data: string[] = [process.argv[4], process.argv[5]];
     await uf.EmployeeUpdate(process.argv[3], data);
   }
 
@@ -92,7 +89,7 @@ export async function Decisions(options: OptionValues) {
   if (options.logoutsHourSearch) await uf.LogoutSearchHour(process.argv[3]);
 
   if (options.createEvent) {
-    const event = new Event(
+    const data: string[] = [
       process.argv[3],
       process.argv[4],
       process.argv[5],
@@ -102,9 +99,8 @@ export async function Decisions(options: OptionValues) {
       process.argv[9],
       process.argv[10],
       process.argv[11],
-    );
-
-    const create = event.Create();
+    ];
+    const create = event.Create(data);
     return create;
   }
 

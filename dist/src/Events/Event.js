@@ -5,18 +5,9 @@ exports.Event = void 0;
 const prisma_1 = require("../../lib/prisma");
 const EventSearch_1 = require("./EventSearch");
 class Event {
-    constructor(eventCreator = '', date = '', hour = '', name = '', hosts = '', modality = '', location = '', plattform = '', eventCreatorId = '', errorMsg = 'Operação não autorizada, login de funcionário necessário', eventSearch = new EventSearch_1.EventSearch()) {
-        this.eventCreator = eventCreator;
-        this.date = date;
-        this.hour = hour;
-        this.name = name;
-        this.hosts = hosts;
-        this.modality = modality;
-        this.location = location;
-        this.plattform = plattform;
-        this.eventCreatorId = eventCreatorId;
-        this.errorMsg = errorMsg;
-        this.eventSearch = eventSearch;
+    constructor() {
+        this.eventSearch = new EventSearch_1.EventSearch();
+        this.errorMsg = 'Operação não autorizada, login de funcionário necessário';
     }
     async AdminLoginVerify() {
         try {
@@ -74,7 +65,7 @@ class Event {
             return console.log(e);
         }
     }
-    async Create() {
+    async Create(data) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
             const adminVerify = await this.AdminLoginVerify();
@@ -86,15 +77,15 @@ class Event {
             }
             const event = await prisma_1.prisma.event.create({
                 data: {
-                    eventCreator: this.eventCreator,
-                    date: this.date,
-                    hour: this.hour,
-                    name: this.name,
-                    hosts: this.hosts,
-                    modality: this.modality,
-                    location: this.location,
-                    plattform: this.plattform,
-                    eventCreatorId: this.eventCreatorId,
+                    eventCreator: data[0],
+                    date: data[1],
+                    hour: data[2],
+                    name: data[3],
+                    hosts: data[4],
+                    modality: data[5],
+                    location: data[6],
+                    plattform: data[7],
+                    eventCreatorId: data[8],
                 },
             });
             return console.table(event);
@@ -110,7 +101,6 @@ class Event {
             if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
             }
-            console.log(employeeVerify);
             if (!employeeVerify && !adminVerify) {
                 return console.log('Erro desconhecido');
             }

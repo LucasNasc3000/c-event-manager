@@ -35,8 +35,7 @@ async function Decisions(options) {
         return user;
     }
     if (options.updateUsers) {
-        const data = [];
-        data.push(process.argv[4], process.argv[5]);
+        const data = [process.argv[4], process.argv[5]];
         await uf.EmployeeUpdate(process.argv[3], data);
     }
     if (options.searchUsersId) {
@@ -72,8 +71,18 @@ async function Decisions(options) {
     if (options.logoutsHourSearch)
         await uf.LogoutSearchHour(process.argv[3]);
     if (options.createEvent) {
-        const event = new Event_1.Event(process.argv[3], process.argv[4], process.argv[5], process.argv[6], process.argv[7], process.argv[8], process.argv[9], process.argv[10], process.argv[11]);
-        const create = event.Create();
+        const data = [
+            process.argv[3],
+            process.argv[4],
+            process.argv[5],
+            process.argv[6],
+            process.argv[7],
+            process.argv[8],
+            process.argv[9],
+            process.argv[10],
+            process.argv[11],
+        ];
+        const create = event.Create(data);
         return create;
     }
     if (options.readEvent)

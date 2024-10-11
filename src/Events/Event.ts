@@ -3,19 +3,9 @@ import { prisma } from '../../lib/prisma';
 import { EventSearch } from './EventSearch';
 
 export class Event {
-  constructor(
-    private eventCreator: string = '',
-    private date: string = '',
-    private hour: string = '',
-    private name: string = '',
-    private hosts: string = '',
-    private modality: string = '',
-    private location: string = '',
-    private plattform: string = '',
-    private eventCreatorId: string = '',
-    private errorMsg: string = 'Operação não autorizada, login de funcionário necessário',
-    private eventSearch: EventSearch = new EventSearch(),
-  ) {}
+  private eventSearch: EventSearch = new EventSearch();
+  private errorMsg: string =
+    'Operação não autorizada, login de funcionário necessário';
 
   public async AdminLoginVerify() {
     try {
@@ -89,7 +79,7 @@ export class Event {
     }
   }
 
-  async Create() {
+  async Create(data: string[]) {
     try {
       const employeeVerify = await this.EmployeeLoginVerify();
       const adminVerify = await this.AdminLoginVerify();
@@ -104,15 +94,15 @@ export class Event {
 
       const event = await prisma.event.create({
         data: {
-          eventCreator: this.eventCreator,
-          date: this.date,
-          hour: this.hour,
-          name: this.name,
-          hosts: this.hosts,
-          modality: this.modality,
-          location: this.location,
-          plattform: this.plattform,
-          eventCreatorId: this.eventCreatorId,
+          eventCreator: data[0],
+          date: data[1],
+          hour: data[2],
+          name: data[3],
+          hosts: data[4],
+          modality: data[5],
+          location: data[6],
+          plattform: data[7],
+          eventCreatorId: data[8],
         },
       });
 
