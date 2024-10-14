@@ -196,6 +196,14 @@ export class Event {
         return console.log('Erro desconhecido');
       }
 
+      const findEvent = await prisma.event.findUnique({
+        where: {
+          id: id,
+        },
+      });
+
+      if (!findEvent) return console.log(`O evento ${id} não existe`);
+
       const deleteEvent = await prisma.event.delete({
         where: {
           id: id,

@@ -53,9 +53,7 @@ export class EventSearch {
         },
       });
 
-      if (!findEvent) return console.log(`Evento ${id} nao encontrado`);
-
-      return console.table(findEvent);
+      return this.SearchResult(findEvent, [], `Evento ${id} não encontrado`);
     } catch (e) {
       console.log(e);
     }
@@ -74,13 +72,11 @@ export class EventSearch {
         },
       });
 
-      if (!findEvent) {
-        return console.log(
-          `Eventos criados por: ${eventCreatorParam} nao encontrados`,
-        );
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos criados por: ${eventCreatorParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -95,15 +91,17 @@ export class EventSearch {
 
       const findEvent = await prisma.event.findMany({
         where: {
-          date: dateParam,
+          date: {
+            startsWith: dateParam,
+          },
         },
       });
 
-      if (!findEvent) {
-        return console.log(`Eventos do dia: ${dateParam} nao encontrado`);
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos do dia: ${dateParam} nao encontrado`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -118,15 +116,17 @@ export class EventSearch {
 
       const findEvent = await prisma.event.findMany({
         where: {
-          hour: hourParam,
+          hour: {
+            startsWith: hourParam,
+          },
         },
       });
 
-      if (!findEvent) {
-        return console.log(`Eventos da hora: ${hourParam} nao encontrados`);
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos da hora: ${hourParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -139,17 +139,19 @@ export class EventSearch {
 
       if (!employeeVerify) return console.log('Erro desconhecido');
 
-      const findEvent = await prisma.event.findUnique({
+      const findEvent = await prisma.event.findMany({
         where: {
-          name: nameParam,
+          name: {
+            startsWith: nameParam,
+          },
         },
       });
 
-      if (!findEvent) {
-        return console.log(`Evento: ${nameParam} nao encontrado`);
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos de nome: ${nameParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -164,17 +166,17 @@ export class EventSearch {
 
       const findEvent = await prisma.event.findMany({
         where: {
-          hosts: hostsParam,
+          hosts: {
+            startsWith: hostsParam,
+          },
         },
       });
 
-      if (!findEvent) {
-        return console.log(
-          `Eventos com os anfitrioes: ${hostsParam} nao encontrados`,
-        );
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos com os anfitrioes: ${hostsParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -193,13 +195,11 @@ export class EventSearch {
         },
       });
 
-      if (!findEvent) {
-        return console.log(
-          `Eventos no local: ${locationParam} nao encontrados`,
-        );
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos no local: ${locationParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -218,13 +218,11 @@ export class EventSearch {
         },
       });
 
-      if (!findEvent) {
-        return console.log(
-          `Eventos na plataforma: ${plattformParam} nao encontrados`,
-        );
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos na plataforma ${plattformParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
@@ -243,15 +241,25 @@ export class EventSearch {
         },
       });
 
-      if (!findEvent) {
-        return console.log(
-          `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`,
-        );
-      }
-
-      return console.table(findEvent);
+      return this.SearchResult(
+        {},
+        findEvent,
+        `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`,
+      );
     } catch (e) {
       console.log(e);
     }
+  }
+
+  private SearchResult(
+    searchData: unknown,
+    searchDataArray: unknown[],
+    error: string,
+  ) {
+    if (searchData === null) return console.log(error);
+
+    if (searchDataArray.length < 1) return console.log(error);
+
+    console.table(searchData);
   }
 }

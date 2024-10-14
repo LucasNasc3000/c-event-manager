@@ -54,11 +54,10 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// disponibilizar a função de pesquisar por eventos pela chave estrangeira disponivel ao adm ou somente a ele
+// criar classe para as verificações de login?
 // criar uma função para verificar o resultado da pesquisa e caso ela retorne null ou void retornar a mensagem de erro adequada (passar esta msg por parametro).
 // retornar estas funções mencionadas acima no final das funçoes de consulta (talvez registro e atualização também)
 // criar interface event para dividir a atual classe Evento em EventoCRUD e EventoSearch
-// administrador poder acessar os eventos
 // hash para senhas
 // tratamento de erros (tirar o console.log(e) e colocar outra coisa, como uma mensagem de erro, para a segurança da aplicação)
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch

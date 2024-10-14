@@ -163,6 +163,13 @@ class Event {
             if (!employeeVerify && !adminVerify) {
                 return console.log('Erro desconhecido');
             }
+            const findEvent = await prisma_1.prisma.event.findUnique({
+                where: {
+                    id: id,
+                },
+            });
+            if (!findEvent)
+                return console.log(`O evento ${id} não existe`);
             const deleteEvent = await prisma_1.prisma.event.delete({
                 where: {
                     id: id,
