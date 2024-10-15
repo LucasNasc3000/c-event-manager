@@ -78,19 +78,21 @@ class EmployeeSearch {
                     },
                 },
             });
-            return this.SearchResult({}, findEmployee, `Funcionarios com o nome "${name}" nao encontrados`);
+            return this.SearchResult(null, findEmployee, `Funcionarios com o nome "${name}" nao encontrados`);
         }
         catch (e) {
             return console.log(e);
         }
     }
     SearchResult(searchData, searchDataArray, error) {
-        console.log(searchDataArray);
-        if (searchData === null)
-            return console.log(error);
-        if (searchDataArray.length < 1)
-            return console.log(error);
-        console.table(searchData);
+        switch (true) {
+            case searchData === null && searchDataArray.length < 1:
+                return console.log(error);
+            case searchData === null && searchDataArray.length > 0:
+                return console.table(searchDataArray);
+            case searchDataArray.length < 1 && searchData !== null:
+                return console.table(searchData);
+        }
     }
 }
 exports.EmployeeSearch = EmployeeSearch;

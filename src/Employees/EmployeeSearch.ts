@@ -92,7 +92,7 @@ export class EmployeeSearch {
       });
 
       return this.SearchResult(
-        {},
+        null,
         findEmployee,
         `Funcionarios com o nome "${name}" nao encontrados`,
       );
@@ -106,11 +106,15 @@ export class EmployeeSearch {
     searchDataArray: unknown[],
     error: string,
   ) {
-    console.log(searchDataArray);
-    if (searchData === null) return console.log(error);
+    switch (true) {
+      case searchData === null && searchDataArray.length < 1:
+        return console.log(error);
 
-    if (searchDataArray.length < 1) return console.log(error);
+      case searchData === null && searchDataArray.length > 0:
+        return console.table(searchDataArray);
 
-    console.table(searchData);
+      case searchDataArray.length < 1 && searchData !== null:
+        return console.table(searchData);
+    }
   }
 }

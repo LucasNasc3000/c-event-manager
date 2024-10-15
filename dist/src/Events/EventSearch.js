@@ -251,10 +251,9 @@ class EventSearch {
         }
     }
     SearchResult(searchData, searchDataArray, error) {
+        console.log(searchDataArray.length);
         switch (true) {
-            case searchData === null:
-                return console.log(error);
-            case searchDataArray.length < 1:
+            case searchData === null && searchDataArray.length < 1:
                 return console.log(error);
             case searchData === null && searchDataArray.length > 0:
                 return console.table(searchDataArray);
