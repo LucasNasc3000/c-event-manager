@@ -3,6 +3,7 @@
 /* eslint-disable prefer-const */
 import dotenv from 'dotenv';
 import { Employee } from './Employee';
+import { EmployeeSearch } from './EmployeeSearch';
 import { UserAdmin } from './UserAdmin';
 import { UserAbstract } from '../interfaces/UserAbstract';
 import { Logs } from '../Logs/Logs';
@@ -14,6 +15,7 @@ export class EmployeeFactory implements UserAbstract {
   private _password: string = '';
   private _email: string = '';
   private empl: Employee = new Employee();
+  private employeeSearch: EmployeeSearch = new EmployeeSearch();
   private log: Logs = new Logs();
 
   constructor(email: string = '', password: string = '', name: string = '') {
@@ -93,11 +95,11 @@ export class EmployeeFactory implements UserAbstract {
     }
 
     if (searchValue.includes('@') || searchValue.includes('.com')) {
-      await this.empl.SearchByEmail(searchValue);
+      await this.employeeSearch.SearchByEmail(searchValue);
     } else if (alphabetRegex.test(searchValue)) {
-      await this.empl.SearchByName(searchValue);
+      await this.employeeSearch.SearchByName(searchValue);
     } else {
-      const searchId = await this.empl.SearchById(searchValue);
+      const searchId = await this.employeeSearch.SearchById(searchValue);
 
       if (searchId === null) {
         return console.log(

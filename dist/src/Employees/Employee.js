@@ -8,12 +8,14 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const prisma_1 = require("../../lib/prisma");
 const DateTime_1 = require("../utils/DateTime");
 const Logs_1 = require("../Logs/Logs");
+const EmployeeSearch_1 = require("./EmployeeSearch");
 dotenv_1.default.config();
 class Employee {
     constructor(name = '', email = '', password = '') {
         this._name = '';
         this._email = '';
         this._password = '';
+        this.employeeSearch = new EmployeeSearch_1.EmployeeSearch();
         this.errorMsg = 'Operacao nao autorizada. Login do administrador necessario';
         this._name = name;
         this._email = email;
@@ -117,7 +119,7 @@ class Employee {
                     name: data[1],
                 },
             });
-            const updateCheck = await this.SearchById(id);
+            const updateCheck = await this.employeeSearch.SearchById(id);
             return updateCheck;
         }
         catch (e) {
@@ -132,65 +134,6 @@ class Employee {
                 },
             });
             return console.log(`Funcionario ${deleteEmployee.id} deletado`);
-        }
-        catch (e) {
-            return console.log(e);
-        }
-    }
-    async SearchById(id) {
-        try {
-            const admLoginVerify = await this.AdminLoginVerify();
-            if (admLoginVerify === false)
-                return console.log(this.errorMsg);
-            const findEmployee = await prisma_1.prisma.employee.findUnique({
-                where: {
-                    id: id,
-                },
-            });
-            if (!findEmployee) {
-                return console.log('Funcionário não encontrado');
-            }
-            return console.table(findEmployee);
-        }
-        catch (e) {
-            console.log(e);
-        }
-    }
-    async SearchByEmail(email) {
-        try {
-            const admLoginVerify = await this.AdminLoginVerify();
-            if (admLoginVerify === false)
-                return console.log(this.errorMsg);
-            const findEmployee = await prisma_1.prisma.employee.findUnique({
-                where: {
-                    email: email,
-                },
-            });
-            if (!findEmployee) {
-                return console.log(`Funcionario com email "${email}" nao encontrado`);
-            }
-            return console.table(findEmployee);
-        }
-        catch (e) {
-            return console.log(e);
-        }
-    }
-    async SearchByName(name) {
-        try {
-            const admLoginVerify = await this.AdminLoginVerify();
-            if (admLoginVerify === false)
-                return console.log(this.errorMsg);
-            const findEmployee = await prisma_1.prisma.employee.findMany({
-                where: {
-                    name: {
-                        startsWith: name,
-                    },
-                },
-            });
-            if (findEmployee.length < 1) {
-                return console.log(`Funcionarios com o nome "${name}" nao encontrados`);
-            }
-            return console.table(findEmployee);
         }
         catch (e) {
             return console.log(e);

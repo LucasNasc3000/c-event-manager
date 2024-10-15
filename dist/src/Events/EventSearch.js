@@ -6,6 +6,34 @@ class EventSearch {
     constructor() {
         this.errorMsg = 'Operação não autorizada, login de funcionário necessário';
     }
+    async AdminLoginVerify() {
+        try {
+            const admLogin = await prisma_1.prisma.adminLogin.findMany();
+            const adminData = [];
+            if (admLogin.length <= 0)
+                return false;
+            admLogin.map((adm) => {
+                adminData.push(adm.adminUser, adm.adminPassword);
+            });
+            const adminVerify = await prisma_1.prisma.employee.findUnique({
+                where: {
+                    email: adminData[0],
+                    password: adminData[1],
+                },
+            });
+            if (!adminVerify) {
+                return console.log(`Erro ao validar login do administrador ${admLogin[0]}`);
+            }
+            if (adminVerify.email === adminData[0] &&
+                adminVerify.password === adminData[1]) {
+                return true;
+            }
+            return false;
+        }
+        catch (e) {
+            return console.log(e);
+        }
+    }
     async EmployeeLoginVerify() {
         try {
             const employeeLogin = await prisma_1.prisma.userLogin.findMany();
@@ -37,9 +65,11 @@ class EventSearch {
     async SearchById(id) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findUnique({
                 where: {
@@ -55,16 +85,18 @@ class EventSearch {
     async SearchByEventCreator(eventCreatorParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     eventCreator: eventCreatorParam,
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos criados por: ${eventCreatorParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos criados por: ${eventCreatorParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
@@ -73,9 +105,11 @@ class EventSearch {
     async SearchByDate(dateParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
@@ -84,7 +118,7 @@ class EventSearch {
                     },
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos do dia: ${dateParam} nao encontrado`);
+            return this.SearchResult(null, findEvent, `Eventos do dia: ${dateParam} nao encontrado`);
         }
         catch (e) {
             console.log(e);
@@ -93,9 +127,11 @@ class EventSearch {
     async SearchByHour(hourParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
@@ -104,7 +140,7 @@ class EventSearch {
                     },
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos da hora: ${hourParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos da hora: ${hourParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
@@ -113,9 +149,11 @@ class EventSearch {
     async SearchByName(nameParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
@@ -124,7 +162,7 @@ class EventSearch {
                     },
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos de nome: ${nameParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos de nome: ${nameParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
@@ -133,9 +171,11 @@ class EventSearch {
     async SearchByHosts(hostsParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
@@ -144,7 +184,7 @@ class EventSearch {
                     },
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos com os anfitrioes: ${hostsParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos com os anfitrioes: ${hostsParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
@@ -153,16 +193,18 @@ class EventSearch {
     async SearchByLocation(locationParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     location: locationParam,
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos no local: ${locationParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos no local: ${locationParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
@@ -171,16 +213,18 @@ class EventSearch {
     async SearchByPlattform(plattformParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     plattform: plattformParam,
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos na plataforma ${plattformParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos na plataforma ${plattformParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
@@ -189,27 +233,34 @@ class EventSearch {
     async SearchByEventCreatorId(eventCreatorIdParam) {
         try {
             const employeeVerify = await this.EmployeeLoginVerify();
-            if (employeeVerify === false)
+            const adminVerify = await this.AdminLoginVerify();
+            if (adminVerify === false && employeeVerify === false) {
                 return console.log(this.errorMsg);
-            if (!employeeVerify)
+            }
+            if (!employeeVerify && !adminVerify)
                 return console.log('Erro desconhecido');
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     eventCreatorId: eventCreatorIdParam,
                 },
             });
-            return this.SearchResult({}, findEvent, `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`);
+            return this.SearchResult(null, findEvent, `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`);
         }
         catch (e) {
             console.log(e);
         }
     }
     SearchResult(searchData, searchDataArray, error) {
-        if (searchData === null)
-            return console.log(error);
-        if (searchDataArray.length < 1)
-            return console.log(error);
-        console.table(searchData);
+        switch (true) {
+            case searchData === null:
+                return console.log(error);
+            case searchDataArray.length < 1:
+                return console.log(error);
+            case searchData === null && searchDataArray.length > 0:
+                return console.table(searchDataArray);
+            case searchDataArray.length < 1 && searchData !== null:
+                return console.table(searchData);
+        }
     }
 }
 exports.EventSearch = EventSearch;

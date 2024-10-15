@@ -9,6 +9,7 @@ exports.EmployeeFactory = void 0;
 /* eslint-disable prefer-const */
 const dotenv_1 = __importDefault(require("dotenv"));
 const Employee_1 = require("./Employee");
+const EmployeeSearch_1 = require("./EmployeeSearch");
 const UserAdmin_1 = require("./UserAdmin");
 const Logs_1 = require("../Logs/Logs");
 dotenv_1.default.config();
@@ -18,6 +19,7 @@ class EmployeeFactory {
         this._password = '';
         this._email = '';
         this.empl = new Employee_1.Employee();
+        this.employeeSearch = new EmployeeSearch_1.EmployeeSearch();
         this.log = new Logs_1.Logs();
         this._email = email;
         this._password = password;
@@ -81,13 +83,13 @@ class EmployeeFactory {
             return console.log('Dado nao informado');
         }
         if (searchValue.includes('@') || searchValue.includes('.com')) {
-            await this.empl.SearchByEmail(searchValue);
+            await this.employeeSearch.SearchByEmail(searchValue);
         }
         else if (alphabetRegex.test(searchValue)) {
-            await this.empl.SearchByName(searchValue);
+            await this.employeeSearch.SearchByName(searchValue);
         }
         else {
-            const searchId = await this.empl.SearchById(searchValue);
+            const searchId = await this.employeeSearch.SearchById(searchValue);
             if (searchId === null) {
                 return console.log(`Funcionario de id: ${searchValue} inexistente ou o dado de busca foi informado incorretamente.`);
             }
