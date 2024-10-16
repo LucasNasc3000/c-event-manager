@@ -1,88 +1,20 @@
 /* eslint-disable no-unused-vars */
 import { prisma } from '../../lib/prisma';
 import { EventSearch } from './EventSearch';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
+import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
 
 export class Event {
   private eventSearch: EventSearch = new EventSearch();
+  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+  private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
   private errorMsg: string =
     'Operação não autorizada, login de funcionário necessário';
 
-  public async AdminLoginVerify() {
-    try {
-      const admLogin = await prisma.adminLogin.findMany();
-      const adminData: string[] = [];
-
-      if (admLogin.length <= 0) return false;
-
-      admLogin.map((adm) => {
-        adminData.push(adm.adminUser, adm.adminPassword);
-      });
-
-      const adminVerify = await prisma.employee.findUnique({
-        where: {
-          email: adminData[0],
-          password: adminData[1],
-        },
-      });
-
-      if (!adminVerify) {
-        return console.log(
-          `Erro ao validar login do administrador ${admLogin[0]}`,
-        );
-      }
-
-      if (
-        adminVerify.email === adminData[0] &&
-        adminVerify.password === adminData[1]
-      ) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return console.log(e);
-    }
-  }
-
-  async EmployeeLoginVerify() {
-    try {
-      const employeeLogin = await prisma.userLogin.findMany();
-      const empData: string[] = [];
-
-      if (employeeLogin.length <= 0) return false;
-
-      employeeLogin.map((employee) => {
-        empData.push(employee.userEmail, employee.userPassword);
-      });
-
-      const employeeLoginVerify = await prisma.employee.findUnique({
-        where: {
-          email: empData[0],
-          password: empData[1],
-        },
-      });
-
-      if (!employeeLoginVerify) {
-        return console.log(
-          `Erro ao validar login do funcionário: ${empData[0]}`,
-        );
-      }
-
-      if (
-        employeeLoginVerify.email === empData[0] &&
-        employeeLoginVerify.password === empData[1]
-      ) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return console.log(e);
-    }
-  }
-
   async Create(data: string[]) {
     try {
-      const employeeVerify = await this.EmployeeLoginVerify();
-      const adminVerify = await this.AdminLoginVerify();
+      const employeeVerify = await this.employeeLoginVerify.Verify();
+      const adminVerify = await this.adminLoginVerify.Verify();
 
       if (adminVerify === false && employeeVerify === false) {
         return console.log(this.errorMsg);
@@ -114,8 +46,8 @@ export class Event {
 
   async List() {
     try {
-      const employeeVerify = await this.EmployeeLoginVerify();
-      const adminVerify = await this.AdminLoginVerify();
+      const employeeVerify = await this.employeeLoginVerify.Verify();
+      const adminVerify = await this.adminLoginVerify.Verify();
 
       if (adminVerify === false && employeeVerify === false) {
         return console.log(this.errorMsg);
@@ -139,8 +71,8 @@ export class Event {
 
   public async Update(id: string, data: string[]) {
     try {
-      const employeeVerify = await this.EmployeeLoginVerify();
-      const adminVerify = await this.AdminLoginVerify();
+      const employeeVerify = await this.employeeLoginVerify.Verify();
+      const adminVerify = await this.adminLoginVerify.Verify();
 
       if (adminVerify === false && employeeVerify === false) {
         return console.log(this.errorMsg);
@@ -185,8 +117,8 @@ export class Event {
 
   public async Delete(id: string) {
     try {
-      const employeeVerify = await this.EmployeeLoginVerify();
-      const adminVerify = await this.AdminLoginVerify();
+      const employeeVerify = await this.employeeLoginVerify.Verify();
+      const adminVerify = await this.adminLoginVerify.Verify();
 
       if (adminVerify === false && employeeVerify === false) {
         return console.log(this.errorMsg);

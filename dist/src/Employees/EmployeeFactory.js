@@ -96,28 +96,28 @@ class EmployeeFactory {
         }
     }
     async LogSearchEmail(emailSearchValue) {
-        this.log.LogSearchEmail(this._password, emailSearchValue);
+        this.log.LogSearchEmail(emailSearchValue);
     }
     async LogSearchDate(dateSearchValue) {
-        this.log.LogSearchDate(this._password, dateSearchValue);
+        this.log.LogSearchDate(dateSearchValue);
     }
     async LogSearchHour(hourSearchValue) {
-        this.log.LogSearchHour(this._password, hourSearchValue);
+        this.log.LogSearchHour(hourSearchValue);
     }
     async LogoutSearchEmail(emailSearchValue) {
-        this.log.LogoutSearchEmail(this._password, emailSearchValue);
+        this.log.LogoutSearchEmail(emailSearchValue);
     }
     async LogoutSearchDate(dateSearchValue) {
-        this.log.LogoutSearchDate(this._password, dateSearchValue);
+        this.log.LogoutSearchDate(dateSearchValue);
     }
     async LogoutSearchHour(hourSearchValue) {
-        this.log.LogoutSearchHour(this._password, hourSearchValue);
+        this.log.LogoutSearchHour(hourSearchValue);
     }
     async LogsList() {
-        this.log.ListLogins(this._password);
+        this.log.ListLogins();
     }
     async LogoutsList() {
-        this.log.ListLogouts(this._password);
+        this.log.ListLogouts();
     }
     FieldsCheck() {
         const fields = [this._name, this._email, this._password];

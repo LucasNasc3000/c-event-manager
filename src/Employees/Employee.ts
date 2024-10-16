@@ -4,6 +4,7 @@ import { UserAbstract } from '../interfaces/UserAbstract';
 import { DateTime } from '../utils/DateTime';
 import { Logs } from '../Logs/Logs';
 import { EmployeeSearch } from './EmployeeSearch';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ export class Employee implements UserAbstract {
   private _email: string = '';
   private _password: string = '';
   private employeeSearch: EmployeeSearch = new EmployeeSearch();
+  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   private errorMsg: string =
     'Operacao nao autorizada. Login do administrador necessario';
 
@@ -19,42 +21,6 @@ export class Employee implements UserAbstract {
     this._name = name;
     this._email = email;
     this._password = password;
-  }
-
-  public async AdminLoginVerify() {
-    try {
-      const admLogin = await prisma.adminLogin.findMany();
-      const adminData: string[] = [];
-
-      if (admLogin.length <= 0) return false;
-
-      admLogin.map((adm) => {
-        adminData.push(adm.adminUser, adm.adminPassword);
-      });
-
-      const adminVerify = await prisma.employee.findUnique({
-        where: {
-          email: adminData[0],
-          password: adminData[1],
-        },
-      });
-
-      if (!adminVerify) {
-        return console.log(
-          `Erro ao validar login do administrador ${admLogin[0]}`,
-        );
-      }
-
-      if (
-        adminVerify.email === adminData[0] &&
-        adminVerify.password === adminData[1]
-      ) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return console.log(e);
-    }
   }
 
   private async EmployeeLoginVerify() {
@@ -77,7 +43,7 @@ export class Employee implements UserAbstract {
 
   public async Create() {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const createEmployee = await prisma.employee.create({
@@ -96,7 +62,7 @@ export class Employee implements UserAbstract {
 
   public async List() {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const employeesList = await prisma.employee.findMany();
@@ -115,7 +81,7 @@ export class Employee implements UserAbstract {
 
   public async Update(id: string, data: string[]) {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) return console.log(this.errorMsg);
 
       const findEmployee = await prisma.employee.findUnique({
@@ -162,7 +128,7 @@ export class Employee implements UserAbstract {
 
   public async Login() {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       const employeeLoginVerify = await this.EmployeeLoginVerify();
       if (admLoginVerify === true) {
         return console.log(

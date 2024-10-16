@@ -1,9 +1,10 @@
 import { prisma } from '../../lib/prisma';
-import { Employee } from '../Employees/Employee';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 
 export class Logs {
   private dateTime: string[] = [];
   private email: string;
+  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
 
   constructor(email: string = '', dateTime: string[] = []) {
     this.dateTime = dateTime;
@@ -54,10 +55,9 @@ export class Logs {
     }
   }
 
-  public async ListLogins(password: string) {
+  public async ListLogins() {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -76,10 +76,9 @@ export class Logs {
     }
   }
 
-  public async ListLogouts(password: string) {
+  public async ListLogouts() {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -98,10 +97,9 @@ export class Logs {
     }
   }
 
-  public async LogSearchEmail(password: string, emailSearchValue: string) {
+  public async LogSearchEmail(emailSearchValue: string) {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -126,10 +124,9 @@ export class Logs {
     }
   }
 
-  public async LogSearchDate(password: string, dateSearchValue: string) {
+  public async LogSearchDate(dateSearchValue: string) {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -154,10 +151,9 @@ export class Logs {
     }
   }
 
-  public async LogSearchHour(password: string, hourSearchValue: string) {
+  public async LogSearchHour(hourSearchValue: string) {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -182,10 +178,9 @@ export class Logs {
     }
   }
 
-  public async LogoutSearchEmail(password: string, emailSearchValue: string) {
+  public async LogoutSearchEmail(emailSearchValue: string) {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -210,10 +205,9 @@ export class Logs {
     }
   }
 
-  public async LogoutSearchDate(password: string, dateSearchValue: string) {
+  public async LogoutSearchDate(dateSearchValue: string) {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',
@@ -240,10 +234,9 @@ export class Logs {
     }
   }
 
-  public async LogoutSearchHour(password: string, hourSearchValue: string) {
+  public async LogoutSearchHour(hourSearchValue: string) {
     try {
-      const emp = new Employee('', this.email, password);
-      const admLoginVerify = await emp.AdminLoginVerify();
+      const admLoginVerify = await this.adminLoginVerify.Verify();
       if (admLoginVerify === false) {
         return console.log(
           'Operacao nao autorizada. Login do administrador necessario',

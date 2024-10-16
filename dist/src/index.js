@@ -55,9 +55,6 @@ async function Index() {
 }
 exports.Index = Index;
 // criar classe para as verificações de login?
-// criar uma função para verificar o resultado da pesquisa e caso ela retorne null ou void retornar a mensagem de erro adequada (passar esta msg por parametro).
-// retornar estas funções mencionadas acima no final das funçoes de consulta (talvez registro e atualização também)
-// criar interface event para dividir a atual classe Evento em EventoCRUD e EventoSearch
 // hash para senhas
 // tratamento de erros (tirar o console.log(e) e colocar outra coisa, como uma mensagem de erro, para a segurança da aplicação)
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch

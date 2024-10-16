@@ -110,35 +110,35 @@ export class EmployeeFactory implements UserAbstract {
   }
 
   public async LogSearchEmail(emailSearchValue: string) {
-    this.log.LogSearchEmail(this._password, emailSearchValue);
+    this.log.LogSearchEmail(emailSearchValue);
   }
 
   public async LogSearchDate(dateSearchValue: string) {
-    this.log.LogSearchDate(this._password, dateSearchValue);
+    this.log.LogSearchDate(dateSearchValue);
   }
 
   public async LogSearchHour(hourSearchValue: string) {
-    this.log.LogSearchHour(this._password, hourSearchValue);
+    this.log.LogSearchHour(hourSearchValue);
   }
 
   public async LogoutSearchEmail(emailSearchValue: string) {
-    this.log.LogoutSearchEmail(this._password, emailSearchValue);
+    this.log.LogoutSearchEmail(emailSearchValue);
   }
 
   public async LogoutSearchDate(dateSearchValue: string) {
-    this.log.LogoutSearchDate(this._password, dateSearchValue);
+    this.log.LogoutSearchDate(dateSearchValue);
   }
 
   public async LogoutSearchHour(hourSearchValue: string) {
-    this.log.LogoutSearchHour(this._password, hourSearchValue);
+    this.log.LogoutSearchHour(hourSearchValue);
   }
 
   public async LogsList() {
-    this.log.ListLogins(this._password);
+    this.log.ListLogins();
   }
 
   public async LogoutsList() {
-    this.log.ListLogouts(this._password);
+    this.log.ListLogouts();
   }
 
   private FieldsCheck(): boolean {
