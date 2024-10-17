@@ -37,9 +37,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -65,9 +64,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -95,9 +93,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -125,9 +122,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -155,9 +151,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -185,9 +180,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -213,9 +207,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
@@ -241,9 +234,8 @@ export class EventSearch {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
+      if (adminVerify === false && employeeVerify === false)
         return console.log(this.errorMsg);
-      }
 
       if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');

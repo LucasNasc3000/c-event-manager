@@ -53,9 +53,8 @@ export class Event {
         return console.log(this.errorMsg);
       }
 
-      if (!employeeVerify && !adminVerify) {
+      if (!employeeVerify && !adminVerify)
         return console.log('Erro desconhecido');
-      }
 
       const eventsList = await prisma.event.findMany();
 
