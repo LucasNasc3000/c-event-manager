@@ -33,7 +33,7 @@ export class EmployeeLoginVerify {
       }
       return false;
     } catch (e) {
-      return console.log(e);
+      return e;
     }
   }
 }

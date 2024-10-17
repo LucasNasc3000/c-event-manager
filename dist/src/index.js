@@ -54,7 +54,6 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// criar classe para as verificações de login?
 // hash para senhas
 // tratamento de erros (tirar o console.log(e) e colocar outra coisa, como uma mensagem de erro, para a segurança da aplicação)
 // funções que instanciam a uf com argumentos prévios e chamar essas funções no switch

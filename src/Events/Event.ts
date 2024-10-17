@@ -3,26 +3,20 @@ import { prisma } from '../../lib/prisma';
 import { EventSearch } from './EventSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
+import { VerifyResult } from '../LoginVerify/VerifyResult';
 
 export class Event {
   private eventSearch: EventSearch = new EventSearch();
   private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
-  private errorMsg: string =
-    'Operação não autorizada, login de funcionário necessário';
+  private verifyResult: VerifyResult = new VerifyResult();
 
   async Create(data: string[]) {
     try {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
-        return console.log(this.errorMsg);
-      }
-
-      if (!employeeVerify && !adminVerify) {
-        return console.log('Erro desconhecido');
-      }
+      this.verifyResult.Result(employeeVerify, adminVerify);
 
       const event = await prisma.event.create({
         data: {
@@ -49,12 +43,7 @@ export class Event {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
-        return console.log(this.errorMsg);
-      }
-
-      if (!employeeVerify && !adminVerify)
-        return console.log('Erro desconhecido');
+      this.verifyResult.Result(employeeVerify, adminVerify);
 
       const eventsList = await prisma.event.findMany();
 
@@ -64,7 +53,7 @@ export class Event {
 
       return console.table(eventsList);
     } catch (e) {
-      return console.log(e);
+      return e;
     }
   }
 
@@ -73,13 +62,7 @@ export class Event {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
-        return console.log(this.errorMsg);
-      }
-
-      if (!employeeVerify && !adminVerify) {
-        return console.log('Erro desconhecido');
-      }
+      this.verifyResult.Result(employeeVerify, adminVerify);
 
       const findEvent = await prisma.event.findUnique({
         where: {
@@ -119,13 +102,7 @@ export class Event {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
 
-      if (adminVerify === false && employeeVerify === false) {
-        return console.log(this.errorMsg);
-      }
-
-      if (!employeeVerify && !adminVerify) {
-        return console.log('Erro desconhecido');
-      }
+      this.verifyResult.Result(employeeVerify, adminVerify);
 
       const findEvent = await prisma.event.findUnique({
         where: {

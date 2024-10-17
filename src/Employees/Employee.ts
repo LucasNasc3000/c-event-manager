@@ -5,6 +5,8 @@ import { DateTime } from '../utils/DateTime';
 import { Logs } from '../Logs/Logs';
 import { EmployeeSearch } from './EmployeeSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
+import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
 
 dotenv.config();
 
@@ -14,8 +16,8 @@ export class Employee implements UserAbstract {
   private _password: string = '';
   private employeeSearch: EmployeeSearch = new EmployeeSearch();
   private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  private errorMsg: string =
-    'Operacao nao autorizada. Login do administrador necessario';
+  private verifyResult: VerifyResult = new VerifyResult();
+  private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
 
   constructor(name: string = '', email: string = '', password: string = '') {
     this._name = name;
@@ -23,28 +25,10 @@ export class Employee implements UserAbstract {
     this._password = password;
   }
 
-  private async EmployeeLoginVerify() {
-    try {
-      const empLogin = await prisma.userLogin.findMany();
-
-      if (empLogin.length > 0) {
-        const employeeLoginVerify = empLogin.map((emp) => {
-          return emp.userEmail;
-        });
-
-        return employeeLoginVerify[0];
-      }
-
-      return false;
-    } catch (e) {
-      return console.log(e);
-    }
-  }
-
   public async Create() {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
-      if (admLoginVerify === false) return console.log(this.errorMsg);
+      this.verifyResult.Result(null, admLoginVerify);
 
       const createEmployee = await prisma.employee.create({
         data: {
@@ -63,7 +47,7 @@ export class Employee implements UserAbstract {
   public async List() {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
-      if (admLoginVerify === false) return console.log(this.errorMsg);
+      this.verifyResult.Result(null, admLoginVerify);
 
       const employeesList = await prisma.employee.findMany();
 
@@ -72,17 +56,15 @@ export class Employee implements UserAbstract {
           'Ocorreu um erro ou não há funcionários cadastrados',
         );
       }
-
-      return console.table(employeesList);
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
   public async Update(id: string, data: string[]) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
-      if (admLoginVerify === false) return console.log(this.errorMsg);
+      this.verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -115,6 +97,9 @@ export class Employee implements UserAbstract {
 
   public async Delete(id: string) {
     try {
+      const admLoginVerify = await this.adminLoginVerify.Verify();
+      this.verifyResult.Result(null, admLoginVerify);
+
       const deleteEmployee = await prisma.employee.delete({
         where: {
           id: id,
@@ -129,7 +114,8 @@ export class Employee implements UserAbstract {
   public async Login() {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
-      const employeeLoginVerify = await this.EmployeeLoginVerify();
+      const employeeLoginVerify = await this.employeeLoginVerify.Verify();
+
       if (admLoginVerify === true) {
         return console.log(
           'Login nao autorizado enquanto o administrador estiver logado',

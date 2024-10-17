@@ -1,49 +1,15 @@
 import { prisma } from '../../lib/prisma';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
+import { VerifyResult } from '../LoginVerify/VerifyResult';
 
 export class EmployeeSearch {
-  private errorMsg: string =
-    'Operacao nao autorizada. Login do administrador necessario';
-
-  public async AdminLoginVerify() {
-    try {
-      const admLogin = await prisma.adminLogin.findMany();
-      const adminData: string[] = [];
-
-      if (admLogin.length <= 0) return false;
-
-      admLogin.map((adm) => {
-        adminData.push(adm.adminUser, adm.adminPassword);
-      });
-
-      const adminVerify = await prisma.employee.findUnique({
-        where: {
-          email: adminData[0],
-          password: adminData[1],
-        },
-      });
-
-      if (!adminVerify) {
-        return console.log(
-          `Erro ao validar login do administrador ${admLogin[0]}`,
-        );
-      }
-
-      if (
-        adminVerify.email === adminData[0] &&
-        adminVerify.password === adminData[1]
-      ) {
-        return true;
-      }
-      return false;
-    } catch (e) {
-      return console.log(e);
-    }
-  }
+  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+  private verifyResult: VerifyResult = new VerifyResult();
 
   public async SearchById(id: string) {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
-      if (admLoginVerify === false) return console.log(this.errorMsg);
+      const admLoginVerify = await this.adminLoginVerify.Verify();
+      this.verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -59,8 +25,8 @@ export class EmployeeSearch {
 
   public async SearchByEmail(email: string) {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
-      if (admLoginVerify === false) return console.log(this.errorMsg);
+      const admLoginVerify = await this.adminLoginVerify.Verify();
+      this.verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -80,8 +46,8 @@ export class EmployeeSearch {
 
   public async SearchByName(name: string) {
     try {
-      const admLoginVerify = await this.AdminLoginVerify();
-      if (admLoginVerify === false) return console.log(this.errorMsg);
+      const admLoginVerify = await this.adminLoginVerify.Verify();
+      this.verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findMany({
         where: {
