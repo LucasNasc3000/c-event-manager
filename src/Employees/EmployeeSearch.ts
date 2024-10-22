@@ -19,7 +19,7 @@ export class EmployeeSearch {
 
       return this.SearchResult(findEmployee, [], 'Funcionário não encontrado');
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 

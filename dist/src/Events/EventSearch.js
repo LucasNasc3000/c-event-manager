@@ -58,7 +58,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos do dia: ${dateParam} nao encontrado`);
         }
         catch (e) {
-            console.log(e);
+            return e;
         }
     }
     async SearchByHour(hourParam) {
@@ -164,7 +164,6 @@ class EventSearch {
         }
     }
     SearchResult(searchData, searchDataArray, error) {
-        console.log(searchDataArray.length);
         switch (true) {
             case searchData === null && searchDataArray.length < 1:
                 return console.log(error);

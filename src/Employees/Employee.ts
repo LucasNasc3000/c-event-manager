@@ -40,7 +40,7 @@ export class Employee implements UserAbstract {
 
       return console.table(createEmployee);
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 

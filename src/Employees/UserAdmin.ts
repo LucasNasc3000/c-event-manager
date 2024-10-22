@@ -28,7 +28,7 @@ export class UserAdmin {
 
       return admExists;
     } catch (e) {
-      return console.log(e);
+      return console.log('Erro ao buscar administrador');
     }
   }
 
@@ -46,7 +46,7 @@ export class UserAdmin {
 
       return admExists;
     } catch (e) {
-      return console.log(e);
+      return console.log('Erro ao verificar se o administrador já está logado');
     }
   }
 
@@ -64,7 +64,7 @@ export class UserAdmin {
       }
       return console.log('Administrador ja cadastrado');
     } catch (e) {
-      return console.log(e);
+      return console.log('Erro ao criar administrador');
     }
   }
 
@@ -78,7 +78,7 @@ export class UserAdmin {
       await admin.Create();
       return 'Administrador criado';
     } catch (e) {
-      console.log(e);
+      return console.log('Erro ao criar novo administrador');
     }
   }
 
@@ -109,7 +109,7 @@ export class UserAdmin {
         return console.log('Administrador logado com sucesso');
       }
     } catch (e) {
-      return console.log(e);
+      return console.log('Erro ao logar como administrador');
     }
   }
 
@@ -118,7 +118,7 @@ export class UserAdmin {
       await prisma.adminLogin.deleteMany();
       return console.log('Administrador deslogado');
     } catch (e) {
-      console.log(e);
+      console.log('Erro ao realizar logout como administrador');
     }
   }
 }
