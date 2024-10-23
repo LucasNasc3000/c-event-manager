@@ -24,7 +24,7 @@ class EventSearch {
             return this.SearchResult(findEvent, [], `Evento ${id} não encontrado`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByEventCreator(eventCreatorParam) {
@@ -40,7 +40,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos criados por: ${eventCreatorParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByDate(dateParam) {
@@ -58,7 +58,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos do dia: ${dateParam} nao encontrado`);
         }
         catch (e) {
-            return e;
+            return console.log(e);
         }
     }
     async SearchByHour(hourParam) {
@@ -76,7 +76,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos da hora: ${hourParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByName(nameParam) {
@@ -94,7 +94,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos de nome: ${nameParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByHosts(hostsParam) {
@@ -112,7 +112,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos com os anfitrioes: ${hostsParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByLocation(locationParam) {
@@ -128,7 +128,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos no local: ${locationParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByPlattform(plattformParam) {
@@ -144,7 +144,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos na plataforma ${plattformParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async SearchByEventCreatorId(eventCreatorIdParam) {
@@ -160,7 +160,7 @@ class EventSearch {
             return this.SearchResult(null, findEvent, `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     SearchResult(searchData, searchDataArray, error) {

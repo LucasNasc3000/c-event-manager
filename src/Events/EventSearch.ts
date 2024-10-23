@@ -23,7 +23,7 @@ export class EventSearch {
 
       return this.SearchResult(findEvent, [], `Evento ${id} não encontrado`);
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -46,7 +46,7 @@ export class EventSearch {
         `Eventos criados por: ${eventCreatorParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -71,7 +71,7 @@ export class EventSearch {
         `Eventos do dia: ${dateParam} nao encontrado`,
       );
     } catch (e) {
-      return e;
+      return console.log(e);
     }
   }
 
@@ -96,7 +96,7 @@ export class EventSearch {
         `Eventos da hora: ${hourParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -121,7 +121,7 @@ export class EventSearch {
         `Eventos de nome: ${nameParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -146,7 +146,7 @@ export class EventSearch {
         `Eventos com os anfitrioes: ${hostsParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -169,7 +169,7 @@ export class EventSearch {
         `Eventos no local: ${locationParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -192,7 +192,7 @@ export class EventSearch {
         `Eventos na plataforma ${plattformParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 
@@ -215,7 +215,7 @@ export class EventSearch {
         `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`,
       );
     } catch (e) {
-      console.log(e);
+      return console.log(e);
     }
   }
 

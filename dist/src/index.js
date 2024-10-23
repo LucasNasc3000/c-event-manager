@@ -54,11 +54,7 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// adicionar SOLID
 // hash para senhas
-// tratamento de erros (tirar o console.log(e) e colocar outra coisa, como uma mensagem de erro, para a segurança da aplicação)
-// funções que instanciam a uf com argumentos prévios e chamar essas funções no switch
-// Para os eventos --> Verificar se existem funcionários na tabela de login de usuários (mudar o nome dps)
-// Se existir, verificar se os mesmos estão na tabela de funcionários
 // Enxugar o código
-// Tratar erros
 Index();

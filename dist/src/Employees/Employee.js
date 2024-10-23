@@ -40,7 +40,7 @@ class Employee {
             return console.table(createEmployee);
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
     async List() {
@@ -51,6 +51,7 @@ class Employee {
             if (employeesList.length < 1) {
                 return console.log('Ocorreu um erro ou não há funcionários cadastrados');
             }
+            return console.table(employeesList);
         }
         catch (e) {
             return console.log(e);
@@ -60,14 +61,7 @@ class Employee {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
-            const findEmployee = await prisma_1.prisma.employee.findUnique({
-                where: {
-                    id: id,
-                },
-            });
-            if (!findEmployee) {
-                return console.log(`Funcionario ${id} nao encontrado`);
-            }
+            await this.employeeSearch.SearchById(id, false);
             await prisma_1.prisma.employee.update({
                 where: {
                     id: id,
@@ -77,8 +71,7 @@ class Employee {
                     name: data[1],
                 },
             });
-            const updateCheck = await this.employeeSearch.SearchById(id);
-            return updateCheck;
+            await this.employeeSearch.SearchById(id, true);
         }
         catch (e) {
             return console.log(e);

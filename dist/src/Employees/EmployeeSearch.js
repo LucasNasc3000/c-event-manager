@@ -9,7 +9,7 @@ class EmployeeSearch {
         this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
         this.verifyResult = new VerifyResult_1.VerifyResult();
     }
-    async SearchById(id) {
+    async SearchById(id, isSearch = true) {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
@@ -18,13 +18,13 @@ class EmployeeSearch {
                     id: id,
                 },
             });
-            return this.SearchResult(findEmployee, [], 'Funcionário não encontrado');
+            return this.SearchResult(findEmployee, [], isSearch, 'Funcionário não encontrado');
         }
         catch (e) {
-            console.log(e);
+            return console.log(e);
         }
     }
-    async SearchByEmail(email) {
+    async SearchByEmail(email, isSearch = true) {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
@@ -33,7 +33,7 @@ class EmployeeSearch {
                     email: email,
                 },
             });
-            return this.SearchResult(findEmployee, [], `Funcionario com email "${email}" nao encontrado`);
+            return this.SearchResult(findEmployee, [], isSearch, `Funcionario com email "${email}" nao encontrado`);
         }
         catch (e) {
             return console.log(e);
@@ -50,20 +50,38 @@ class EmployeeSearch {
                     },
                 },
             });
-            return this.SearchResult(null, findEmployee, `Funcionarios com o nome "${name}" nao encontrados`);
+            return this.SearchResult(null, findEmployee, true, `Funcionarios com o nome "${name}" nao encontrados`);
         }
         catch (e) {
             return console.log(e);
         }
     }
-    SearchResult(searchData, searchDataArray, error) {
+    SearchResult(searchData, searchDataArray, isSearch, error) {
         switch (true) {
-            case searchData === null && searchDataArray.length < 1:
+            case isSearch === true &&
+                searchData === null &&
+                searchDataArray.length < 1:
                 return console.log(error);
-            case searchData === null && searchDataArray.length > 0:
+            case isSearch === true &&
+                searchData === null &&
+                searchDataArray.length > 0:
                 return console.table(searchDataArray);
-            case searchDataArray.length < 1 && searchData !== null:
+            case isSearch === true &&
+                searchDataArray.length < 1 &&
+                searchData !== null:
                 return console.table(searchData);
+            case isSearch === false &&
+                searchDataArray.length > 0 &&
+                searchData === null:
+                return console.log('ok');
+            case isSearch === false &&
+                searchData !== null &&
+                searchDataArray.length < 1:
+                return console.log('ok');
+            case isSearch === false &&
+                searchData === null &&
+                searchDataArray.length < 1:
+                throw new Error('Funcionário não encontrado');
         }
     }
 }

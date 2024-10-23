@@ -27,7 +27,7 @@ class UserAdmin {
             return admExists;
         }
         catch (e) {
-            return console.log(e);
+            return console.log('Erro ao buscar administrador');
         }
     }
     async IsLogged() {
@@ -43,7 +43,7 @@ class UserAdmin {
             return admExists;
         }
         catch (e) {
-            return console.log(e);
+            return console.log('Erro ao verificar se o administrador já está logado');
         }
     }
     async Create() {
@@ -61,7 +61,7 @@ class UserAdmin {
             return console.log('Administrador ja cadastrado');
         }
         catch (e) {
-            return console.log(e);
+            return console.log('Erro ao criar administrador');
         }
     }
     static async CreateAdmin(adminEmail, adminPassword) {
@@ -74,7 +74,7 @@ class UserAdmin {
             return 'Administrador criado';
         }
         catch (e) {
-            console.log(e);
+            return console.log('Erro ao criar novo administrador');
         }
     }
     static async AdminLogin(adminEmail, adminPassword) {
@@ -101,7 +101,7 @@ class UserAdmin {
             }
         }
         catch (e) {
-            return console.log(e);
+            return console.log('Erro ao logar como administrador');
         }
     }
     static async AdminLogout() {
@@ -110,7 +110,7 @@ class UserAdmin {
             return console.log('Administrador deslogado');
         }
         catch (e) {
-            console.log(e);
+            console.log('Erro ao realizar logout como administrador');
         }
     }
 }

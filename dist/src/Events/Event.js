@@ -50,7 +50,7 @@ class Event {
             return console.table(eventsList);
         }
         catch (e) {
-            return e;
+            return console.log(e);
         }
     }
     async Update(id, data) {

@@ -53,7 +53,7 @@ export class Event {
 
       return console.table(eventsList);
     } catch (e) {
-      return e;
+      return console.log(e);
     }
   }
 

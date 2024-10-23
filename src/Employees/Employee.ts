@@ -56,6 +56,8 @@ export class Employee implements UserAbstract {
           'Ocorreu um erro ou não há funcionários cadastrados',
         );
       }
+
+      return console.table(employeesList);
     } catch (e) {
       return console.log(e);
     }
@@ -66,15 +68,7 @@ export class Employee implements UserAbstract {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      const findEmployee = await prisma.employee.findUnique({
-        where: {
-          id: id,
-        },
-      });
-
-      if (!findEmployee) {
-        return console.log(`Funcionario ${id} nao encontrado`);
-      }
+      await this.employeeSearch.SearchById(id, false);
 
       await prisma.employee.update({
         where: {
@@ -87,9 +81,7 @@ export class Employee implements UserAbstract {
         },
       });
 
-      const updateCheck = await this.employeeSearch.SearchById(id);
-
-      return updateCheck;
+      await this.employeeSearch.SearchById(id, true);
     } catch (e) {
       return console.log(e);
     }
@@ -105,6 +97,7 @@ export class Employee implements UserAbstract {
           id: id,
         },
       });
+
       return console.log(`Funcionario ${deleteEmployee.id} deletado`);
     } catch (e) {
       return console.log(e);

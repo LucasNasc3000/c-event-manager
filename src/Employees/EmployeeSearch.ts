@@ -6,7 +6,7 @@ export class EmployeeSearch {
   private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   private verifyResult: VerifyResult = new VerifyResult();
 
-  public async SearchById(id: string) {
+  public async SearchById(id: string, isSearch: boolean = true) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
@@ -17,13 +17,18 @@ export class EmployeeSearch {
         },
       });
 
-      return this.SearchResult(findEmployee, [], 'Funcionário não encontrado');
+      return this.SearchResult(
+        findEmployee,
+        [],
+        isSearch,
+        'Funcionário não encontrado',
+      );
     } catch (e) {
       return console.log(e);
     }
   }
 
-  public async SearchByEmail(email: string) {
+  public async SearchByEmail(email: string, isSearch: boolean = true) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
@@ -37,6 +42,7 @@ export class EmployeeSearch {
       return this.SearchResult(
         findEmployee,
         [],
+        isSearch,
         `Funcionario com email "${email}" nao encontrado`,
       );
     } catch (e) {
@@ -60,6 +66,7 @@ export class EmployeeSearch {
       return this.SearchResult(
         null,
         findEmployee,
+        true,
         `Funcionarios com o nome "${name}" nao encontrados`,
       );
     } catch (e) {
@@ -70,17 +77,39 @@ export class EmployeeSearch {
   private SearchResult(
     searchData: unknown,
     searchDataArray: unknown[],
+    isSearch: boolean,
     error: string,
   ) {
     switch (true) {
-      case searchData === null && searchDataArray.length < 1:
+      case isSearch === true &&
+        searchData === null &&
+        searchDataArray.length < 1:
         return console.log(error);
 
-      case searchData === null && searchDataArray.length > 0:
+      case isSearch === true &&
+        searchData === null &&
+        searchDataArray.length > 0:
         return console.table(searchDataArray);
 
-      case searchDataArray.length < 1 && searchData !== null:
+      case isSearch === true &&
+        searchDataArray.length < 1 &&
+        searchData !== null:
         return console.table(searchData);
+
+      case isSearch === false &&
+        searchDataArray.length > 0 &&
+        searchData === null:
+        return console.log('ok');
+
+      case isSearch === false &&
+        searchData !== null &&
+        searchDataArray.length < 1:
+        return console.log('ok');
+
+      case isSearch === false &&
+        searchData === null &&
+        searchDataArray.length < 1:
+        throw new Error('Funcionário não encontrado');
     }
   }
 }
