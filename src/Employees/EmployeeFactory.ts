@@ -3,7 +3,7 @@
 /* eslint-disable prefer-const */
 import dotenv from 'dotenv';
 import { Employee } from './Employee';
-import { EmployeeSearch } from './EmployeeSearch';
+import { EmployeeSearchFilter } from './EmployeeSearchFilter';
 import { UserAdmin } from './UserAdmin';
 import { UserAbstract } from '../interfaces/UserAbstract';
 import { Logs } from '../Logs/Logs';
@@ -15,7 +15,6 @@ export class EmployeeFactory implements UserAbstract {
   private _password: string = '';
   private _email: string = '';
   private empl: Employee = new Employee();
-  private employeeSearch: EmployeeSearch = new EmployeeSearch();
   private log: Logs = new Logs();
 
   constructor(email: string = '', password: string = '', name: string = '') {
@@ -91,23 +90,13 @@ export class EmployeeFactory implements UserAbstract {
     await this.empl.Delete(id);
   }
 
-  public async Search(searchValue: string) {
-    const alphabetRegex = /^[a-zA-Z]+$/;
-    if (searchValue === '') return console.log('Dado nao informado');
+  public async Search(searchParam: string, searchValue: string) {
+    const employeeSearch: EmployeeSearchFilter = new EmployeeSearchFilter(
+      searchParam,
+      searchValue,
+    );
 
-    if (searchValue.includes('@') || searchValue.includes('.com')) {
-      await this.employeeSearch.SearchByEmail(searchValue);
-    } else if (alphabetRegex.test(searchValue)) {
-      await this.employeeSearch.SearchByName(searchValue);
-    } else {
-      const searchId = await this.employeeSearch.SearchById(searchValue);
-
-      if (searchId === null) {
-        return console.log(
-          `Funcionario de id: ${searchValue} inexistente ou o dado de busca foi informado incorretamente.`,
-        );
-      }
-    }
+    await employeeSearch.Filter();
   }
 
   public async LogSearchEmail(emailSearchValue: string) {

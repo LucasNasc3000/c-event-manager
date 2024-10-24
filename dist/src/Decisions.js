@@ -38,24 +38,14 @@ async function Decisions(options) {
         const data = [process.argv[4], process.argv[5]];
         await uf.EmployeeUpdate(process.argv[3], data);
     }
-    if (options.searchUsersId) {
-        const EmployeeFinder = uf.Search(process.argv[3]);
-        return EmployeeFinder;
-    }
-    if (options.searchUsersEmail) {
-        const EmployeeFinder = uf.Search(process.argv[3]);
-        return EmployeeFinder;
-    }
-    if (options.searchUsersName) {
-        const EmployeeFinder = uf.Search(process.argv[3]);
-        return EmployeeFinder;
-    }
+    if (options.searchUser)
+        uf.Search(process.argv[3], process.argv[4]);
     if (options.logsList)
         uf.LogsList();
     if (options.logoutsList)
         uf.LogoutsList();
     if (options.readUsers)
-        await uf.EmployeesList();
+        uf.EmployeesList();
     if (options.deleteUsers)
         await uf.Delete(process.argv[3]);
     if (options.logsEmailSearch)
@@ -108,10 +98,3 @@ async function Decisions(options) {
     }
 }
 exports.Decisions = Decisions;
-// export function test(arg1: string, whichData: string) {
-//   switch (whichData) {
-//     case 'name':
-//       const fbn = new EmployeeFactory('', '', arg1);
-//       return fbn;
-//   }
-// }

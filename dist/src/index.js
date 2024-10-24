@@ -22,15 +22,13 @@ async function Index() {
         .option('-re, --readEvent', 'Mostra todas os eventos')
         .option('-ue, --updateEvent <id> <values>', 'Atualiza os dados de um evento')
         .option('-de, --deleteEvent <id>', 'Deleta um evento')
-        .option('-se, --searchEvent <searchEventValues>', 'Pesquisa por um evento')
+        .option('-se, --searchEvent  <searchEventParam> <searchEventValues>', 'Pesquisa por um evento')
         .option('Usuarios (somente administrador): ')
         .option('-cs, --createUser <values>', 'Cria um novo usuario')
         .option('-ru, --readUsers', 'Mostra todos os usuarios')
         .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados do usuario')
         .option('-du, --deleteUsers <id>', 'Deleta um usuario')
-        .option('-sid, --searchUsersId <searchUserValues>', 'Pesquisa um usuario pelo id')
-        .option('-sbm, --searchUsersEmail <searchUserValues>', 'Pesquisa um usuario pelo email')
-        .option('-sbn, --searchUsersName <searchUserValues>', 'Pesquisa por um usuario pelo nome')
+        .option('-su, --searchUser <searchUserParam> <searchUserValue>', 'Pesquisa um usuario')
         .option('-list, --logsList', 'Lista todos os registro de login')
         .option('-outs, --logoutsList', 'Lista todos os registro de logout')
         .option('-lms, --logsEmailSearch', 'Pesquisa um log por email')
@@ -54,6 +52,7 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// otimizar pesquisas de logs tambem
 // trocar else if em employee factory por switch true
 // adicionar SOLID
 // hash para senhas
