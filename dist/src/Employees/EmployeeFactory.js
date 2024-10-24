@@ -11,7 +11,6 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const Employee_1 = require("./Employee");
 const EmployeeSearchFilter_1 = require("./EmployeeSearchFilter");
 const UserAdmin_1 = require("./UserAdmin");
-const Logs_1 = require("../Logs/Logs");
 dotenv_1.default.config();
 class EmployeeFactory {
     constructor(email = '', password = '', name = '') {
@@ -19,7 +18,6 @@ class EmployeeFactory {
         this._password = '';
         this._email = '';
         this.empl = new Employee_1.Employee();
-        this.log = new Logs_1.Logs();
         this._email = email;
         this._password = password;
         this._name = name;
@@ -81,30 +79,6 @@ class EmployeeFactory {
     async Search(searchParam, searchValue) {
         const employeeSearch = new EmployeeSearchFilter_1.EmployeeSearchFilter(searchParam, searchValue);
         await employeeSearch.Filter();
-    }
-    async LogSearchEmail(emailSearchValue) {
-        this.log.LogSearchEmail(emailSearchValue);
-    }
-    async LogSearchDate(dateSearchValue) {
-        this.log.LogSearchDate(dateSearchValue);
-    }
-    async LogSearchHour(hourSearchValue) {
-        this.log.LogSearchHour(hourSearchValue);
-    }
-    async LogoutSearchEmail(emailSearchValue) {
-        this.log.LogoutSearchEmail(emailSearchValue);
-    }
-    async LogoutSearchDate(dateSearchValue) {
-        this.log.LogoutSearchDate(dateSearchValue);
-    }
-    async LogoutSearchHour(hourSearchValue) {
-        this.log.LogoutSearchHour(hourSearchValue);
-    }
-    async LogsList() {
-        this.log.ListLogins();
-    }
-    async LogoutsList() {
-        this.log.ListLogouts();
     }
     FieldsCheck() {
         const fields = [this._name, this._email, this._password];

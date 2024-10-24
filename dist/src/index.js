@@ -31,12 +31,7 @@ async function Index() {
         .option('-su, --searchUser <searchUserParam> <searchUserValue>', 'Pesquisa um usuario')
         .option('-list, --logsList', 'Lista todos os registro de login')
         .option('-outs, --logoutsList', 'Lista todos os registro de logout')
-        .option('-lms, --logsEmailSearch', 'Pesquisa um log por email')
-        .option('-lds, --logsDateSearch', 'Pesquisa um log por data')
-        .option('-lhs, --logsHourSearch', 'Pesquisa um log por hora')
-        .option('-loms, --logoutsEmailSearch', 'Pesquisa um logout por email')
-        .option('-lods, --logoutsDateSearch', 'Pesquisa um logout por data')
-        .option('-lohs, --logoutsHourSearch', 'Pesquisa um logout por hora')
+        .option('-lgs, --logsSearch <logSearchParam> <logSearchValue>', 'Pesquisa um log')
         .option('                                                ')
         .option('Legendas: ', '? --> campo opcional')
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
@@ -52,8 +47,8 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// otimizar pesquisas de logs tambem
-// trocar else if em employee factory por switch true
+// criar factory para logs?
+// remover awaits desncessarios em employee decisions
 // adicionar SOLID
 // hash para senhas
 // Enxugar o código

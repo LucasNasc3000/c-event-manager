@@ -6,7 +6,6 @@ import { Employee } from './Employee';
 import { EmployeeSearchFilter } from './EmployeeSearchFilter';
 import { UserAdmin } from './UserAdmin';
 import { UserAbstract } from '../interfaces/UserAbstract';
-import { Logs } from '../Logs/Logs';
 
 dotenv.config();
 
@@ -15,7 +14,6 @@ export class EmployeeFactory implements UserAbstract {
   private _password: string = '';
   private _email: string = '';
   private empl: Employee = new Employee();
-  private log: Logs = new Logs();
 
   constructor(email: string = '', password: string = '', name: string = '') {
     this._email = email;
@@ -97,38 +95,6 @@ export class EmployeeFactory implements UserAbstract {
     );
 
     await employeeSearch.Filter();
-  }
-
-  public async LogSearchEmail(emailSearchValue: string) {
-    this.log.LogSearchEmail(emailSearchValue);
-  }
-
-  public async LogSearchDate(dateSearchValue: string) {
-    this.log.LogSearchDate(dateSearchValue);
-  }
-
-  public async LogSearchHour(hourSearchValue: string) {
-    this.log.LogSearchHour(hourSearchValue);
-  }
-
-  public async LogoutSearchEmail(emailSearchValue: string) {
-    this.log.LogoutSearchEmail(emailSearchValue);
-  }
-
-  public async LogoutSearchDate(dateSearchValue: string) {
-    this.log.LogoutSearchDate(dateSearchValue);
-  }
-
-  public async LogoutSearchHour(hourSearchValue: string) {
-    this.log.LogoutSearchHour(hourSearchValue);
-  }
-
-  public async LogsList() {
-    this.log.ListLogins();
-  }
-
-  public async LogoutsList() {
-    this.log.ListLogouts();
   }
 
   private FieldsCheck(): boolean {

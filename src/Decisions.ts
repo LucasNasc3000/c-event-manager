@@ -3,10 +3,13 @@ import { OptionValues } from 'commander';
 import { EmployeeFactory } from './Employees/EmployeeFactory';
 import { Event } from './Events/Event';
 import { EventSearchFilter } from './Events/EventSearchFilter';
+import { Logs } from './Logs/Logs';
+import { LogsSearchFilter } from './Logs/LogsSearchFilter';
 
 export async function Decisions(options: OptionValues) {
   const uf: EmployeeFactory = new EmployeeFactory();
   const event: Event = new Event();
+  const logs: Logs = new Logs();
 
   if (options.cadmin) {
     const uf = new EmployeeFactory(
@@ -55,25 +58,22 @@ export async function Decisions(options: OptionValues) {
 
   if (options.searchUser) uf.Search(process.argv[3], process.argv[4]);
 
-  if (options.logsList) uf.LogsList();
+  if (options.logsList) logs.ListLogins();
 
-  if (options.logoutsList) uf.LogoutsList();
+  if (options.logoutsList) logs.ListLogouts();
+
+  if (options.logsSearch) {
+    const logSearch: LogsSearchFilter = new LogsSearchFilter(
+      process.argv[3],
+      process.argv[4],
+    );
+
+    logSearch.Filter();
+  }
 
   if (options.readUsers) uf.EmployeesList();
 
   if (options.deleteUsers) await uf.Delete(process.argv[3]);
-
-  if (options.logsEmailSearch) await uf.LogSearchEmail(process.argv[3]);
-
-  if (options.logsDateSearch) await uf.LogSearchDate(process.argv[3]);
-
-  if (options.logsHourSearch) await uf.LogSearchHour(process.argv[3]);
-
-  if (options.logoutsEmailSearch) await uf.LogoutSearchEmail(process.argv[3]);
-
-  if (options.logoutsDateSearch) await uf.LogoutSearchDate(process.argv[3]);
-
-  if (options.logoutsHourSearch) await uf.LogoutSearchHour(process.argv[3]);
 
   if (options.createEvent) {
     const data: string[] = [

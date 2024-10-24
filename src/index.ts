@@ -38,12 +38,10 @@ export async function Index() {
     )
     .option('-list, --logsList', 'Lista todos os registro de login')
     .option('-outs, --logoutsList', 'Lista todos os registro de logout')
-    .option('-lms, --logsEmailSearch', 'Pesquisa um log por email')
-    .option('-lds, --logsDateSearch', 'Pesquisa um log por data')
-    .option('-lhs, --logsHourSearch', 'Pesquisa um log por hora')
-    .option('-loms, --logoutsEmailSearch', 'Pesquisa um logout por email')
-    .option('-lods, --logoutsDateSearch', 'Pesquisa um logout por data')
-    .option('-lohs, --logoutsHourSearch', 'Pesquisa um logout por hora')
+    .option(
+      '-lgs, --logsSearch <logSearchParam> <logSearchValue>',
+      'Pesquisa um log',
+    )
     .option('                                                ')
     .option('Legendas: ', '? --> campo opcional')
     .option(
@@ -73,9 +71,8 @@ export async function Index() {
   Decisions(options);
 }
 
+// criar factory para logs?
 // remover awaits desncessarios em employee decisions
-// otimizar pesquisas de logs tambem
-// trocar else if em employee factory por switch true
 // adicionar SOLID
 // hash para senhas
 // Enxugar o código

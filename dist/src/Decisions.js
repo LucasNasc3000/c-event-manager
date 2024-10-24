@@ -4,9 +4,12 @@ exports.Decisions = void 0;
 const EmployeeFactory_1 = require("./Employees/EmployeeFactory");
 const Event_1 = require("./Events/Event");
 const EventSearchFilter_1 = require("./Events/EventSearchFilter");
+const Logs_1 = require("./Logs/Logs");
+const LogsSearchFilter_1 = require("./Logs/LogsSearchFilter");
 async function Decisions(options) {
     const uf = new EmployeeFactory_1.EmployeeFactory();
     const event = new Event_1.Event();
+    const logs = new Logs_1.Logs();
     if (options.cadmin) {
         const uf = new EmployeeFactory_1.EmployeeFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
         await uf.UserCreate();
@@ -41,25 +44,17 @@ async function Decisions(options) {
     if (options.searchUser)
         uf.Search(process.argv[3], process.argv[4]);
     if (options.logsList)
-        uf.LogsList();
+        logs.ListLogins();
     if (options.logoutsList)
-        uf.LogoutsList();
+        logs.ListLogouts();
+    if (options.logsSearch) {
+        const logSearch = new LogsSearchFilter_1.LogsSearchFilter(process.argv[3], process.argv[4]);
+        logSearch.Filter();
+    }
     if (options.readUsers)
         uf.EmployeesList();
     if (options.deleteUsers)
         await uf.Delete(process.argv[3]);
-    if (options.logsEmailSearch)
-        await uf.LogSearchEmail(process.argv[3]);
-    if (options.logsDateSearch)
-        await uf.LogSearchDate(process.argv[3]);
-    if (options.logsHourSearch)
-        await uf.LogSearchHour(process.argv[3]);
-    if (options.logoutsEmailSearch)
-        await uf.LogoutSearchEmail(process.argv[3]);
-    if (options.logoutsDateSearch)
-        await uf.LogoutSearchDate(process.argv[3]);
-    if (options.logoutsHourSearch)
-        await uf.LogoutSearchHour(process.argv[3]);
     if (options.createEvent) {
         const data = [
             process.argv[3],
