@@ -72,6 +72,8 @@ class EmployeeFactory {
         if (typeof id === 'undefined' || id === '' || id === null) {
             return 'id nao informado';
         }
+        if (data.length < 1)
+            return 'nenhum dado informado';
         await this.empl.Update(id, data);
     }
     async Delete(id) {
@@ -79,9 +81,8 @@ class EmployeeFactory {
     }
     async Search(searchValue) {
         const alphabetRegex = /^[a-zA-Z]+$/;
-        if (searchValue === '') {
+        if (searchValue === '')
             return console.log('Dado nao informado');
-        }
         if (searchValue.includes('@') || searchValue.includes('.com')) {
             await this.employeeSearch.SearchByEmail(searchValue);
         }

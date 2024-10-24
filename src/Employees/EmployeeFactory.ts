@@ -81,6 +81,9 @@ export class EmployeeFactory implements UserAbstract {
     if (typeof id === 'undefined' || id === '' || id === null) {
       return 'id nao informado';
     }
+
+    if (data.length < 1) return 'nenhum dado informado';
+
     await this.empl.Update(id, data);
   }
 
@@ -90,9 +93,7 @@ export class EmployeeFactory implements UserAbstract {
 
   public async Search(searchValue: string) {
     const alphabetRegex = /^[a-zA-Z]+$/;
-    if (searchValue === '') {
-      return console.log('Dado nao informado');
-    }
+    if (searchValue === '') return console.log('Dado nao informado');
 
     if (searchValue.includes('@') || searchValue.includes('.com')) {
       await this.employeeSearch.SearchByEmail(searchValue);

@@ -37,9 +37,8 @@ class UserAdmin {
                     adminUser: this.adminEmail,
                 },
             });
-            if (admExists === null) {
+            if (admExists === null)
                 return null;
-            }
             return admExists;
         }
         catch (e) {

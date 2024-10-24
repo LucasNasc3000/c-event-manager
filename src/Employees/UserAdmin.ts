@@ -40,9 +40,7 @@ export class UserAdmin {
         },
       });
 
-      if (admExists === null) {
-        return null;
-      }
+      if (admExists === null) return null;
 
       return admExists;
     } catch (e) {

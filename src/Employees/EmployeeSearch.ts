@@ -79,7 +79,7 @@ export class EmployeeSearch {
     searchDataArray: unknown[],
     isSearch: boolean,
     error: string,
-  ) {
+  ): void | object {
     switch (true) {
       case isSearch === true &&
         searchData === null &&
@@ -99,12 +99,12 @@ export class EmployeeSearch {
       case isSearch === false &&
         searchDataArray.length > 0 &&
         searchData === null:
-        return console.log('ok');
+        return searchDataArray;
 
       case isSearch === false &&
         searchData !== null &&
         searchDataArray.length < 1:
-        return console.log('ok');
+        return searchData;
 
       case isSearch === false &&
         searchData === null &&

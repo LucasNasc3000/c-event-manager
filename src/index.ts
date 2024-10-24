@@ -78,6 +78,7 @@ export async function Index() {
   Decisions(options);
 }
 
+// trocar else if em employee factory por switch true
 // adicionar SOLID
 // hash para senhas
 // Enxugar o código

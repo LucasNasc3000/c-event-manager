@@ -54,6 +54,7 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
+// trocar else if em employee factory por switch true
 // adicionar SOLID
 // hash para senhas
 // Enxugar o código
