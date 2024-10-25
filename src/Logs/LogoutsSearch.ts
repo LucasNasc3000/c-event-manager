@@ -2,33 +2,33 @@ import { prisma } from '../../lib/prisma';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 
-export class LogsSearch {
+export class LogoutsSearch {
   private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   private verifyResult: VerifyResult = new VerifyResult();
 
-  public async LogSearchId(id: string) {
+  public async LogoutSearchId(id: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      const findLog = await prisma.logsLogin.findUnique({
+      const findLogout = await prisma.logsLogout.findUnique({
         where: {
           id: id,
         },
       });
 
-      return this.SearchResult(findLog, [], `Log ${id} nao encontrado`);
+      return this.SearchResult(findLogout, [], `Logout ${id} não encontrado`);
     } catch (e) {
       return console.log(e);
     }
   }
 
-  public async LogSearchEmail(emailSearchValue: string) {
+  public async LogoutSearchEmail(emailSearchValue: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      const findLog = await prisma.logsLogin.findMany({
+      const findLogout = await prisma.logsLogout.findMany({
         where: {
           email: emailSearchValue,
         },
@@ -36,22 +36,22 @@ export class LogsSearch {
 
       return this.SearchResult(
         null,
-        findLog,
-        `Logs do funcionário ${emailSearchValue} nao encontrados`,
+        findLogout,
+        `Logouts do funcionário ${emailSearchValue} nao encontrados`,
       );
     } catch (e) {
       return console.log(e);
     }
   }
 
-  public async LogSearchDate(dateSearchValue: string) {
+  public async LogoutSearchDate(dateSearchValue: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      const findLog = await prisma.logsLogin.findMany({
+      const findLogout = await prisma.logsLogout.findMany({
         where: {
-          loginDate: {
+          logoutDate: {
             startsWith: dateSearchValue,
           },
         },
@@ -59,22 +59,22 @@ export class LogsSearch {
 
       return this.SearchResult(
         null,
-        findLog,
-        `Logs da data ${dateSearchValue} nao encontrados`,
+        findLogout,
+        `Logouts da data ${dateSearchValue} nao encontrados`,
       );
     } catch (e) {
       return console.log(e);
     }
   }
 
-  public async LogSearchHour(hourSearchValue: string) {
+  public async LogoutSearchHour(hourSearchValue: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      const findLog = await prisma.logsLogin.findMany({
+      const findLogout = await prisma.logsLogout.findMany({
         where: {
-          loginHour: {
+          logoutHour: {
             startsWith: hourSearchValue,
           },
         },
@@ -82,8 +82,8 @@ export class LogsSearch {
 
       return this.SearchResult(
         null,
-        findLog,
-        `Logs da data ${hourSearchValue} nao encontrados`,
+        findLogout,
+        `Logouts da data ${hourSearchValue} nao encontrados`,
       );
     } catch (e) {
       return console.log(e);

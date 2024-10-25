@@ -7,6 +7,7 @@ import { EmployeeSearch } from './EmployeeSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
+import { Logouts } from '../Logs/Logouts';
 
 dotenv.config();
 
@@ -141,7 +142,7 @@ export class Employee implements UserAbstract {
       });
 
       const logLogin = new Logs(this._email, DateTime());
-      await logLogin.CreateLogin();
+      await logLogin.Create();
       return console.log(`Funcionario ${this._email} logado com sucesso.`);
     } catch (e) {
       return console.log(e);
@@ -156,8 +157,8 @@ export class Employee implements UserAbstract {
         },
       });
 
-      const logLogout = new Logs(this._email, DateTime());
-      await logLogout.CreateLogout();
+      const logLogout = new Logouts(this._email, DateTime());
+      await logLogout.Create();
       return console.log(`Funcionario ${this._email} deslogado.`);
     } catch (e) {
       return console.log(e);

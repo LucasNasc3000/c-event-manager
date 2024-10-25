@@ -73,7 +73,6 @@ export async function Index() {
 
 // mudar a condição de criação de funcionarios
 // criar factory para logs? sim
-// remover awaits desncessarios em employee decisions
 // adicionar SOLID
 // hash para senhas
 // Enxugar o código

@@ -3,7 +3,7 @@ import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 import { LogsAbstract } from '../interfaces/LogsAbstract';
 
-export class Logs implements LogsAbstract {
+export class Logouts implements LogsAbstract {
   public _dateTime: string[] = [];
   public _email: string;
   public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
@@ -24,11 +24,11 @@ export class Logs implements LogsAbstract {
         return console.log('Data e hora não foram enviadas');
       }
 
-      await prisma.logsLogin.create({
+      await prisma.logsLogout.create({
         data: {
           email: this._email,
-          loginDate: this._dateTime[0],
-          loginHour: this._dateTime[1],
+          logoutDate: this._dateTime[0],
+          logoutHour: this._dateTime[1],
         },
       });
     } catch (e) {
@@ -41,13 +41,13 @@ export class Logs implements LogsAbstract {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      const logsList = await prisma.logsLogin.findMany();
+      const logoutsList = await prisma.logsLogout.findMany();
 
-      if (logsList.length < 1) {
-        return console.log('Ocorreu um erro ou não há loginsregistrados');
+      if (logoutsList.length < 1) {
+        return console.log('Ocorreu um erro ou não há logouts registrados');
       }
 
-      return console.table(logsList);
+      return console.table(logoutsList);
     } catch (e) {
       return console.log(e);
     }
