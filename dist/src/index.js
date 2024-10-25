@@ -47,7 +47,8 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// criar factory para logs?
+// mudar a condição de criação de funcionarios
+// criar factory para logs? sim
 // remover awaits desncessarios em employee decisions
 // adicionar SOLID
 // hash para senhas

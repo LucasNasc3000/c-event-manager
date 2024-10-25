@@ -16,24 +16,21 @@ export async function Decisions(options: OptionValues) {
       process.env.ADMIN_USER as string,
       process.env.ADMIN_USER as string,
     );
-    await uf.UserCreate();
+    uf.UserCreate();
   }
 
   if (options.adminlog) {
     const uf = new EmployeeFactory(process.argv[3], process.argv[4]);
-    const adminLog = await uf.Login();
-    return adminLog;
+    uf.Login();
   }
 
   if (options.emplog) {
     const uf = new EmployeeFactory(process.argv[3], process.argv[4]);
-    const employeeLogin = await uf.Login();
-    return employeeLogin;
+    uf.Login();
   }
 
   if (options.logout) {
-    const adminLogout = uf.AdminLogout();
-    return adminLogout;
+    uf.AdminLogout();
   }
 
   if (options.elogout) {
@@ -47,18 +44,20 @@ export async function Decisions(options: OptionValues) {
       process.argv[4],
       process.argv[5],
     );
-    const user = await uf.UserCreate();
-    return user;
+    uf.UserCreate();
   }
 
   if (options.updateUsers) {
     const data: string[] = [process.argv[4], process.argv[5]];
-    await uf.EmployeeUpdate(process.argv[3], data);
+    uf.EmployeeUpdate(process.argv[3], data);
   }
 
   if (options.searchUser) uf.Search(process.argv[3], process.argv[4]);
 
-  if (options.logsList) logs.ListLogins();
+  if (options.logsList) {
+    logs.ListLogins();
+    console.log(process.argv[0]);
+  }
 
   if (options.logoutsList) logs.ListLogouts();
 
@@ -73,7 +72,7 @@ export async function Decisions(options: OptionValues) {
 
   if (options.readUsers) uf.EmployeesList();
 
-  if (options.deleteUsers) await uf.Delete(process.argv[3]);
+  if (options.deleteUsers) uf.Delete(process.argv[3]);
 
   if (options.createEvent) {
     const data: string[] = [
@@ -87,11 +86,10 @@ export async function Decisions(options: OptionValues) {
       process.argv[10],
       process.argv[11],
     ];
-    const create = event.Create(data);
-    return create;
+    event.Create(data);
   }
 
-  if (options.readEvent) await event.List();
+  if (options.readEvent) event.List();
 
   if (options.updateEvent) {
     const data: string[] = [
@@ -105,13 +103,13 @@ export async function Decisions(options: OptionValues) {
       process.argv[11],
     ];
 
-    await event.Update(process.argv[3], data);
+    event.Update(process.argv[3], data);
   }
 
-  if (options.deleteEvent) await event.Delete(process.argv[3]);
+  if (options.deleteEvent) event.Delete(process.argv[3]);
 
   if (options.searchEvent) {
     const filter = new EventSearchFilter(process.argv[3], process.argv[4]);
-    await filter.Filter();
+    filter.Filter();
   }
 }

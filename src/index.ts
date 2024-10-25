@@ -71,7 +71,8 @@ export async function Index() {
   Decisions(options);
 }
 
-// criar factory para logs?
+// mudar a condição de criação de funcionarios
+// criar factory para logs? sim
 // remover awaits desncessarios em employee decisions
 // adicionar SOLID
 // hash para senhas
