@@ -7,14 +7,17 @@ import { LogsSearchFilter } from './LogsSearchFilter';
 
 export class LogFactory implements LogsAbstract, LogsSearchAbstract {
   constructor(
+    public _isLog: boolean,
     public _searchParam: string = '',
     public _data: string = '',
     public _dateTime: string[] = [],
     public _email: string = '',
-    public _logs: Logs = new Logs(this._email, this._dateTime),
-    public _logouts: Logouts = new Logouts(this._email, this._dateTime),
-    public _isLog: boolean,
-  ) {}
+    public _logs: Logs = new Logs(),
+    public _logouts: Logouts = new Logouts(),
+  ) {
+    this._logs = new Logs(this._email, this._dateTime);
+    this._logouts = new Logouts(this._email, this._dateTime);
+  }
 
   async Create() {
     if (this._isLog === false) {

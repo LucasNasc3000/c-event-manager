@@ -1,18 +1,13 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Employee = void 0;
-const dotenv_1 = __importDefault(require("dotenv"));
 const prisma_1 = require("../../lib/prisma");
 const DateTime_1 = require("../utils/DateTime");
-const Logs_1 = require("../Logs/Logs");
+const LogFactory_1 = require("../Logs/LogFactory");
 const EmployeeSearch_1 = require("./EmployeeSearch");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
-dotenv_1.default.config();
 class Employee {
     constructor(name = '', email = '', password = '') {
         this._name = '';
@@ -118,8 +113,8 @@ class Employee {
                     userPassword: this._password,
                 },
             });
-            const logLogin = new Logs_1.Logs(this._email, (0, DateTime_1.DateTime)());
-            await logLogin.CreateLogin();
+            const logLogin = new LogFactory_1.LogFactory(true, '', '', (0, DateTime_1.DateTime)(), this._email);
+            await logLogin.Create();
             return console.log(`Funcionario ${this._email} logado com sucesso.`);
         }
         catch (e) {
@@ -133,8 +128,8 @@ class Employee {
                     userEmail: this._email,
                 },
             });
-            const logLogout = new Logs_1.Logs(this._email, (0, DateTime_1.DateTime)());
-            await logLogout.CreateLogout();
+            const logLogout = new LogFactory_1.LogFactory(false, '', '', (0, DateTime_1.DateTime)(), this._email);
+            await logLogout.Create();
             return console.log(`Funcionario ${this._email} deslogado.`);
         }
         catch (e) {

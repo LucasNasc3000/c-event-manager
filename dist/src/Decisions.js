@@ -4,12 +4,10 @@ exports.Decisions = void 0;
 const EmployeeFactory_1 = require("./Employees/EmployeeFactory");
 const Event_1 = require("./Events/Event");
 const EventSearchFilter_1 = require("./Events/EventSearchFilter");
-const Logs_1 = require("./Logs/Logs");
-const LogsSearchFilter_1 = require("./Logs/LogsSearchFilter");
+const LogFactory_1 = require("./Logs/LogFactory");
 async function Decisions(options) {
     const uf = new EmployeeFactory_1.EmployeeFactory();
     const event = new Event_1.Event();
-    const logs = new Logs_1.Logs();
     if (options.cadmin) {
         const uf = new EmployeeFactory_1.EmployeeFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
         uf.UserCreate();
@@ -40,13 +38,19 @@ async function Decisions(options) {
     if (options.searchUser)
         uf.Search(process.argv[3], process.argv[4]);
     if (options.logsList) {
-        logs.ListLogins();
-        console.log(process.argv[0]);
+        const logs = new LogFactory_1.LogFactory(true);
+        logs.List();
     }
-    if (options.logoutsList)
-        logs.ListLogouts();
+    if (options.logoutsList) {
+        const logs = new LogFactory_1.LogFactory(false);
+        logs.List();
+    }
     if (options.logsSearch) {
-        const logSearch = new LogsSearchFilter_1.LogsSearchFilter(process.argv[3], process.argv[4]);
+        const logSearch = new LogFactory_1.LogFactory(true, process.argv[3], process.argv[4]);
+        logSearch.Filter();
+    }
+    if (options.logoutsSearch) {
+        const logSearch = new LogFactory_1.LogFactory(false, process.argv[3], process.argv[4]);
         logSearch.Filter();
     }
     if (options.readUsers)

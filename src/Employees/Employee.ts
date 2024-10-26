@@ -1,15 +1,11 @@
-import dotenv from 'dotenv';
 import { prisma } from '../../lib/prisma';
 import { UserAbstract } from '../interfaces/UserAbstract';
 import { DateTime } from '../utils/DateTime';
-import { Logs } from '../Logs/Logs';
+import { LogFactory } from '../Logs/LogFactory';
 import { EmployeeSearch } from './EmployeeSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
-import { Logouts } from '../Logs/Logouts';
-
-dotenv.config();
 
 export class Employee implements UserAbstract {
   private _name: string = '';
@@ -141,7 +137,7 @@ export class Employee implements UserAbstract {
         },
       });
 
-      const logLogin = new Logs(this._email, DateTime());
+      const logLogin = new LogFactory(true, '', '', DateTime(), this._email);
       await logLogin.Create();
       return console.log(`Funcionario ${this._email} logado com sucesso.`);
     } catch (e) {
@@ -157,7 +153,7 @@ export class Employee implements UserAbstract {
         },
       });
 
-      const logLogout = new Logouts(this._email, DateTime());
+      const logLogout = new LogFactory(false, '', '', DateTime(), this._email);
       await logLogout.Create();
       return console.log(`Funcionario ${this._email} deslogado.`);
     } catch (e) {

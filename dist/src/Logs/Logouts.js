@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Logs = void 0;
+exports.Logouts = void 0;
 const prisma_1 = require("../../lib/prisma");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
-class Logs {
+class Logouts {
     constructor(email = '', dateTime = []) {
         this._dateTime = [];
         this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
@@ -20,11 +20,11 @@ class Logs {
             if (!this._dateTime || this._dateTime.length < 1) {
                 return console.log('Data e hora não foram enviadas');
             }
-            await prisma_1.prisma.logsLogin.create({
+            await prisma_1.prisma.logsLogout.create({
                 data: {
                     email: this._email,
-                    loginDate: this._dateTime[0],
-                    loginHour: this._dateTime[1],
+                    logoutDate: this._dateTime[0],
+                    logoutHour: this._dateTime[1],
                 },
             });
         }
@@ -36,15 +36,15 @@ class Logs {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
-            const logsList = await prisma_1.prisma.logsLogin.findMany();
-            if (logsList.length < 1) {
-                return console.log('Ocorreu um erro ou não há loginsregistrados');
+            const logoutsList = await prisma_1.prisma.logsLogout.findMany();
+            if (logoutsList.length < 1) {
+                return console.log('Ocorreu um erro ou não há logouts registrados');
             }
-            return console.table(logsList);
+            return console.table(logoutsList);
         }
         catch (e) {
             return console.log(e);
         }
     }
 }
-exports.Logs = Logs;
+exports.Logouts = Logouts;

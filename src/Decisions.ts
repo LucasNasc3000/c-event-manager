@@ -3,13 +3,11 @@ import { OptionValues } from 'commander';
 import { EmployeeFactory } from './Employees/EmployeeFactory';
 import { Event } from './Events/Event';
 import { EventSearchFilter } from './Events/EventSearchFilter';
-import { Logs } from './Logs/Logs';
-import { LogsSearchFilter } from './Logs/LogsSearchFilter';
+import { LogFactory } from './Logs/LogFactory';
 
 export async function Decisions(options: OptionValues) {
   const uf: EmployeeFactory = new EmployeeFactory();
   const event: Event = new Event();
-  const logs: Logs = new Logs();
 
   if (options.cadmin) {
     const uf = new EmployeeFactory(
@@ -55,18 +53,30 @@ export async function Decisions(options: OptionValues) {
   if (options.searchUser) uf.Search(process.argv[3], process.argv[4]);
 
   if (options.logsList) {
-    logs.ListLogins();
-    console.log(process.argv[0]);
+    const logs: LogFactory = new LogFactory(true);
+    logs.List();
   }
 
-  if (options.logoutsList) logs.ListLogouts();
+  if (options.logoutsList) {
+    const logs: LogFactory = new LogFactory(false);
+    logs.List();
+  }
 
   if (options.logsSearch) {
-    const logSearch: LogsSearchFilter = new LogsSearchFilter(
+    const logSearch: LogFactory = new LogFactory(
+      true,
       process.argv[3],
       process.argv[4],
     );
+    logSearch.Filter();
+  }
 
+  if (options.logoutsSearch) {
+    const logSearch: LogFactory = new LogFactory(
+      false,
+      process.argv[3],
+      process.argv[4],
+    );
     logSearch.Filter();
   }
 

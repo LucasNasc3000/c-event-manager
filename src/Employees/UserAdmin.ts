@@ -1,9 +1,6 @@
-import dotenv from 'dotenv';
 import { prisma } from '../../lib/prisma';
 import { DateTime } from '../utils/DateTime';
-import { Logs } from '../Logs/Logs';
-
-dotenv.config();
+import { LogFactory } from '../Logs/LogFactory';
 
 export class UserAdmin {
   private adminEmail: string;
@@ -102,8 +99,14 @@ export class UserAdmin {
           },
         });
 
-        const logLogin = new Logs(admExists.email, DateTime());
-        await logLogin.CreateLogin();
+        const logLogin = new LogFactory(
+          true,
+          '',
+          '',
+          DateTime(),
+          admExists.email,
+        );
+        await logLogin.Create();
         return console.log('Administrador logado com sucesso');
       }
     } catch (e) {
@@ -113,7 +116,24 @@ export class UserAdmin {
 
   static async AdminLogout() {
     try {
+      const adminData = await prisma.adminLogin.findMany();
+      const adminEmail: string[] = [];
+
+      adminData.map((data) => {
+        adminEmail.push(data.adminUser);
+      });
+
       await prisma.adminLogin.deleteMany();
+
+      const logLogout = new LogFactory(
+        false,
+        '',
+        '',
+        DateTime(),
+        adminEmail[0],
+      );
+      await logLogout.Create();
+
       return console.log('Administrador deslogado');
     } catch (e) {
       console.log('Erro ao realizar logout como administrador');

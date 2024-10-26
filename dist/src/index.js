@@ -32,6 +32,7 @@ async function Index() {
         .option('-list, --logsList', 'Lista todos os registro de login')
         .option('-outs, --logoutsList', 'Lista todos os registro de logout')
         .option('-lgs, --logsSearch <logSearchParam> <logSearchValue>', 'Pesquisa um log')
+        .option('-lgos, --logoutsSearch <logoutSearchParam> <logoutSearchValue>', 'Pesquisa um logout')
         .option('                                                ')
         .option('Legendas: ', '? --> campo opcional')
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
@@ -49,7 +50,6 @@ async function Index() {
 exports.Index = Index;
 // mudar a condição de criação de funcionarios
 // criar factory para logs? sim
-// remover awaits desncessarios em employee decisions
 // adicionar SOLID
 // hash para senhas
 // Enxugar o código

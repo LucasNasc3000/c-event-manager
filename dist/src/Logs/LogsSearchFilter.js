@@ -4,37 +4,25 @@ exports.LogsSearchFilter = void 0;
 /* eslint-disable no-unused-vars */
 const LogsSearch_1 = require("./LogsSearch");
 class LogsSearchFilter {
-    constructor(searchParam, data, logsSearch = new LogsSearch_1.LogsSearch()) {
-        this.searchParam = searchParam;
-        this.data = data;
+    constructor(_searchParam, _data, logsSearch = new LogsSearch_1.LogsSearch()) {
+        this._searchParam = _searchParam;
+        this._data = _data;
         this.logsSearch = logsSearch;
     }
     async Filter() {
-        switch (this.searchParam) {
+        switch (this._searchParam) {
             case 'id':
-                await this.logsSearch.LogSearchId(this.data);
+                await this.logsSearch.LogSearchId(this._data);
                 break;
             case 'email':
-                await this.logsSearch.LogSearchEmail(this.data);
+                await this.logsSearch.LogSearchEmail(this._data);
                 break;
             case 'date':
-                await this.logsSearch.LogSearchDate(this.data);
+                await this.logsSearch.LogSearchDate(this._data);
                 break;
             case 'hour':
-                await this.logsSearch.LogSearchHour(this.data);
+                await this.logsSearch.LogSearchHour(this._data);
                 break;
-            // case this.searchParam === 'id':
-            //   await this.logsSearch.LogoutSearchId(this.data);
-            //   break;
-            // case this.searchParam === 'email':
-            //   await this.logsSearch.LogoutSearchEmail(this.data);
-            //   break;
-            // case this.searchParam === 'date':
-            //   await this.logsSearch.LogoutSearchDate(this.data);
-            //   break;
-            // case this.searchParam === 'hour':
-            //   await this.logsSearch.LogoutSearchHour(this.data);
-            //   break;
             default:
                 return;
         }

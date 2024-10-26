@@ -42,6 +42,10 @@ export async function Index() {
       '-lgs, --logsSearch <logSearchParam> <logSearchValue>',
       'Pesquisa um log',
     )
+    .option(
+      '-lgos, --logoutsSearch <logoutSearchParam> <logoutSearchValue>',
+      'Pesquisa um logout',
+    )
     .option('                                                ')
     .option('Legendas: ', '? --> campo opcional')
     .option(

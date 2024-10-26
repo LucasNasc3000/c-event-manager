@@ -1,14 +1,9 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserAdmin = void 0;
-const dotenv_1 = __importDefault(require("dotenv"));
 const prisma_1 = require("../../lib/prisma");
 const DateTime_1 = require("../utils/DateTime");
-const Logs_1 = require("../Logs/Logs");
-dotenv_1.default.config();
+const LogFactory_1 = require("../Logs/LogFactory");
 class UserAdmin {
     constructor(adminEmail, adminPassword) {
         this.adminEmail = adminEmail;
@@ -94,8 +89,8 @@ class UserAdmin {
                         adminPassword: admExists.password,
                     },
                 });
-                const logLogin = new Logs_1.Logs(admExists.email, (0, DateTime_1.DateTime)());
-                await logLogin.CreateLogin();
+                const logLogin = new LogFactory_1.LogFactory(true, '', '', (0, DateTime_1.DateTime)(), admExists.email);
+                await logLogin.Create();
                 return console.log('Administrador logado com sucesso');
             }
         }
@@ -105,7 +100,14 @@ class UserAdmin {
     }
     static async AdminLogout() {
         try {
+            const adminData = await prisma_1.prisma.adminLogin.findMany();
+            const adminEmail = [];
+            adminData.map((data) => {
+                adminEmail.push(data.adminUser);
+            });
             await prisma_1.prisma.adminLogin.deleteMany();
+            const logLogout = new LogFactory_1.LogFactory(false, '', '', (0, DateTime_1.DateTime)(), adminEmail[0]);
+            await logLogout.Create();
             return console.log('Administrador deslogado');
         }
         catch (e) {
