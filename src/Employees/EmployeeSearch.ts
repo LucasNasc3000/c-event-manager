@@ -28,7 +28,7 @@ export class EmployeeSearch {
     }
   }
 
-  public async SearchByEmail(email: string, isSearch: boolean = true) {
+  public async SearchByEmail(email: string) {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
@@ -42,7 +42,7 @@ export class EmployeeSearch {
       return this.SearchResult(
         findEmployee,
         [],
-        isSearch,
+        true,
         `Funcionario com email "${email}" nao encontrado`,
       );
     } catch (e) {

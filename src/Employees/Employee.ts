@@ -2,6 +2,7 @@ import { prisma } from '../../lib/prisma';
 import { UserAbstract } from '../interfaces/UserAbstract';
 import { DateTime } from '../utils/DateTime';
 import { LogFactory } from '../Logs/LogFactory';
+import { EmployeeSearchFilter } from './EmployeeSearchFilter';
 import { EmployeeSearch } from './EmployeeSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
@@ -11,7 +12,6 @@ export class Employee implements UserAbstract {
   private _name: string = '';
   private _email: string = '';
   private _password: string = '';
-  private employeeSearch: EmployeeSearch = new EmployeeSearch();
   private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   private verifyResult: VerifyResult = new VerifyResult();
   private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
@@ -65,7 +65,8 @@ export class Employee implements UserAbstract {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
 
-      await this.employeeSearch.SearchById(id, false);
+      const employeeNewData: EmployeeSearch = new EmployeeSearch();
+      await employeeNewData.SearchById(id, false);
 
       await prisma.employee.update({
         where: {
@@ -78,7 +79,12 @@ export class Employee implements UserAbstract {
         },
       });
 
-      await this.employeeSearch.SearchById(id, true);
+      const employeeSearch: EmployeeSearchFilter = new EmployeeSearchFilter(
+        'id',
+        id,
+      );
+
+      employeeSearch.Filter();
     } catch (e) {
       return console.log(e);
     }
@@ -88,6 +94,9 @@ export class Employee implements UserAbstract {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
       this.verifyResult.Result(null, admLoginVerify);
+
+      const employeeSearch: EmployeeSearch = new EmployeeSearch();
+      await employeeSearch.SearchById(id, false);
 
       const deleteEmployee = await prisma.employee.delete({
         where: {

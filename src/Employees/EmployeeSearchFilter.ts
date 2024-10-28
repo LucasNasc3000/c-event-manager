@@ -11,7 +11,7 @@ export class EmployeeSearchFilter {
   async Filter() {
     switch (this.searchParam) {
       case 'id':
-        await this.employeeSearch.SearchById(this.data);
+        await this.employeeSearch.SearchById(this.data, true);
         break;
 
       case 'name':

@@ -4,6 +4,7 @@ exports.Employee = void 0;
 const prisma_1 = require("../../lib/prisma");
 const DateTime_1 = require("../utils/DateTime");
 const LogFactory_1 = require("../Logs/LogFactory");
+const EmployeeSearchFilter_1 = require("./EmployeeSearchFilter");
 const EmployeeSearch_1 = require("./EmployeeSearch");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
@@ -13,7 +14,6 @@ class Employee {
         this._name = '';
         this._email = '';
         this._password = '';
-        this.employeeSearch = new EmployeeSearch_1.EmployeeSearch();
         this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
         this.verifyResult = new VerifyResult_1.VerifyResult();
         this.employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
@@ -56,7 +56,8 @@ class Employee {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
-            await this.employeeSearch.SearchById(id, false);
+            const employeeNewData = new EmployeeSearch_1.EmployeeSearch();
+            await employeeNewData.SearchById(id, false);
             await prisma_1.prisma.employee.update({
                 where: {
                     id: id,
@@ -66,7 +67,8 @@ class Employee {
                     name: data[1],
                 },
             });
-            await this.employeeSearch.SearchById(id, true);
+            const employeeSearch = new EmployeeSearchFilter_1.EmployeeSearchFilter('id', id);
+            employeeSearch.Filter();
         }
         catch (e) {
             return console.log(e);
@@ -76,6 +78,9 @@ class Employee {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
+            const employeeSearch = new EmployeeSearch_1.EmployeeSearch();
+            const es = await employeeSearch.SearchById(id, false);
+            console.log(`EMPLOYEE_SEARCH: ${es}`);
             const deleteEmployee = await prisma_1.prisma.employee.delete({
                 where: {
                     id: id,

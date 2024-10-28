@@ -24,7 +24,7 @@ class EmployeeSearch {
             return console.log(e);
         }
     }
-    async SearchByEmail(email, isSearch = true) {
+    async SearchByEmail(email) {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
@@ -33,7 +33,7 @@ class EmployeeSearch {
                     email: email,
                 },
             });
-            return this.SearchResult(findEmployee, [], isSearch, `Funcionario com email "${email}" nao encontrado`);
+            return this.SearchResult(findEmployee, [], true, `Funcionario com email "${email}" nao encontrado`);
         }
         catch (e) {
             return console.log(e);

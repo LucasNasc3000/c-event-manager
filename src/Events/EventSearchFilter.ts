@@ -11,7 +11,7 @@ export class EventSearchFilter {
   async Filter() {
     switch (this.searchParam) {
       case 'id':
-        await this.eventSearch.SearchById(this.data);
+        await this.eventSearch.SearchById(this.data, true);
         break;
 
       case 'eventCreator':

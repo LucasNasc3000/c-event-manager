@@ -58,13 +58,7 @@ class Event {
             const employeeVerify = await this.employeeLoginVerify.Verify();
             const adminVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(employeeVerify, adminVerify);
-            const findEvent = await prisma_1.prisma.event.findUnique({
-                where: {
-                    id: id,
-                },
-            });
-            if (!findEvent)
-                return console.log(`Evento ${id} nao encontrado`);
+            await this.eventSearch.SearchById(id, false);
             await prisma_1.prisma.event.update({
                 where: {
                     id: id,
@@ -80,7 +74,7 @@ class Event {
                     plattform: data[7],
                 },
             });
-            const updateCheck = await this.eventSearch.SearchById(id);
+            const updateCheck = await this.eventSearch.SearchById(id, true);
             return updateCheck;
         }
         catch (e) {
@@ -92,13 +86,7 @@ class Event {
             const employeeVerify = await this.employeeLoginVerify.Verify();
             const adminVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(employeeVerify, adminVerify);
-            const findEvent = await prisma_1.prisma.event.findUnique({
-                where: {
-                    id: id,
-                },
-            });
-            if (!findEvent)
-                return console.log(`O evento ${id} não existe`);
+            await this.eventSearch.SearchById(id, false);
             const deleteEvent = await prisma_1.prisma.event.delete({
                 where: {
                     id: id,

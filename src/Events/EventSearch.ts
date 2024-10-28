@@ -8,7 +8,7 @@ export class EventSearch {
   private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
   private verifyResult: VerifyResult = new VerifyResult();
 
-  public async SearchById(id: string) {
+  public async SearchById(id: string, isSearch: boolean) {
     try {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
@@ -21,7 +21,12 @@ export class EventSearch {
         },
       });
 
-      return this.SearchResult(findEvent, [], `Evento ${id} não encontrado`);
+      return this.SearchResult(
+        findEvent,
+        [],
+        isSearch,
+        `Evento ${id} não encontrado`,
+      );
     } catch (e) {
       return console.log(e);
     }
@@ -43,6 +48,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos criados por: ${eventCreatorParam} nao encontrados`,
       );
     } catch (e) {
@@ -68,6 +74,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos do dia: ${dateParam} nao encontrado`,
       );
     } catch (e) {
@@ -93,6 +100,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos da hora: ${hourParam} nao encontrados`,
       );
     } catch (e) {
@@ -118,6 +126,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos de nome: ${nameParam} nao encontrados`,
       );
     } catch (e) {
@@ -143,6 +152,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos com os anfitrioes: ${hostsParam} nao encontrados`,
       );
     } catch (e) {
@@ -166,6 +176,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos no local: ${locationParam} nao encontrados`,
       );
     } catch (e) {
@@ -189,6 +200,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos na plataforma ${plattformParam} nao encontrados`,
       );
     } catch (e) {
@@ -212,6 +224,7 @@ export class EventSearch {
       return this.SearchResult(
         null,
         findEvent,
+        true,
         `Eventos criados pelo funcionário: ${eventCreatorIdParam} nao encontrados`,
       );
     } catch (e) {
@@ -222,17 +235,39 @@ export class EventSearch {
   private SearchResult(
     searchData: unknown,
     searchDataArray: unknown[],
+    isSearch: boolean,
     error: string,
-  ) {
+  ): void | object {
     switch (true) {
-      case searchData === null && searchDataArray.length < 1:
+      case isSearch === true &&
+        searchData === null &&
+        searchDataArray.length < 1:
         return console.log(error);
 
-      case searchData === null && searchDataArray.length > 0:
+      case isSearch === true &&
+        searchData === null &&
+        searchDataArray.length > 0:
         return console.table(searchDataArray);
 
-      case searchDataArray.length < 1 && searchData !== null:
+      case isSearch === true &&
+        searchDataArray.length < 1 &&
+        searchData !== null:
         return console.table(searchData);
+
+      case isSearch === false &&
+        searchDataArray.length > 0 &&
+        searchData === null:
+        return searchDataArray;
+
+      case isSearch === false &&
+        searchData !== null &&
+        searchDataArray.length < 1:
+        return searchData;
+
+      case isSearch === false &&
+        searchData === null &&
+        searchDataArray.length < 1:
+        throw new Error('Evento não encontrado');
     }
   }
 }
