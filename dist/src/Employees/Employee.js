@@ -79,8 +79,7 @@ class Employee {
             const admLoginVerify = await this.adminLoginVerify.Verify();
             this.verifyResult.Result(null, admLoginVerify);
             const employeeSearch = new EmployeeSearch_1.EmployeeSearch();
-            const es = await employeeSearch.SearchById(id, false);
-            console.log(`EMPLOYEE_SEARCH: ${es}`);
+            await employeeSearch.SearchById(id, false);
             const deleteEmployee = await prisma_1.prisma.employee.delete({
                 where: {
                     id: id,
