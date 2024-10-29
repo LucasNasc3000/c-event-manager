@@ -1,9 +1,10 @@
 import { prisma } from '../../lib/prisma';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { Auth } from '../interfaces/Auth';
 import { LogsAbstract } from '../interfaces/LogsAbstract';
 
-export class Logs implements LogsAbstract {
+export class Logs implements LogsAbstract, Auth {
   public _dateTime: string[] = [];
   public _email: string;
   public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();

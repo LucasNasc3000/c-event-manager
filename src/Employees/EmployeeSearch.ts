@@ -1,10 +1,11 @@
 import { prisma } from '../../lib/prisma';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { Auth } from '../interfaces/Auth';
 
-export class EmployeeSearch {
-  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  private verifyResult: VerifyResult = new VerifyResult();
+export class EmployeeSearch implements Auth {
+  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+  public verifyResult: VerifyResult = new VerifyResult();
 
   public async SearchById(id: string, isSearch: boolean = true) {
     try {

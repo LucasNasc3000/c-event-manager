@@ -7,13 +7,14 @@ import { EmployeeSearch } from './EmployeeSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
+import { Auth } from '../interfaces/Auth';
 
-export class Employee implements UserAbstract {
+export class Employee implements UserAbstract, Auth {
   private _name: string = '';
   private _email: string = '';
   private _password: string = '';
-  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  private verifyResult: VerifyResult = new VerifyResult();
+  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+  public verifyResult: VerifyResult = new VerifyResult();
   private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
 
   constructor(name: string = '', email: string = '', password: string = '') {

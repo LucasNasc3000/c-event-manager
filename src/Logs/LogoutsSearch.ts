@@ -1,10 +1,11 @@
 import { prisma } from '../../lib/prisma';
+import { Auth } from '../interfaces/Auth';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 
-export class LogoutsSearch {
-  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  private verifyResult: VerifyResult = new VerifyResult();
+export class LogoutsSearch implements Auth {
+  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+  public verifyResult: VerifyResult = new VerifyResult();
 
   public async LogoutSearchId(id: string) {
     try {
