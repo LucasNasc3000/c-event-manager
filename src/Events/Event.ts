@@ -4,12 +4,13 @@ import { EventSearch } from './EventSearch';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { EmployeeAuth } from '../interfaces/Auth';
 
-export class Event {
+export class Event implements EmployeeAuth {
   private eventSearch: EventSearch = new EventSearch();
-  private adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
-  private verifyResult: VerifyResult = new VerifyResult();
+  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+  public employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+  public verifyResult: VerifyResult = new VerifyResult();
 
   async Create(data: string[]) {
     try {
