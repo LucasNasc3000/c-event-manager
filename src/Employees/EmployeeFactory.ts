@@ -40,7 +40,7 @@ export class EmployeeFactory implements UserAbstract {
       return console.log('Email, nome ou senha nao foram preenchidos');
     }
 
-    if (this._name !== 'adm@30001') {
+    if (!this._name.includes('adm')) {
       const empl = new Employee(this._name, this._email, this._password);
       await empl.Create();
     }
@@ -48,11 +48,7 @@ export class EmployeeFactory implements UserAbstract {
   }
 
   public async Login() {
-    if (
-      this._email[0] === 'a' &&
-      this._email[1] === 'd' &&
-      this._email[2] === 'm'
-    ) {
+    if (this._email.includes('adm')) {
       return UserAdmin.AdminLogin(this._email, this._password);
     }
 
@@ -101,17 +97,11 @@ export class EmployeeFactory implements UserAbstract {
     const fields: string[] = [this._name, this._email, this._password];
 
     for (let i = 0; i < fields.length; i++) {
-      if (fields[i] !== '') {
-        return true;
-      }
+      if (fields[i] !== '') return true;
 
-      if (fields[i] !== null) {
-        return true;
-      }
+      if (fields[i] !== null) return true;
 
-      if (typeof fields[i] !== 'undefined') {
-        return true;
-      }
+      if (typeof fields[i] !== 'undefined') return true;
     }
     return false;
   }

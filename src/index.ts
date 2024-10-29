@@ -75,9 +75,7 @@ export async function Index() {
   Decisions(options);
 }
 
-// mudar a condição de criação de funcionarios
 // adicionar SOLID
 // hash para senhas
-// Enxugar o código
 
 Index();

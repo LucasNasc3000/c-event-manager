@@ -46,6 +46,8 @@ class Employee {
             if (employeesList.length < 1) {
                 return console.log('Ocorreu um erro ou não há funcionários cadastrados');
             }
+            const name = 'admadqwasx';
+            console.log('AQUI: ' + name.includes('adm'));
             return console.table(employeesList);
         }
         catch (e) {
