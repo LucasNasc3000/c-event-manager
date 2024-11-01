@@ -2,17 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmployeeSearch = void 0;
 const prisma_1 = require("../../lib/prisma");
-const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
-const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 class EmployeeSearch {
-    constructor() {
-        this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
-        this.verifyResult = new VerifyResult_1.VerifyResult();
+    constructor(_adminLoginVerify, _verifyResult) {
+        this._adminLoginVerify = _adminLoginVerify;
+        this._verifyResult = _verifyResult;
+    }
+    Verify() {
+        throw new Error('Method not implemented.');
     }
     async SearchById(id, isSearch = true) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findEmployee = await prisma_1.prisma.employee.findUnique({
                 where: {
                     id: id,
@@ -26,8 +27,8 @@ class EmployeeSearch {
     }
     async SearchByEmail(email) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findEmployee = await prisma_1.prisma.employee.findUnique({
                 where: {
                     email: email,
@@ -41,8 +42,8 @@ class EmployeeSearch {
     }
     async SearchByName(name) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findEmployee = await prisma_1.prisma.employee.findMany({
                 where: {
                     name: {

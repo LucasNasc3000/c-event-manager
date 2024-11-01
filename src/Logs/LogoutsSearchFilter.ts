@@ -1,6 +1,9 @@
 import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
+import { SearchFilterAbstract } from '../interfaces/SearchFilterAbstracts';
 
-export class LogoutsSearchFilter implements LogsSearchAbstract {
+export class LogoutsSearchFilter
+  implements LogsSearchAbstract, SearchFilterAbstract
+{
   constructor(
     public _searchParam: string,
     public _data: string,

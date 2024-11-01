@@ -1,4 +1,6 @@
-export class VerifyResult {
+import { AuthResult } from '../interfaces/Auth';
+
+export class VerifyResult implements AuthResult {
   Result(employeeLoginVerify: unknown, adminLoginVerify: unknown): void {
     switch (true) {
       case employeeLoginVerify === null && adminLoginVerify === false:

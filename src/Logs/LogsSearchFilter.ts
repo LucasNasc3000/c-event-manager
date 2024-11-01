@@ -1,30 +1,45 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import { LogsSearch } from './LogsSearch';
-import { LogsSearchAbstract } from '../interfaces/LogsSearchFilterAbstract';
+import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
+import { SearchFilterAbstract } from '../interfaces/SearchFilterAbstracts';
 
-export class LogsSearchFilter implements LogsSearchAbstract {
+export class LogsSearchFilter
+  implements LogsSearchAbstract, SearchFilterAbstract
+{
   constructor(
     public _searchParam: string,
     public _data: string,
-    public logsSearch: LogsSearch = new LogsSearch(),
+    public logsSearch: LogsSearchAbstract,
   ) {}
+  SearchById(_id: string): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
+  SearchByEmail(_emailSearchValue: string): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
+  SearchByDate(_dateSearchValue: string): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
+  SearchByHour(_hourSearchValue: string): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
 
   async Filter() {
     switch (this._searchParam) {
       case 'id':
-        await this.logsSearch.LogSearchId(this._data);
+        await this.logsSearch.SearchById(this._data);
         break;
 
       case 'email':
-        await this.logsSearch.LogSearchEmail(this._data);
+        await this.logsSearch.SearchByEmail(this._data);
         break;
 
       case 'date':
-        await this.logsSearch.LogSearchDate(this._data);
+        await this.logsSearch.SearchByDate(this._data);
         break;
 
       case 'hour':
-        await this.logsSearch.LogSearchHour(this._data);
+        await this.logsSearch.SearchByHour(this._data);
         break;
 
       default:

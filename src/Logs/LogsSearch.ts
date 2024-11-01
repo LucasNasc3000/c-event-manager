@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { prisma } from '../../lib/prisma';
-import { Auth } from '../interfaces/Auth';
-import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
-import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { Auth, AuthResult } from '../interfaces/Auth';
+import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
 
-export class LogsSearch implements Auth {
-  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  public verifyResult: VerifyResult = new VerifyResult();
+export class LogsSearch implements LogsSearchAbstract {
+  constructor(
+    public _adminLoginVerify: Auth,
+    public _verifyResult: AuthResult,
+  ) {}
 
-  public async LogSearchId(id: string) {
+  public async SearchById(id: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLog = await prisma.logsLogin.findUnique({
         where: {
@@ -24,10 +26,10 @@ export class LogsSearch implements Auth {
     }
   }
 
-  public async LogSearchEmail(emailSearchValue: string) {
+  public async SearchByEmail(emailSearchValue: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLog = await prisma.logsLogin.findMany({
         where: {
@@ -45,10 +47,10 @@ export class LogsSearch implements Auth {
     }
   }
 
-  public async LogSearchDate(dateSearchValue: string) {
+  public async SearchByDate(dateSearchValue: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLog = await prisma.logsLogin.findMany({
         where: {
@@ -68,10 +70,10 @@ export class LogsSearch implements Auth {
     }
   }
 
-  public async LogSearchHour(hourSearchValue: string) {
+  public async SearchByHour(hourSearchValue: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLog = await prisma.logsLogin.findMany({
         where: {

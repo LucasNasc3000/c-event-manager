@@ -7,9 +7,6 @@ class LogoutsSearch {
         this._adminLoginVerify = _adminLoginVerify;
         this._verifyResult = _verifyResult;
     }
-    Verify() {
-        throw new Error('Method not implemented.');
-    }
     async SearchById(id) {
         try {
             const admLoginVerify = await this._adminLoginVerify.Verify();

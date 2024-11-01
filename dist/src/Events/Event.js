@@ -4,20 +4,24 @@ exports.Event = void 0;
 /* eslint-disable no-unused-vars */
 const prisma_1 = require("../../lib/prisma");
 const EventSearch_1 = require("./EventSearch");
-const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
-const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
+const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
+const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
+const EventSearchFilter_1 = require("./EventSearchFilter");
 class Event {
-    constructor() {
-        this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
-        this.employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
-        this.verifyResult = new VerifyResult_1.VerifyResult();
+    constructor(_adminLoginVerify, _employeeLoginVerify, _verifyResult) {
+        this._adminLoginVerify = _adminLoginVerify;
+        this._employeeLoginVerify = _employeeLoginVerify;
+        this._verifyResult = _verifyResult;
+    }
+    Verify() {
+        throw new Error('Method not implemented.');
     }
     async Create(data) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const event = await prisma_1.prisma.event.create({
                 data: {
                     eventCreator: data[0],
@@ -39,9 +43,9 @@ class Event {
     }
     async List() {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const eventsList = await prisma_1.prisma.event.findMany();
             if (eventsList.length < 1) {
                 return console.log('Ocorreu um erro ou não há eventos cadastrados');
@@ -54,10 +58,13 @@ class Event {
     }
     async Update(id, data) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            const eventSearch = new EventSearch_1.EventSearch();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const localEmployeeVerify = await this._employeeLoginVerify.Verify();
+            const localAdminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(localEmployeeVerify, localAdminVerify);
+            const employeeVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
+            const adminVerify = new AdminLoginVerify_1.AdminLoginVerify();
+            const verifyResult = new VerifyResult_1.VerifyResult();
+            const eventSearch = new EventSearch_1.EventSearch(adminVerify, employeeVerify, verifyResult);
             await eventSearch.SearchById(id, false);
             await prisma_1.prisma.event.update({
                 where: {
@@ -74,7 +81,9 @@ class Event {
                     plattform: data[7],
                 },
             });
-            const updateCheck = await eventSearch.SearchById(id, true);
+            const showEvent = new EventSearch_1.EventSearch(adminVerify, employeeVerify, verifyResult);
+            const eventSearchFilter = new EventSearchFilter_1.EventSearchFilter('id', id, showEvent);
+            const updateCheck = await eventSearchFilter.Filter();
             return updateCheck;
         }
         catch (e) {
@@ -83,10 +92,13 @@ class Event {
     }
     async Delete(id) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            const eventSearch = new EventSearch_1.EventSearch();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const localEmployeeVerify = await this._employeeLoginVerify.Verify();
+            const localAdminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(localEmployeeVerify, localAdminVerify);
+            const employeeVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
+            const adminVerify = new AdminLoginVerify_1.AdminLoginVerify();
+            const verifyResult = new VerifyResult_1.VerifyResult();
+            const eventSearch = new EventSearch_1.EventSearch(adminVerify, employeeVerify, verifyResult);
             await eventSearch.SearchById(id, false);
             const deleteEvent = await prisma_1.prisma.event.delete({
                 where: {

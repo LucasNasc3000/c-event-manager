@@ -4,28 +4,27 @@ import { DateTime } from '../utils/DateTime';
 import { LogFactory } from '../Logs/LogFactory';
 import { EmployeeSearchFilter } from './EmployeeSearchFilter';
 import { EmployeeSearch } from './EmployeeSearch';
+import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
+import { Auth, AuthResult } from '../interfaces/Auth';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
-import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
-import { Auth } from '../interfaces/Auth';
 
-export class Employee implements UserAbstract, Auth {
-  private _name: string = '';
-  private _email: string = '';
-  private _password: string = '';
-  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  public verifyResult: VerifyResult = new VerifyResult();
-
-  constructor(name: string = '', email: string = '', password: string = '') {
-    this._name = name;
-    this._email = email;
-    this._password = password;
+export class Employee implements UserAbstract {
+  constructor(
+    private _name: string = '',
+    private _email: string = '',
+    private _password: string = '',
+    public _adminLoginVerify: Auth,
+    public _verifyResult: AuthResult,
+  ) {}
+  Verify(): Promise<unknown> {
+    throw new Error('Method not implemented.');
   }
 
   public async Create() {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const createEmployee = await prisma.employee.create({
         data: {
@@ -43,8 +42,8 @@ export class Employee implements UserAbstract, Auth {
 
   public async List() {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const employeesList = await prisma.employee.findMany();
 
@@ -62,10 +61,16 @@ export class Employee implements UserAbstract, Auth {
 
   public async Update(id: string, data: string[]) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
-      const employeeNewData: EmployeeSearch = new EmployeeSearch();
+      const admVerify: AdminLoginVerify = new AdminLoginVerify();
+      const admVerifyResult: VerifyResult = new VerifyResult();
+
+      const employeeNewData: EmployeeSearch = new EmployeeSearch(
+        admVerify,
+        admVerifyResult,
+      );
       await employeeNewData.SearchById(id, false);
 
       await prisma.employee.update({
@@ -79,12 +84,18 @@ export class Employee implements UserAbstract, Auth {
         },
       });
 
-      const employeeSearch: EmployeeSearchFilter = new EmployeeSearchFilter(
-        'id',
-        id,
+      const showEmployeeNewData: EmployeeSearch = new EmployeeSearch(
+        admVerify,
+        admVerifyResult,
       );
 
-      employeeSearch.Filter();
+      const employeeSearchFilter = new EmployeeSearchFilter(
+        'id',
+        id,
+        showEmployeeNewData,
+      );
+
+      employeeSearchFilter.Filter();
     } catch (e) {
       return console.log(e);
     }
@@ -92,10 +103,16 @@ export class Employee implements UserAbstract, Auth {
 
   public async Delete(id: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
-      const employeeSearch: EmployeeSearch = new EmployeeSearch();
+      const admVerify: AdminLoginVerify = new AdminLoginVerify();
+      const admVerifyResult: VerifyResult = new VerifyResult();
+
+      const employeeSearch: EmployeeSearch = new EmployeeSearch(
+        admVerify,
+        admVerifyResult,
+      );
       await employeeSearch.SearchById(id, false);
 
       const deleteEmployee = await prisma.employee.delete({
@@ -112,7 +129,7 @@ export class Employee implements UserAbstract, Auth {
 
   public async Login() {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
+      const admLoginVerify = await this._adminLoginVerify.Verify();
       const employeeLoginVerify = new EmployeeLoginVerify();
       await employeeLoginVerify.Verify();
 

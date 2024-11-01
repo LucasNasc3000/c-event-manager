@@ -1,13 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmployeeSearchFilter = void 0;
-/* eslint-disable no-unused-vars */
-const EmployeeSearch_1 = require("./EmployeeSearch");
 class EmployeeSearchFilter {
-    constructor(searchParam, data, employeeSearch = new EmployeeSearch_1.EmployeeSearch()) {
+    constructor(searchParam, data, employeeSearch) {
         this.searchParam = searchParam;
         this.data = data;
         this.employeeSearch = employeeSearch;
+    }
+    SearchById(_id, _isSearch) {
+        throw new Error('Method not implemented.');
+    }
+    SearchByEmail(_emailSearchValue) {
+        throw new Error('Method not implemented.');
+    }
+    SearchByName(_nameSearchValue) {
+        throw new Error('Method not implemented.');
     }
     async Filter() {
         switch (this.searchParam) {

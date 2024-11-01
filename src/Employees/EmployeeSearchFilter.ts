@@ -1,12 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
-import { EmployeeSearch } from './EmployeeSearch';
+import { EmployeeSearchAbstract } from '../interfaces/EmployeeSearchAbstract';
 
-export class EmployeeSearchFilter {
+export class EmployeeSearchFilter implements EmployeeSearchAbstract {
   constructor(
     private searchParam: string,
     private data: string,
-    private employeeSearch: EmployeeSearch = new EmployeeSearch(),
+    private employeeSearch: EmployeeSearchAbstract,
   ) {}
+  SearchById(_id: string, _isSearch?: boolean): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
+  SearchByEmail(_emailSearchValue: string): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
+  SearchByName(_nameSearchValue: string): Promise<void | object> {
+    throw new Error('Method not implemented.');
+  }
 
   async Filter() {
     switch (this.searchParam) {

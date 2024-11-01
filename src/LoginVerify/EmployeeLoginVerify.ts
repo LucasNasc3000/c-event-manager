@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/prisma';
+import { Auth } from '../interfaces/Auth';
 
-export class EmployeeLoginVerify {
+export class EmployeeLoginVerify implements Auth {
   async Verify() {
     try {
       const employeeLogin = await prisma.userLogin.findMany();

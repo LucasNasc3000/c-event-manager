@@ -1,19 +1,13 @@
 import { prisma } from '../../lib/prisma';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
-import { Auth } from '../interfaces/Auth';
 import { LogsAbstract } from '../interfaces/LogsAbstract';
 
-export class Logouts implements LogsAbstract, Auth {
-  public _dateTime: string[] = [];
-  public _email: string;
-  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  public verifyResult: VerifyResult = new VerifyResult();
-
-  constructor(email: string = '', dateTime: string[] = []) {
-    this._dateTime = dateTime;
-    this._email = email;
-  }
+export class Logouts implements LogsAbstract {
+  constructor(
+    public _email: string = '',
+    public _dateTime: string[] = [],
+  ) {}
 
   public async Create() {
     try {
@@ -39,8 +33,11 @@ export class Logouts implements LogsAbstract, Auth {
 
   public async List() {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+      const verifyResult: VerifyResult = new VerifyResult();
+
+      await admLoginVerify.Verify();
+      verifyResult.Result(null, admLoginVerify);
 
       const logoutsList = await prisma.logsLogout.findMany();
 

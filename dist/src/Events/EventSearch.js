@@ -2,20 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventSearch = void 0;
 const prisma_1 = require("../../lib/prisma");
-const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
-const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
-const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 class EventSearch {
-    constructor() {
-        this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
-        this.employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
-        this.verifyResult = new VerifyResult_1.VerifyResult();
+    constructor(_adminLoginVerify, _employeeLoginVerify, _verifyResult) {
+        this._adminLoginVerify = _adminLoginVerify;
+        this._employeeLoginVerify = _employeeLoginVerify;
+        this._verifyResult = _verifyResult;
+    }
+    Verify() {
+        throw new Error('Method not implemented.');
     }
     async SearchById(id, isSearch) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findUnique({
                 where: {
                     id: id,
@@ -29,9 +29,9 @@ class EventSearch {
     }
     async SearchByEventCreator(eventCreatorParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     eventCreator: eventCreatorParam,
@@ -45,9 +45,9 @@ class EventSearch {
     }
     async SearchByDate(dateParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     date: {
@@ -63,9 +63,9 @@ class EventSearch {
     }
     async SearchByHour(hourParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     hour: {
@@ -81,9 +81,9 @@ class EventSearch {
     }
     async SearchByName(nameParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     name: {
@@ -99,9 +99,9 @@ class EventSearch {
     }
     async SearchByHosts(hostsParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     hosts: {
@@ -117,9 +117,9 @@ class EventSearch {
     }
     async SearchByLocation(locationParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     location: locationParam,
@@ -133,9 +133,9 @@ class EventSearch {
     }
     async SearchByPlattform(plattformParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     plattform: plattformParam,
@@ -149,9 +149,9 @@ class EventSearch {
     }
     async SearchByEventCreatorId(eventCreatorIdParam) {
         try {
-            const employeeVerify = await this.employeeLoginVerify.Verify();
-            const adminVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(employeeVerify, adminVerify);
+            const employeeVerify = await this._employeeLoginVerify.Verify();
+            const adminVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(employeeVerify, adminVerify);
             const findEvent = await prisma_1.prisma.event.findMany({
                 where: {
                     eventCreatorId: eventCreatorIdParam,

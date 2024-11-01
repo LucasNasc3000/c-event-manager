@@ -1,22 +1,29 @@
 /* eslint-disable no-unused-vars */
 import { prisma } from '../../lib/prisma';
 import { EventSearch } from './EventSearch';
-import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
-import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
+import { Auth, AuthResult } from '../interfaces/Auth';
+import { EventAbstract } from '../interfaces/EventAbstract';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
-import { EmployeeAuth } from '../interfaces/Auth';
+import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
+import { EventSearchFilter } from './EventSearchFilter';
 
-export class Event implements EmployeeAuth {
-  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  public employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
-  public verifyResult: VerifyResult = new VerifyResult();
+export class Event implements EventAbstract {
+  constructor(
+    public _adminLoginVerify: Auth,
+    public _employeeLoginVerify: Auth,
+    public _verifyResult: AuthResult,
+  ) {}
+  Verify(): Promise<unknown> {
+    throw new Error('Method not implemented.');
+  }
 
   async Create(data: string[]) {
     try {
-      const employeeVerify = await this.employeeLoginVerify.Verify();
-      const adminVerify = await this.adminLoginVerify.Verify();
+      const employeeVerify = await this._employeeLoginVerify.Verify();
+      const adminVerify = await this._adminLoginVerify.Verify();
 
-      this.verifyResult.Result(employeeVerify, adminVerify);
+      this._verifyResult.Result(employeeVerify, adminVerify);
 
       const event = await prisma.event.create({
         data: {
@@ -40,10 +47,10 @@ export class Event implements EmployeeAuth {
 
   async List() {
     try {
-      const employeeVerify = await this.employeeLoginVerify.Verify();
-      const adminVerify = await this.adminLoginVerify.Verify();
+      const employeeVerify = await this._employeeLoginVerify.Verify();
+      const adminVerify = await this._adminLoginVerify.Verify();
 
-      this.verifyResult.Result(employeeVerify, adminVerify);
+      this._verifyResult.Result(employeeVerify, adminVerify);
 
       const eventsList = await prisma.event.findMany();
 
@@ -59,11 +66,19 @@ export class Event implements EmployeeAuth {
 
   public async Update(id: string, data: string[]) {
     try {
-      const employeeVerify = await this.employeeLoginVerify.Verify();
-      const adminVerify = await this.adminLoginVerify.Verify();
-      const eventSearch: EventSearch = new EventSearch();
+      const localEmployeeVerify = await this._employeeLoginVerify.Verify();
+      const localAdminVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(localEmployeeVerify, localAdminVerify);
 
-      this.verifyResult.Result(employeeVerify, adminVerify);
+      const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+      const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+      const verifyResult: VerifyResult = new VerifyResult();
+
+      const eventSearch: EventSearch = new EventSearch(
+        adminVerify,
+        employeeVerify,
+        verifyResult,
+      );
 
       await eventSearch.SearchById(id, false);
 
@@ -84,7 +99,19 @@ export class Event implements EmployeeAuth {
         },
       });
 
-      const updateCheck = await eventSearch.SearchById(id, true);
+      const showEvent: EventSearch = new EventSearch(
+        adminVerify,
+        employeeVerify,
+        verifyResult,
+      );
+
+      const eventSearchFilter: EventSearchFilter = new EventSearchFilter(
+        'id',
+        id,
+        showEvent,
+      );
+
+      const updateCheck = await eventSearchFilter.Filter();
 
       return updateCheck;
     } catch (e) {
@@ -94,11 +121,19 @@ export class Event implements EmployeeAuth {
 
   public async Delete(id: string) {
     try {
-      const employeeVerify = await this.employeeLoginVerify.Verify();
-      const adminVerify = await this.adminLoginVerify.Verify();
-      const eventSearch: EventSearch = new EventSearch();
+      const localEmployeeVerify = await this._employeeLoginVerify.Verify();
+      const localAdminVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(localEmployeeVerify, localAdminVerify);
 
-      this.verifyResult.Result(employeeVerify, adminVerify);
+      const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+      const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+      const verifyResult: VerifyResult = new VerifyResult();
+
+      const eventSearch: EventSearch = new EventSearch(
+        adminVerify,
+        employeeVerify,
+        verifyResult,
+      );
 
       await eventSearch.SearchById(id, false);
 

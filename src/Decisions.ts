@@ -4,17 +4,18 @@ import { EmployeeFactory } from './Employees/EmployeeFactory';
 import { Event } from './Events/Event';
 import { EventSearchFilter } from './Events/EventSearchFilter';
 import { LogFactory } from './Logs/LogFactory';
+import { AdminLoginVerify } from './LoginVerify/AdminLoginVerify';
+import { EmployeeLoginVerify } from './LoginVerify/EmployeeLoginVerify';
+import { VerifyResult } from './LoginVerify/VerifyResult';
+import { EventSearch } from './Events/EventSearch';
 
 export async function Decisions(options: OptionValues) {
-  const uf: EmployeeFactory = new EmployeeFactory();
-  const event: Event = new Event();
-
   if (options.cadmin) {
     const uf = new EmployeeFactory(
       process.env.ADMIN_USER as string,
       process.env.ADMIN_USER as string,
     );
-    uf.UserCreate();
+    uf.Create();
   }
 
   if (options.adminlog) {
@@ -28,12 +29,13 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.logout) {
+    const uf = new EmployeeFactory();
     uf.AdminLogout();
   }
 
   if (options.elogout) {
     const uf = new EmployeeFactory(process.argv[3]);
-    uf.EmployeeLogout();
+    uf.Logout();
   }
 
   if (options.createUser) {
@@ -42,15 +44,20 @@ export async function Decisions(options: OptionValues) {
       process.argv[4],
       process.argv[5],
     );
-    uf.UserCreate();
+    uf.Create();
   }
 
   if (options.updateUsers) {
+    const uf = new EmployeeFactory();
+
     const data: string[] = [process.argv[4], process.argv[5]];
-    uf.EmployeeUpdate(process.argv[3], data);
+    uf.Update(process.argv[3], data);
   }
 
-  if (options.searchUser) uf.Search(process.argv[3], process.argv[4]);
+  if (options.searchUser) {
+    const uf = new EmployeeFactory();
+    uf.Search(process.argv[3], process.argv[4]);
+  }
 
   if (options.logsList) {
     const logs: LogFactory = new LogFactory(true);
@@ -80,11 +87,23 @@ export async function Decisions(options: OptionValues) {
     logSearch.Filter();
   }
 
-  if (options.readUsers) uf.EmployeesList();
+  if (options.readUsers) {
+    const uf = new EmployeeFactory();
+    uf.List();
+  }
 
-  if (options.deleteUsers) uf.Delete(process.argv[3]);
+  if (options.deleteUsers) {
+    const uf = new EmployeeFactory();
+    uf.Delete(process.argv[3]);
+  }
 
   if (options.createEvent) {
+    const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+    const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+    const resultVerify: VerifyResult = new VerifyResult();
+
+    const event: Event = new Event(adminVerify, employeeVerify, resultVerify);
+
     const data: string[] = [
       process.argv[3],
       process.argv[4],
@@ -99,9 +118,23 @@ export async function Decisions(options: OptionValues) {
     event.Create(data);
   }
 
-  if (options.readEvent) event.List();
+  if (options.readEvent) {
+    const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+    const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+    const resultVerify: VerifyResult = new VerifyResult();
+
+    const event: Event = new Event(adminVerify, employeeVerify, resultVerify);
+
+    event.List();
+  }
 
   if (options.updateEvent) {
+    const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+    const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+    const resultVerify: VerifyResult = new VerifyResult();
+
+    const event: Event = new Event(adminVerify, employeeVerify, resultVerify);
+
     const data: string[] = [
       process.argv[4],
       process.argv[5],
@@ -116,10 +149,32 @@ export async function Decisions(options: OptionValues) {
     event.Update(process.argv[3], data);
   }
 
-  if (options.deleteEvent) event.Delete(process.argv[3]);
+  if (options.deleteEvent) {
+    const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+    const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+    const resultVerify: VerifyResult = new VerifyResult();
+
+    const event: Event = new Event(adminVerify, employeeVerify, resultVerify);
+
+    event.Delete(process.argv[3]);
+  }
 
   if (options.searchEvent) {
-    const filter = new EventSearchFilter(process.argv[3], process.argv[4]);
+    const adminVerify: AdminLoginVerify = new AdminLoginVerify();
+    const employeeVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
+    const resultVerify: VerifyResult = new VerifyResult();
+
+    const eventSearch: EventSearch = new EventSearch(
+      adminVerify,
+      employeeVerify,
+      resultVerify,
+    );
+
+    const filter = new EventSearchFilter(
+      process.argv[3],
+      process.argv[4],
+      eventSearch,
+    );
     filter.Filter();
   }
 }

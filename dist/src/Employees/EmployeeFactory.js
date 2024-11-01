@@ -1,79 +1,79 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmployeeFactory = void 0;
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable prefer-const */
 const Employee_1 = require("./Employee");
 const EmployeeSearchFilter_1 = require("./EmployeeSearchFilter");
 const UserAdmin_1 = require("./UserAdmin");
+const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
+const VerifyResult_1 = require("../LoginVerify/VerifyResult");
+const EmployeeSearch_1 = require("./EmployeeSearch");
 class EmployeeFactory {
-    constructor(email = '', password = '', name = '') {
-        this._name = '';
-        this._password = '';
-        this._email = '';
-        this._email = email;
-        this._password = password;
-        this._name = name;
+    constructor(_name = '', _email = '', _password = '') {
+        this._name = _name;
+        this._email = _email;
+        this._password = _password;
     }
-    Create() {
-        throw new Error('Method not implemented.');
-    }
-    List() {
-        throw new Error('Method not implemented.');
-    }
-    Update(id, data) {
-        throw new Error('Method not implemented.');
-    }
-    Logout() {
-        throw new Error('Method not implemented.');
-    }
-    async UserCreate() {
+    async Create() {
+        const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const verifyResult = new VerifyResult_1.VerifyResult();
         const fieldsCheck = this.FieldsCheck();
         if (fieldsCheck === false) {
             return console.log('Email, nome ou senha nao foram preenchidos');
         }
         if (!this._name.includes('adm')) {
-            const empl = new Employee_1.Employee(this._name, this._email, this._password);
+            const empl = new Employee_1.Employee(this._name, this._email, this._password, admLoginVerify, verifyResult);
             await empl.Create();
         }
         await UserAdmin_1.UserAdmin.CreateAdmin(this._email, this._password);
     }
     async Login() {
+        const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const verifyResult = new VerifyResult_1.VerifyResult();
         if (this._email.includes('adm')) {
             return UserAdmin_1.UserAdmin.AdminLogin(this._email, this._password);
         }
-        const empl = new Employee_1.Employee('', this._email, this._password);
+        const empl = new Employee_1.Employee('', this._email, this._password, admLoginVerify, verifyResult);
         const employeeLogin = empl.Login();
         return employeeLogin;
     }
     async AdminLogout() {
         UserAdmin_1.UserAdmin.AdminLogout();
     }
-    async EmployeeLogout() {
-        const empl = new Employee_1.Employee('', this._email);
+    async Logout() {
+        const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const verifyResult = new VerifyResult_1.VerifyResult();
+        const empl = new Employee_1.Employee('', this._email, '', admLoginVerify, verifyResult);
         empl.Logout();
     }
-    async EmployeesList() {
-        const empl = new Employee_1.Employee();
+    async List() {
+        const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const verifyResult = new VerifyResult_1.VerifyResult();
+        const empl = new Employee_1.Employee('', '', '', admLoginVerify, verifyResult);
         await empl.List();
     }
-    async EmployeeUpdate(id, data) {
+    async Update(id, data) {
+        const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const verifyResult = new VerifyResult_1.VerifyResult();
         if (typeof id === 'undefined' || id === '' || id === null) {
             return 'id nao informado';
         }
         if (data.length < 1)
             return 'nenhum dado informado';
-        const empl = new Employee_1.Employee();
+        const empl = new Employee_1.Employee('', '', '', admLoginVerify, verifyResult);
         await empl.Update(id, data);
     }
     async Delete(id) {
-        const empl = new Employee_1.Employee();
+        const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const verifyResult = new VerifyResult_1.VerifyResult();
+        const empl = new Employee_1.Employee('', '', '', admLoginVerify, verifyResult);
         await empl.Delete(id);
     }
     async Search(searchParam, searchValue) {
-        const employeeSearch = new EmployeeSearchFilter_1.EmployeeSearchFilter(searchParam, searchValue);
-        await employeeSearch.Filter();
+        const admVerify = new AdminLoginVerify_1.AdminLoginVerify();
+        const admVerifyResult = new VerifyResult_1.VerifyResult();
+        const employeeSearch = new EmployeeSearch_1.EmployeeSearch(admVerify, admVerifyResult);
+        const employeeSearchFilter = new EmployeeSearchFilter_1.EmployeeSearchFilter(searchParam, searchValue, employeeSearch);
+        await employeeSearchFilter.Filter();
     }
     FieldsCheck() {
         const fields = [this._name, this._email, this._password];

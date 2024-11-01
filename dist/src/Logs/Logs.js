@@ -5,12 +5,9 @@ const prisma_1 = require("../../lib/prisma");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 class Logs {
-    constructor(email = '', dateTime = []) {
-        this._dateTime = [];
-        this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
-        this.verifyResult = new VerifyResult_1.VerifyResult();
-        this._dateTime = dateTime;
-        this._email = email;
+    constructor(_email = '', _dateTime = []) {
+        this._email = _email;
+        this._dateTime = _dateTime;
     }
     async Create() {
         try {
@@ -34,8 +31,10 @@ class Logs {
     }
     async List() {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
+            const verifyResult = new VerifyResult_1.VerifyResult();
+            await admLoginVerify.Verify();
+            verifyResult.Result(null, admLoginVerify);
             const logsList = await prisma_1.prisma.logsLogin.findMany();
             if (logsList.length < 1) {
                 return console.log('Ocorreu um erro ou não há loginsregistrados');

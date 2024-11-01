@@ -6,24 +6,24 @@ const DateTime_1 = require("../utils/DateTime");
 const LogFactory_1 = require("../Logs/LogFactory");
 const EmployeeSearchFilter_1 = require("./EmployeeSearchFilter");
 const EmployeeSearch_1 = require("./EmployeeSearch");
+const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
-const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
 class Employee {
-    constructor(name = '', email = '', password = '') {
-        this._name = '';
-        this._email = '';
-        this._password = '';
-        this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
-        this.verifyResult = new VerifyResult_1.VerifyResult();
-        this._name = name;
-        this._email = email;
-        this._password = password;
+    constructor(_name = '', _email = '', _password = '', _adminLoginVerify, _verifyResult) {
+        this._name = _name;
+        this._email = _email;
+        this._password = _password;
+        this._adminLoginVerify = _adminLoginVerify;
+        this._verifyResult = _verifyResult;
+    }
+    Verify() {
+        throw new Error('Method not implemented.');
     }
     async Create() {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const createEmployee = await prisma_1.prisma.employee.create({
                 data: {
                     name: this._name,
@@ -39,8 +39,8 @@ class Employee {
     }
     async List() {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const employeesList = await prisma_1.prisma.employee.findMany();
             if (employeesList.length < 1) {
                 return console.log('Ocorreu um erro ou não há funcionários cadastrados');
@@ -53,9 +53,11 @@ class Employee {
     }
     async Update(id, data) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
-            const employeeNewData = new EmployeeSearch_1.EmployeeSearch();
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
+            const admVerify = new AdminLoginVerify_1.AdminLoginVerify();
+            const admVerifyResult = new VerifyResult_1.VerifyResult();
+            const employeeNewData = new EmployeeSearch_1.EmployeeSearch(admVerify, admVerifyResult);
             await employeeNewData.SearchById(id, false);
             await prisma_1.prisma.employee.update({
                 where: {
@@ -66,8 +68,9 @@ class Employee {
                     name: data[1],
                 },
             });
-            const employeeSearch = new EmployeeSearchFilter_1.EmployeeSearchFilter('id', id);
-            employeeSearch.Filter();
+            const showEmployeeNewData = new EmployeeSearch_1.EmployeeSearch(admVerify, admVerifyResult);
+            const employeeSearchFilter = new EmployeeSearchFilter_1.EmployeeSearchFilter('id', id, showEmployeeNewData);
+            employeeSearchFilter.Filter();
         }
         catch (e) {
             return console.log(e);
@@ -75,9 +78,11 @@ class Employee {
     }
     async Delete(id) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
-            const employeeSearch = new EmployeeSearch_1.EmployeeSearch();
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
+            const admVerify = new AdminLoginVerify_1.AdminLoginVerify();
+            const admVerifyResult = new VerifyResult_1.VerifyResult();
+            const employeeSearch = new EmployeeSearch_1.EmployeeSearch(admVerify, admVerifyResult);
             await employeeSearch.SearchById(id, false);
             const deleteEmployee = await prisma_1.prisma.employee.delete({
                 where: {
@@ -92,7 +97,7 @@ class Employee {
     }
     async Login() {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
+            const admLoginVerify = await this._adminLoginVerify.Verify();
             const employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
             await employeeLoginVerify.Verify();
             if (admLoginVerify === true) {
@@ -106,6 +111,7 @@ class Employee {
                     email: this._email,
                 },
             });
+            console.log(employeeVerify);
             if (!employeeVerify)
                 return console.log('Funcionario não registrado');
             if ((employeeVerify === null || employeeVerify === void 0 ? void 0 : employeeVerify.password) !== this._password) {

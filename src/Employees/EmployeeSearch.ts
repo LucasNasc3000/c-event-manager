@@ -1,16 +1,20 @@
 import { prisma } from '../../lib/prisma';
-import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
-import { VerifyResult } from '../LoginVerify/VerifyResult';
-import { Auth } from '../interfaces/Auth';
+import { Auth, AuthResult } from '../interfaces/Auth';
+import { EmployeeSearchAbstract } from '../interfaces/EmployeeSearchAbstract';
 
-export class EmployeeSearch implements Auth {
-  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  public verifyResult: VerifyResult = new VerifyResult();
+export class EmployeeSearch implements EmployeeSearchAbstract {
+  constructor(
+    public _adminLoginVerify: Auth,
+    public _verifyResult: AuthResult,
+  ) {}
+  Verify(): Promise<unknown> {
+    throw new Error('Method not implemented.');
+  }
 
   public async SearchById(id: string, isSearch: boolean = true) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -31,8 +35,8 @@ export class EmployeeSearch implements Auth {
 
   public async SearchByEmail(email: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findUnique({
         where: {
@@ -53,8 +57,8 @@ export class EmployeeSearch implements Auth {
 
   public async SearchByName(name: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findEmployee = await prisma.employee.findMany({
         where: {

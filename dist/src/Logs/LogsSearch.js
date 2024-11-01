@@ -1,18 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LogsSearch = void 0;
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const prisma_1 = require("../../lib/prisma");
-const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
-const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 class LogsSearch {
-    constructor() {
-        this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
-        this.verifyResult = new VerifyResult_1.VerifyResult();
+    constructor(_adminLoginVerify, _verifyResult) {
+        this._adminLoginVerify = _adminLoginVerify;
+        this._verifyResult = _verifyResult;
     }
-    async LogSearchId(id) {
+    async SearchById(id) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findLog = await prisma_1.prisma.logsLogin.findUnique({
                 where: {
                     id: id,
@@ -24,10 +23,10 @@ class LogsSearch {
             return console.log(e);
         }
     }
-    async LogSearchEmail(emailSearchValue) {
+    async SearchByEmail(emailSearchValue) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findLog = await prisma_1.prisma.logsLogin.findMany({
                 where: {
                     email: emailSearchValue,
@@ -39,10 +38,10 @@ class LogsSearch {
             return console.log(e);
         }
     }
-    async LogSearchDate(dateSearchValue) {
+    async SearchByDate(dateSearchValue) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findLog = await prisma_1.prisma.logsLogin.findMany({
                 where: {
                     loginDate: {
@@ -56,10 +55,10 @@ class LogsSearch {
             return console.log(e);
         }
     }
-    async LogSearchHour(hourSearchValue) {
+    async SearchByHour(hourSearchValue) {
         try {
-            const admLoginVerify = await this.adminLoginVerify.Verify();
-            this.verifyResult.Result(null, admLoginVerify);
+            const admLoginVerify = await this._adminLoginVerify.Verify();
+            this._verifyResult.Result(null, admLoginVerify);
             const findLog = await prisma_1.prisma.logsLogin.findMany({
                 where: {
                     loginHour: {

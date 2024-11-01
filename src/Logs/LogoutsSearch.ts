@@ -2,14 +2,11 @@ import { prisma } from '../../lib/prisma';
 import { Auth, AuthResult } from '../interfaces/Auth';
 import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
 
-export class LogoutsSearch implements Auth, LogsSearchAbstract {
+export class LogoutsSearch implements LogsSearchAbstract {
   constructor(
     public _adminLoginVerify: Auth,
     public _verifyResult: AuthResult,
   ) {}
-  Verify(): Promise<unknown> {
-    throw new Error('Method not implemented.');
-  }
 
   public async SearchById(id: string) {
     try {

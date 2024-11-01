@@ -1,35 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable prefer-const */
 import { Employee } from './Employee';
 import { EmployeeSearchFilter } from './EmployeeSearchFilter';
 import { UserAdmin } from './UserAdmin';
 import { UserAbstract } from '../interfaces/UserAbstract';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
+import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { EmployeeSearch } from './EmployeeSearch';
 
 export class EmployeeFactory implements UserAbstract {
-  private _name: string = '';
-  private _password: string = '';
-  private _email: string = '';
+  constructor(
+    public _name: string = '',
+    public _email: string = '',
+    public _password: string = '',
+  ) {}
 
-  constructor(email: string = '', password: string = '', name: string = '') {
-    this._email = email;
-    this._password = password;
-    this._name = name;
-  }
-  Create(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  List(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  Update(id: string, data: string[]): Promise<void | null> {
-    throw new Error('Method not implemented.');
-  }
-  Logout(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
+  public async Create() {
+    const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+    const verifyResult: VerifyResult = new VerifyResult();
 
-  public async UserCreate() {
     const fieldsCheck = this.FieldsCheck();
 
     if (fieldsCheck === false) {
@@ -37,18 +24,33 @@ export class EmployeeFactory implements UserAbstract {
     }
 
     if (!this._name.includes('adm')) {
-      const empl = new Employee(this._name, this._email, this._password);
+      const empl = new Employee(
+        this._name,
+        this._email,
+        this._password,
+        admLoginVerify,
+        verifyResult,
+      );
       await empl.Create();
     }
     await UserAdmin.CreateAdmin(this._email, this._password);
   }
 
   public async Login() {
+    const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+    const verifyResult: VerifyResult = new VerifyResult();
+
     if (this._email.includes('adm')) {
       return UserAdmin.AdminLogin(this._email, this._password);
     }
 
-    const empl = new Employee('', this._email, this._password);
+    const empl = new Employee(
+      '',
+      this._email,
+      this._password,
+      admLoginVerify,
+      verifyResult,
+    );
     const employeeLogin = empl.Login();
     return employeeLogin;
   }
@@ -57,40 +59,85 @@ export class EmployeeFactory implements UserAbstract {
     UserAdmin.AdminLogout();
   }
 
-  public async EmployeeLogout() {
-    const empl = new Employee('', this._email);
+  public async Logout() {
+    const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+    const verifyResult: VerifyResult = new VerifyResult();
+
+    const empl = new Employee(
+      '',
+      this._email,
+      '',
+      admLoginVerify,
+      verifyResult,
+    );
     empl.Logout();
   }
 
-  public async EmployeesList() {
-    const empl: Employee = new Employee();
+  public async List() {
+    const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+    const verifyResult: VerifyResult = new VerifyResult();
+
+    const empl: Employee = new Employee(
+      '',
+      '',
+      '',
+      admLoginVerify,
+      verifyResult,
+    );
     await empl.List();
   }
 
-  public async EmployeeUpdate(id: string, data: string[]) {
+  public async Update(id: string, data: string[]) {
+    const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+    const verifyResult: VerifyResult = new VerifyResult();
+
     if (typeof id === 'undefined' || id === '' || id === null) {
       return 'id nao informado';
     }
 
     if (data.length < 1) return 'nenhum dado informado';
 
-    const empl: Employee = new Employee();
+    const empl: Employee = new Employee(
+      '',
+      '',
+      '',
+      admLoginVerify,
+      verifyResult,
+    );
 
     await empl.Update(id, data);
   }
 
   public async Delete(id: string) {
-    const empl: Employee = new Employee();
+    const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
+    const verifyResult: VerifyResult = new VerifyResult();
+
+    const empl: Employee = new Employee(
+      '',
+      '',
+      '',
+      admLoginVerify,
+      verifyResult,
+    );
     await empl.Delete(id);
   }
 
   public async Search(searchParam: string, searchValue: string) {
-    const employeeSearch: EmployeeSearchFilter = new EmployeeSearchFilter(
-      searchParam,
-      searchValue,
+    const admVerify: AdminLoginVerify = new AdminLoginVerify();
+    const admVerifyResult: VerifyResult = new VerifyResult();
+
+    const employeeSearch: EmployeeSearch = new EmployeeSearch(
+      admVerify,
+      admVerifyResult,
     );
 
-    await employeeSearch.Filter();
+    const employeeSearchFilter: EmployeeSearchFilter = new EmployeeSearchFilter(
+      searchParam,
+      searchValue,
+      employeeSearch,
+    );
+
+    await employeeSearchFilter.Filter();
   }
 
   private FieldsCheck(): boolean {
