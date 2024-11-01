@@ -1,12 +1,7 @@
-import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
-import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
-import { VerifyResult } from '../LoginVerify/VerifyResult';
-
 export interface Auth {
-  adminLoginVerify: AdminLoginVerify;
-  verifyResult: VerifyResult;
+  Verify(): Promise<unknown>;
 }
 
-export interface EmployeeAuth extends Auth {
-  employeeLoginVerify: EmployeeLoginVerify;
+export interface AuthResult {
+  Result(_employeeVerify: unknown, _adminVerify: unknown): void;
 }

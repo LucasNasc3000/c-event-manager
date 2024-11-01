@@ -9,7 +9,6 @@ const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 class Event {
     constructor() {
-        this.eventSearch = new EventSearch_1.EventSearch();
         this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
         this.employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
         this.verifyResult = new VerifyResult_1.VerifyResult();
@@ -57,8 +56,9 @@ class Event {
         try {
             const employeeVerify = await this.employeeLoginVerify.Verify();
             const adminVerify = await this.adminLoginVerify.Verify();
+            const eventSearch = new EventSearch_1.EventSearch();
             this.verifyResult.Result(employeeVerify, adminVerify);
-            await this.eventSearch.SearchById(id, false);
+            await eventSearch.SearchById(id, false);
             await prisma_1.prisma.event.update({
                 where: {
                     id: id,
@@ -74,7 +74,7 @@ class Event {
                     plattform: data[7],
                 },
             });
-            const updateCheck = await this.eventSearch.SearchById(id, true);
+            const updateCheck = await eventSearch.SearchById(id, true);
             return updateCheck;
         }
         catch (e) {
@@ -85,8 +85,9 @@ class Event {
         try {
             const employeeVerify = await this.employeeLoginVerify.Verify();
             const adminVerify = await this.adminLoginVerify.Verify();
+            const eventSearch = new EventSearch_1.EventSearch();
             this.verifyResult.Result(employeeVerify, adminVerify);
-            await this.eventSearch.SearchById(id, false);
+            await eventSearch.SearchById(id, false);
             const deleteEvent = await prisma_1.prisma.event.delete({
                 where: {
                     id: id,

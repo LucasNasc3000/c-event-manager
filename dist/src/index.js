@@ -48,8 +48,5 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// mudar a condição de criação de funcionarios
-// adicionar SOLID
 // hash para senhas
-// Enxugar o código
 Index();

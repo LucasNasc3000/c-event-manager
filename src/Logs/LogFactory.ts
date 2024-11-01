@@ -2,10 +2,13 @@ import { Logs } from './Logs';
 import { Logouts } from './Logouts';
 import { LogoutsSearchFilter } from './LogoutsSearchFilter';
 import { LogsAbstract } from '../interfaces/LogsAbstract';
-import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
+import { LogsSearchFilterAbstract } from '../interfaces/LogsSearchFilterAbstract';
 import { LogsSearchFilter } from './LogsSearchFilter';
+import { LogoutsSearch } from './LogoutsSearch';
+import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
+import { VerifyResult } from '../LoginVerify/VerifyResult';
 
-export class LogFactory implements LogsAbstract, LogsSearchAbstract {
+export class LogFactory implements LogsAbstract, LogsSearchFilterAbstract {
   constructor(
     public _isLog: boolean,
     public _searchParam: string = '',
@@ -36,10 +39,14 @@ export class LogFactory implements LogsAbstract, LogsSearchAbstract {
   }
 
   async Filter() {
+    const _adm: AdminLoginVerify = new AdminLoginVerify();
+    const _result: VerifyResult = new VerifyResult();
+    const _lgs: LogoutsSearch = new LogoutsSearch(_adm, _result);
     if (this._isLog === false) {
       const logoutSearch: LogoutsSearchFilter = new LogoutsSearchFilter(
         this._searchParam,
         this._data,
+        _lgs,
       );
       await logoutSearch.Filter();
       return;

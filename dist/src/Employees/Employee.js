@@ -16,7 +16,6 @@ class Employee {
         this._password = '';
         this.adminLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
         this.verifyResult = new VerifyResult_1.VerifyResult();
-        this.employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
         this._name = name;
         this._email = email;
         this._password = password;
@@ -46,8 +45,6 @@ class Employee {
             if (employeesList.length < 1) {
                 return console.log('Ocorreu um erro ou não há funcionários cadastrados');
             }
-            const name = 'admadqwasx';
-            console.log('AQUI: ' + name.includes('adm'));
             return console.table(employeesList);
         }
         catch (e) {
@@ -96,7 +93,8 @@ class Employee {
     async Login() {
         try {
             const admLoginVerify = await this.adminLoginVerify.Verify();
-            const employeeLoginVerify = await this.employeeLoginVerify.Verify();
+            const employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
+            await employeeLoginVerify.Verify();
             if (admLoginVerify === true) {
                 return console.log('Login nao autorizado enquanto o administrador estiver logado');
             }

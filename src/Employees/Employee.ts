@@ -15,7 +15,6 @@ export class Employee implements UserAbstract, Auth {
   private _password: string = '';
   public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   public verifyResult: VerifyResult = new VerifyResult();
-  private employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
 
   constructor(name: string = '', email: string = '', password: string = '') {
     this._name = name;
@@ -114,7 +113,8 @@ export class Employee implements UserAbstract, Auth {
   public async Login() {
     try {
       const admLoginVerify = await this.adminLoginVerify.Verify();
-      const employeeLoginVerify = await this.employeeLoginVerify.Verify();
+      const employeeLoginVerify = new EmployeeLoginVerify();
+      await employeeLoginVerify.Verify();
 
       if (admLoginVerify === true) {
         return console.log(

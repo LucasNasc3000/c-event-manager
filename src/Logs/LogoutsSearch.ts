@@ -1,16 +1,20 @@
 import { prisma } from '../../lib/prisma';
-import { Auth } from '../interfaces/Auth';
-import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
-import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { Auth, AuthResult } from '../interfaces/Auth';
+import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
 
-export class LogoutsSearch implements Auth {
-  public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
-  public verifyResult: VerifyResult = new VerifyResult();
+export class LogoutsSearch implements Auth, LogsSearchAbstract {
+  constructor(
+    public _adminLoginVerify: Auth,
+    public _verifyResult: AuthResult,
+  ) {}
+  Verify(): Promise<unknown> {
+    throw new Error('Method not implemented.');
+  }
 
-  public async LogoutSearchId(id: string) {
+  public async SearchById(id: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLogout = await prisma.logsLogout.findUnique({
         where: {
@@ -24,10 +28,10 @@ export class LogoutsSearch implements Auth {
     }
   }
 
-  public async LogoutSearchEmail(emailSearchValue: string) {
+  public async SearchByEmail(emailSearchValue: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLogout = await prisma.logsLogout.findMany({
         where: {
@@ -45,10 +49,10 @@ export class LogoutsSearch implements Auth {
     }
   }
 
-  public async LogoutSearchDate(dateSearchValue: string) {
+  public async SearchByDate(dateSearchValue: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLogout = await prisma.logsLogout.findMany({
         where: {
@@ -68,10 +72,10 @@ export class LogoutsSearch implements Auth {
     }
   }
 
-  public async LogoutSearchHour(hourSearchValue: string) {
+  public async SearchByHour(hourSearchValue: string) {
     try {
-      const admLoginVerify = await this.adminLoginVerify.Verify();
-      this.verifyResult.Result(null, admLoginVerify);
+      const admLoginVerify = await this._adminLoginVerify.Verify();
+      this._verifyResult.Result(null, admLoginVerify);
 
       const findLogout = await prisma.logsLogout.findMany({
         where: {

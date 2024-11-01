@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { LogsSearch } from './LogsSearch';
-import { LogsSearchAbstract } from '../interfaces/LogsSearchAbstract';
+import { LogsSearchAbstract } from '../interfaces/LogsSearchFilterAbstract';
 
 export class LogsSearchFilter implements LogsSearchAbstract {
   constructor(

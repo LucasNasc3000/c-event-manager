@@ -7,7 +7,6 @@ import { VerifyResult } from '../LoginVerify/VerifyResult';
 import { EmployeeAuth } from '../interfaces/Auth';
 
 export class Event implements EmployeeAuth {
-  private eventSearch: EventSearch = new EventSearch();
   public adminLoginVerify: AdminLoginVerify = new AdminLoginVerify();
   public employeeLoginVerify: EmployeeLoginVerify = new EmployeeLoginVerify();
   public verifyResult: VerifyResult = new VerifyResult();
@@ -62,10 +61,11 @@ export class Event implements EmployeeAuth {
     try {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
+      const eventSearch: EventSearch = new EventSearch();
 
       this.verifyResult.Result(employeeVerify, adminVerify);
 
-      await this.eventSearch.SearchById(id, false);
+      await eventSearch.SearchById(id, false);
 
       await prisma.event.update({
         where: {
@@ -84,7 +84,7 @@ export class Event implements EmployeeAuth {
         },
       });
 
-      const updateCheck = await this.eventSearch.SearchById(id, true);
+      const updateCheck = await eventSearch.SearchById(id, true);
 
       return updateCheck;
     } catch (e) {
@@ -96,10 +96,11 @@ export class Event implements EmployeeAuth {
     try {
       const employeeVerify = await this.employeeLoginVerify.Verify();
       const adminVerify = await this.adminLoginVerify.Verify();
+      const eventSearch: EventSearch = new EventSearch();
 
       this.verifyResult.Result(employeeVerify, adminVerify);
 
-      await this.eventSearch.SearchById(id, false);
+      await eventSearch.SearchById(id, false);
 
       const deleteEvent = await prisma.event.delete({
         where: {

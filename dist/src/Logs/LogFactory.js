@@ -5,6 +5,9 @@ const Logs_1 = require("./Logs");
 const Logouts_1 = require("./Logouts");
 const LogoutsSearchFilter_1 = require("./LogoutsSearchFilter");
 const LogsSearchFilter_1 = require("./LogsSearchFilter");
+const LogoutsSearch_1 = require("./LogoutsSearch");
+const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
+const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 class LogFactory {
     constructor(_isLog, _searchParam = '', _data = '', _dateTime = [], _email = '', _logs = new Logs_1.Logs(), _logouts = new Logouts_1.Logouts()) {
         this._isLog = _isLog;
@@ -32,8 +35,11 @@ class LogFactory {
         await this._logs.List();
     }
     async Filter() {
+        const _adm = new AdminLoginVerify_1.AdminLoginVerify();
+        const _result = new VerifyResult_1.VerifyResult();
+        const _lgs = new LogoutsSearch_1.LogoutsSearch(_adm, _result);
         if (this._isLog === false) {
-            const logoutSearch = new LogoutsSearchFilter_1.LogoutsSearchFilter(this._searchParam, this._data);
+            const logoutSearch = new LogoutsSearchFilter_1.LogoutsSearchFilter(this._searchParam, this._data, _lgs);
             await logoutSearch.Filter();
             return;
         }

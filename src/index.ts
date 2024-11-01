@@ -75,7 +75,6 @@ export async function Index() {
   Decisions(options);
 }
 
-// adicionar SOLID
 // hash para senhas
 
 Index();

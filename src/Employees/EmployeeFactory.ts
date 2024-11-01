@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-import dotenv from 'dotenv';
 import { Employee } from './Employee';
 import { EmployeeSearchFilter } from './EmployeeSearchFilter';
 import { UserAdmin } from './UserAdmin';
 import { UserAbstract } from '../interfaces/UserAbstract';
 
-dotenv.config();
-
 export class EmployeeFactory implements UserAbstract {
   private _name: string = '';
   private _password: string = '';
   private _email: string = '';
-  private empl: Employee = new Employee();
 
   constructor(email: string = '', password: string = '', name: string = '') {
     this._email = email;
@@ -67,7 +63,8 @@ export class EmployeeFactory implements UserAbstract {
   }
 
   public async EmployeesList() {
-    await this.empl.List();
+    const empl: Employee = new Employee();
+    await empl.List();
   }
 
   public async EmployeeUpdate(id: string, data: string[]) {
@@ -77,11 +74,14 @@ export class EmployeeFactory implements UserAbstract {
 
     if (data.length < 1) return 'nenhum dado informado';
 
-    await this.empl.Update(id, data);
+    const empl: Employee = new Employee();
+
+    await empl.Update(id, data);
   }
 
   public async Delete(id: string) {
-    await this.empl.Delete(id);
+    const empl: Employee = new Employee();
+    await empl.Delete(id);
   }
 
   public async Search(searchParam: string, searchValue: string) {
