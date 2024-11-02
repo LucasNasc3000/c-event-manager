@@ -131,7 +131,7 @@ export class Employee implements UserAbstract {
     try {
       const admLoginVerify = await this._adminLoginVerify.Verify();
       const employeeLoginVerify = new EmployeeLoginVerify();
-      await employeeLoginVerify.Verify();
+      const verify = await employeeLoginVerify.Verify();
 
       if (admLoginVerify === true) {
         return console.log(
@@ -139,7 +139,7 @@ export class Employee implements UserAbstract {
         );
       }
 
-      if (typeof employeeLoginVerify === 'string') {
+      if (typeof verify === 'string') {
         return console.log(
           `Erro: o funcionário ${employeeLoginVerify} já está logado`,
         );

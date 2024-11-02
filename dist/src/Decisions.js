@@ -19,7 +19,7 @@ async function Decisions(options) {
         uf.Login();
     }
     if (options.emplog) {
-        const uf = new EmployeeFactory_1.EmployeeFactory(process.argv[3], process.argv[4]);
+        const uf = new EmployeeFactory_1.EmployeeFactory('', process.argv[3], process.argv[4]);
         uf.Login();
     }
     if (options.logout) {

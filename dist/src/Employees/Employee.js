@@ -99,11 +99,11 @@ class Employee {
         try {
             const admLoginVerify = await this._adminLoginVerify.Verify();
             const employeeLoginVerify = new EmployeeLoginVerify_1.EmployeeLoginVerify();
-            await employeeLoginVerify.Verify();
+            const verify = await employeeLoginVerify.Verify();
             if (admLoginVerify === true) {
                 return console.log('Login nao autorizado enquanto o administrador estiver logado');
             }
-            if (typeof employeeLoginVerify === 'string') {
+            if (typeof verify === 'string') {
                 return console.log(`Erro: o funcionário ${employeeLoginVerify} já está logado`);
             }
             const employeeVerify = await prisma_1.prisma.employee.findUnique({
@@ -111,7 +111,6 @@ class Employee {
                     email: this._email,
                 },
             });
-            console.log(employeeVerify);
             if (!employeeVerify)
                 return console.log('Funcionario não registrado');
             if ((employeeVerify === null || employeeVerify === void 0 ? void 0 : employeeVerify.password) !== this._password) {
