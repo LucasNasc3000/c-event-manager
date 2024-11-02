@@ -12,8 +12,9 @@ import { EventSearch } from './Events/EventSearch';
 export async function Decisions(options: OptionValues) {
   if (options.cadmin) {
     const uf = new EmployeeFactory(
-      process.env.ADMIN_USER as string,
-      process.env.ADMIN_USER as string,
+      'oAdmin_01',
+      process.argv[3],
+      process.argv[4],
     );
     uf.Create();
   }
