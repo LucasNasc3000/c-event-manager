@@ -19,7 +19,7 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.adminlog) {
-    const uf = new EmployeeFactory(process.argv[3], process.argv[4]);
+    const uf = new EmployeeFactory('', process.argv[3], process.argv[4]);
     uf.Login();
   }
 
@@ -34,7 +34,7 @@ export async function Decisions(options: OptionValues) {
   }
 
   if (options.elogout) {
-    const uf = new EmployeeFactory(process.argv[3]);
+    const uf = new EmployeeFactory('', process.argv[3]);
     uf.Logout();
   }
 

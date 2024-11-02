@@ -1,10 +1,7 @@
 /* eslint-disable no-case-declarations */
-import dotenv from 'dotenv';
 import { Command } from 'commander';
 import figlet from 'figlet';
 import { Decisions } from './Decisions';
-
-dotenv.config();
 
 export async function Index() {
   console.log(figlet.textSync('C-Event Manager\n'));
@@ -75,9 +72,8 @@ export async function Index() {
   Decisions(options);
 }
 
+// mudar a forma de criar o admin
 // verificar se somente as classes de verificação de login e resultado foram enviadas no construtor. Não é para chamar o método, apenas as classes
-// pesquisar por id dentro das funções update e delete mesmo. KISS
-// implemetar AuthResult nas classes
 // hash para senhas
 
 Index();

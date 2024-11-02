@@ -15,7 +15,7 @@ async function Decisions(options) {
         uf.Create();
     }
     if (options.adminlog) {
-        const uf = new EmployeeFactory_1.EmployeeFactory(process.argv[3], process.argv[4]);
+        const uf = new EmployeeFactory_1.EmployeeFactory('', process.argv[3], process.argv[4]);
         uf.Login();
     }
     if (options.emplog) {
@@ -27,7 +27,7 @@ async function Decisions(options) {
         uf.AdminLogout();
     }
     if (options.elogout) {
-        const uf = new EmployeeFactory_1.EmployeeFactory(process.argv[3]);
+        const uf = new EmployeeFactory_1.EmployeeFactory('', process.argv[3]);
         uf.Logout();
     }
     if (options.createUser) {
