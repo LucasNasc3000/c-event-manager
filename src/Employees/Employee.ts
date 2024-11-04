@@ -8,6 +8,7 @@ import { EmployeeLoginVerify } from '../LoginVerify/EmployeeLoginVerify';
 import { Auth, AuthResult } from '../interfaces/Auth';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
+import { PasswordHash } from './PasswordHash';
 
 export class Employee implements UserAbstract {
   constructor(
@@ -17,24 +18,28 @@ export class Employee implements UserAbstract {
     public _adminLoginVerify: Auth,
     public _verifyResult: AuthResult,
   ) {}
-  Verify(): Promise<unknown> {
-    throw new Error('Method not implemented.');
-  }
 
   public async Create() {
     try {
       const admLoginVerify = await this._adminLoginVerify.Verify();
       this._verifyResult.Result(null, admLoginVerify);
 
-      const createEmployee = await prisma.employee.create({
-        data: {
-          name: this._name,
-          email: this._email,
-          password: this._password,
-        },
-      });
+      const passwordHash: PasswordHash = new PasswordHash(this._password);
+      const createHash = await passwordHash.Hash();
 
-      return console.table(createEmployee);
+      if (typeof createHash === 'string') {
+        const createEmployee = await prisma.employee.create({
+          data: {
+            name: this._name,
+            email: this._email,
+            password: createHash,
+          },
+        });
+
+        return console.table(createEmployee);
+      }
+
+      return console.log('A senha deve ser uma string. Erro de hash');
     } catch (e) {
       return console.log(e);
     }
@@ -153,9 +158,12 @@ export class Employee implements UserAbstract {
 
       if (!employeeVerify) return console.log('Funcionario não registrado');
 
-      if (employeeVerify?.password !== this._password) {
-        return console.log('Senha incorreta');
-      }
+      const passwordHash: PasswordHash = new PasswordHash(
+        employeeVerify.password,
+      );
+      const hashCompare = await passwordHash.Compare(this._password);
+
+      if (hashCompare !== true) return console.log('Senha incorreta');
 
       await prisma.userLogin.create({
         data: {

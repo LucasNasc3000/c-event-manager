@@ -5,18 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Index = void 0;
 /* eslint-disable no-case-declarations */
-const dotenv_1 = __importDefault(require("dotenv"));
 const commander_1 = require("commander");
 const figlet_1 = __importDefault(require("figlet"));
 const Decisions_1 = require("./Decisions");
-dotenv_1.default.config();
 async function Index() {
     console.log(figlet_1.default.textSync('C-Event Manager\n'));
     const program = new commander_1.Command();
     program
         .name('Exemplo ---> npx node dist/src/index.js')
         .usage('-uu u13o12i3kf49 Joao')
-        .description('Programa feito para gerenciar eventos de uma empresa')
+        .description('Programa feito para gerenciar eventos')
         .option('Eventos: ')
         .option('-ce, --createEvent <values>', 'Cria um novo evento')
         .option('-re, --readEvent', 'Mostra todas os eventos')
@@ -48,7 +46,5 @@ async function Index() {
     (0, Decisions_1.Decisions)(options);
 }
 exports.Index = Index;
-// mudar a forma de criar o admin
-// verificar se somente as classes de verificação de login e resultado foram enviadas no construtor. Não é para chamar o método, apenas as classes
-// hash para senhas
+// mudar o nome da pasta
 Index();

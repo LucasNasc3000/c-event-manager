@@ -9,6 +9,7 @@ const EmployeeSearch_1 = require("./EmployeeSearch");
 const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
+const PasswordHash_1 = require("./PasswordHash");
 class Employee {
     constructor(_name = '', _email = '', _password = '', _adminLoginVerify, _verifyResult) {
         this._name = _name;
@@ -17,21 +18,23 @@ class Employee {
         this._adminLoginVerify = _adminLoginVerify;
         this._verifyResult = _verifyResult;
     }
-    Verify() {
-        throw new Error('Method not implemented.');
-    }
     async Create() {
         try {
             const admLoginVerify = await this._adminLoginVerify.Verify();
             this._verifyResult.Result(null, admLoginVerify);
-            const createEmployee = await prisma_1.prisma.employee.create({
-                data: {
-                    name: this._name,
-                    email: this._email,
-                    password: this._password,
-                },
-            });
-            return console.table(createEmployee);
+            const passwordHash = new PasswordHash_1.PasswordHash(this._password);
+            const createHash = await passwordHash.Hash();
+            if (typeof createHash === 'string') {
+                const createEmployee = await prisma_1.prisma.employee.create({
+                    data: {
+                        name: this._name,
+                        email: this._email,
+                        password: createHash,
+                    },
+                });
+                return console.table(createEmployee);
+            }
+            return console.log('A senha deve ser uma string. Erro de hash');
         }
         catch (e) {
             return console.log(e);
@@ -113,9 +116,10 @@ class Employee {
             });
             if (!employeeVerify)
                 return console.log('Funcionario não registrado');
-            if ((employeeVerify === null || employeeVerify === void 0 ? void 0 : employeeVerify.password) !== this._password) {
+            const passwordHash = new PasswordHash_1.PasswordHash(employeeVerify.password);
+            const hashCompare = await passwordHash.Compare(this._password);
+            if (hashCompare !== true)
                 return console.log('Senha incorreta');
-            }
             await prisma_1.prisma.userLogin.create({
                 data: {
                     userEmail: this._email,

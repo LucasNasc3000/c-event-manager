@@ -11,7 +11,7 @@ const VerifyResult_1 = require("./LoginVerify/VerifyResult");
 const EventSearch_1 = require("./Events/EventSearch");
 async function Decisions(options) {
     if (options.cadmin) {
-        const uf = new EmployeeFactory_1.EmployeeFactory(process.env.ADMIN_USER, process.env.ADMIN_USER);
+        const uf = new EmployeeFactory_1.EmployeeFactory('oAdmin_01', process.argv[3], process.argv[4]);
         uf.Create();
     }
     if (options.adminlog) {

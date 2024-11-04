@@ -11,7 +11,7 @@ export async function Index() {
   program
     .name('Exemplo ---> npx node dist/src/index.js')
     .usage('-uu u13o12i3kf49 Joao')
-    .description('Programa feito para gerenciar eventos de uma empresa')
+    .description('Programa feito para gerenciar eventos')
     .option('Eventos: ')
     .option('-ce, --createEvent <values>', 'Cria um novo evento')
     .option('-re, --readEvent', 'Mostra todas os eventos')
@@ -72,8 +72,6 @@ export async function Index() {
   Decisions(options);
 }
 
-// mudar a forma de criar o admin
-// verificar se somente as classes de verificação de login e resultado foram enviadas no construtor. Não é para chamar o método, apenas as classes
-// hash para senhas
+// mudar o nome da pasta
 
 Index();

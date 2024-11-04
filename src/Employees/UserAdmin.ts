@@ -1,6 +1,7 @@
 import { prisma } from '../../lib/prisma';
 import { DateTime } from '../utils/DateTime';
 import { LogFactory } from '../Logs/LogFactory';
+import { PasswordHash } from './PasswordHash';
 
 export class UserAdmin {
   private adminEmail: string;
@@ -48,15 +49,25 @@ export class UserAdmin {
   private async Create() {
     try {
       const admExists = await this.FindAdmin();
+      const passwordHash: PasswordHash = new PasswordHash(this.adminPassword);
+      const createHash = await passwordHash.Hash();
+
       if (admExists === null) {
-        await prisma.employee.create({
-          data: {
-            name: 'adm@30001',
-            email: this.adminEmail,
-            password: this.adminPassword,
-          },
-        });
+        if (typeof createHash === 'string') {
+          await prisma.employee.create({
+            data: {
+              name: 'adm@30001',
+              email: this.adminEmail,
+              password: this.adminPassword,
+            },
+          });
+        } else {
+          return console.log(
+            'Erro ao criar admin. A senha precisa ser uma string',
+          );
+        }
       }
+
       return console.log('Administrador ja cadastrado');
     } catch (e) {
       return console.log('Erro ao criar administrador');
@@ -88,9 +99,10 @@ export class UserAdmin {
           return console.log('Administrador com login ja ativo');
         }
 
-        if (admExists.password !== adminPassword) {
-          return console.log('Senha incorreta');
-        }
+        const passwordHash: PasswordHash = new PasswordHash(adminPassword);
+        const compareHash = await passwordHash.Compare(admExists.password);
+
+        if (compareHash !== true) return console.log('Senha incorreta');
 
         await prisma.adminLogin.create({
           data: {
@@ -119,7 +131,7 @@ export class UserAdmin {
       const adminData = await prisma.adminLogin.findMany();
       const adminEmail: string[] = [];
 
-      adminData.map((data) => {
+      adminData.map((data: { adminUser: string }) => {
         adminEmail.push(data.adminUser);
       });
 

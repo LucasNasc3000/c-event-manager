@@ -4,6 +4,7 @@ exports.UserAdmin = void 0;
 const prisma_1 = require("../../lib/prisma");
 const DateTime_1 = require("../utils/DateTime");
 const LogFactory_1 = require("../Logs/LogFactory");
+// import { PasswordHash } from './PasswordHash';
 class UserAdmin {
     constructor(adminEmail, adminPassword) {
         this.adminEmail = adminEmail;
@@ -43,6 +44,8 @@ class UserAdmin {
     async Create() {
         try {
             const admExists = await this.FindAdmin();
+            // const passwordHash: PasswordHash = new PasswordHash(this.adminPassword);
+            // const createHash = passwordHash.Hash();
             if (admExists === null) {
                 await prisma_1.prisma.employee.create({
                     data: {
@@ -80,9 +83,9 @@ class UserAdmin {
                 if (isLogged !== null) {
                     return console.log('Administrador com login ja ativo');
                 }
-                if (admExists.password !== adminPassword) {
-                    return console.log('Senha incorreta');
-                }
+                // const passwordHash: PasswordHash = new PasswordHash(adminPassword);
+                // const compareHash = passwordHash.Compare(admExists.password);
+                // if (compareHash !== true) return console.log('Senha incorreta');
                 await prisma_1.prisma.adminLogin.create({
                     data: {
                         adminUser: admExists.email,
