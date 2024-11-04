@@ -4,7 +4,7 @@ exports.UserAdmin = void 0;
 const prisma_1 = require("../../lib/prisma");
 const DateTime_1 = require("../utils/DateTime");
 const LogFactory_1 = require("../Logs/LogFactory");
-// import { PasswordHash } from './PasswordHash';
+const PasswordHash_1 = require("./PasswordHash");
 class UserAdmin {
     constructor(adminEmail, adminPassword) {
         this.adminEmail = adminEmail;
@@ -44,16 +44,21 @@ class UserAdmin {
     async Create() {
         try {
             const admExists = await this.FindAdmin();
-            // const passwordHash: PasswordHash = new PasswordHash(this.adminPassword);
-            // const createHash = passwordHash.Hash();
+            const passwordHash = new PasswordHash_1.PasswordHash(this.adminPassword);
+            const createHash = await passwordHash.Hash();
             if (admExists === null) {
-                await prisma_1.prisma.employee.create({
-                    data: {
-                        name: 'adm@30001',
-                        email: this.adminEmail,
-                        password: this.adminPassword,
-                    },
-                });
+                if (typeof createHash === 'string') {
+                    await prisma_1.prisma.employee.create({
+                        data: {
+                            name: 'adm@30001',
+                            email: this.adminEmail,
+                            password: this.adminPassword,
+                        },
+                    });
+                }
+                else {
+                    return console.log('Erro ao criar admin. A senha precisa ser uma string');
+                }
             }
             return console.log('Administrador ja cadastrado');
         }
@@ -83,9 +88,10 @@ class UserAdmin {
                 if (isLogged !== null) {
                     return console.log('Administrador com login ja ativo');
                 }
-                // const passwordHash: PasswordHash = new PasswordHash(adminPassword);
-                // const compareHash = passwordHash.Compare(admExists.password);
-                // if (compareHash !== true) return console.log('Senha incorreta');
+                const passwordHash = new PasswordHash_1.PasswordHash(adminPassword);
+                const compareHash = await passwordHash.Compare(admExists.password);
+                if (compareHash !== true)
+                    return console.log('Senha incorreta');
                 await prisma_1.prisma.adminLogin.create({
                     data: {
                         adminUser: admExists.email,
@@ -96,6 +102,7 @@ class UserAdmin {
                 await logLogin.Create();
                 return console.log('Administrador logado com sucesso');
             }
+            return console.log('Administrador não registrado');
         }
         catch (e) {
             return console.log('Erro ao logar como administrador');

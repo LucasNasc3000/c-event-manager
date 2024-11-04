@@ -121,6 +121,7 @@ export class UserAdmin {
         await logLogin.Create();
         return console.log('Administrador logado com sucesso');
       }
+      return console.log('Administrador não registrado');
     } catch (e) {
       return console.log('Erro ao logar como administrador');
     }

@@ -36,7 +36,6 @@ async function Index() {
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
         .option('Valores para cadastrar e pesquisar por usuarios (somente administrador): ', 'name, email')
         .option('-ca, --cadmin <adminUsername> <password>', 'Cadastra o administrador')
-        .option('-adel, --adminDelete <password>', 'Deleta o administrador')
         .option('-elog, --emplog <username> <password>', 'Login de usuarios')
         .option('-alog, --adminlog <adminuser> <adminpassword>', 'Login de administrador')
         .option('-eout, --elogout <email>', 'Logout para usuarios')

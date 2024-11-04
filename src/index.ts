@@ -57,7 +57,6 @@ export async function Index() {
       '-ca, --cadmin <adminUsername> <password>',
       'Cadastra o administrador',
     )
-    .option('-adel, --adminDelete <password>', 'Deleta o administrador')
     .option('-elog, --emplog <username> <password>', 'Login de usuarios')
     .option(
       '-alog, --adminlog <adminuser> <adminpassword>',
