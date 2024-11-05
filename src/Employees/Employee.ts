@@ -124,6 +124,10 @@ export class Employee implements UserAbstract {
       if (!name || name === '') return console.log('nome precisa ser enviado');
       if (name === process.env.ADMIN_NAME) UserAdmin.AdminLogout();
 
+      const empSearchByName = await employeeSearch.SearchByName(name, false);
+
+      if (!empSearchByName) return;
+
       const deleteEmployee = await prisma.employee.delete({
         where: {
           id: id,

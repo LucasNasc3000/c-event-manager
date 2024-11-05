@@ -92,6 +92,9 @@ class Employee {
                 return console.log('nome precisa ser enviado');
             if (name === process.env.ADMIN_NAME)
                 UserAdmin_1.UserAdmin.AdminLogout();
+            const empSearchByName = await employeeSearch.SearchByName(name, false);
+            if (!empSearchByName)
+                return;
             const deleteEmployee = await prisma_1.prisma.employee.delete({
                 where: {
                     id: id,

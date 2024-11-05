@@ -40,7 +40,7 @@ class EmployeeSearch {
             return console.log(e);
         }
     }
-    async SearchByName(name) {
+    async SearchByName(name, isSearch) {
         try {
             const admLoginVerify = await this._adminLoginVerify.Verify();
             this._verifyResult.Result(null, admLoginVerify);
@@ -51,7 +51,7 @@ class EmployeeSearch {
                     },
                 },
             });
-            return this.SearchResult(null, findEmployee, true, `Funcionarios com o nome "${name}" nao encontrados`);
+            return this.SearchResult(null, findEmployee, isSearch, `Funcionarios com o nome "${name}" nao encontrados`);
         }
         catch (e) {
             return console.log(e);

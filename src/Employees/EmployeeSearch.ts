@@ -55,7 +55,7 @@ export class EmployeeSearch implements EmployeeSearchAbstract {
     }
   }
 
-  public async SearchByName(name: string) {
+  public async SearchByName(name: string, isSearch: boolean) {
     try {
       const admLoginVerify = await this._adminLoginVerify.Verify();
       this._verifyResult.Result(null, admLoginVerify);
@@ -71,7 +71,7 @@ export class EmployeeSearch implements EmployeeSearchAbstract {
       return this.SearchResult(
         null,
         findEmployee,
-        true,
+        isSearch,
         `Funcionarios com o nome "${name}" nao encontrados`,
       );
     } catch (e) {

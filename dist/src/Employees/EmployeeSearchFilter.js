@@ -13,7 +13,7 @@ class EmployeeSearchFilter {
     SearchByEmail(_emailSearchValue) {
         throw new Error('Method not implemented.');
     }
-    SearchByName(_nameSearchValue) {
+    SearchByName(_nameSearchValue, _isSearch) {
         throw new Error('Method not implemented.');
     }
     async Filter() {
@@ -22,7 +22,7 @@ class EmployeeSearchFilter {
                 await this.employeeSearch.SearchById(this.data, true);
                 break;
             case 'name':
-                await this.employeeSearch.SearchByName(this.data);
+                await this.employeeSearch.SearchByName(this.data, true);
                 break;
             case 'email':
                 await this.employeeSearch.SearchByEmail(this.data);

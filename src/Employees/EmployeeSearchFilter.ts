@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { EmployeeSearchAbstract } from '../interfaces/EmployeeSearchAbstract';
@@ -14,7 +15,7 @@ export class EmployeeSearchFilter implements EmployeeSearchAbstract {
   SearchByEmail(_emailSearchValue: string): Promise<void | object> {
     throw new Error('Method not implemented.');
   }
-  SearchByName(_nameSearchValue: string): Promise<void | object> {
+  SearchByName(_nameSearchValue: string, _isSearch?: boolean): Promise<void | object> {
     throw new Error('Method not implemented.');
   }
 
@@ -25,7 +26,7 @@ export class EmployeeSearchFilter implements EmployeeSearchAbstract {
         break;
 
       case 'name':
-        await this.employeeSearch.SearchByName(this.data);
+        await this.employeeSearch.SearchByName(this.data, true);
         break;
 
       case 'email':
