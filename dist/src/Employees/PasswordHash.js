@@ -20,7 +20,7 @@ class PasswordHash {
     }
     async Compare(hash) {
         try {
-            const passwordCheck = await bcryptjs_1.default.compare(hash, this._password);
+            const passwordCheck = await bcryptjs_1.default.compare(this._password, hash);
             return passwordCheck;
         }
         catch (e) {

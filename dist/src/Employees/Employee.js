@@ -10,6 +10,7 @@ const EmployeeLoginVerify_1 = require("../LoginVerify/EmployeeLoginVerify");
 const AdminLoginVerify_1 = require("../LoginVerify/AdminLoginVerify");
 const VerifyResult_1 = require("../LoginVerify/VerifyResult");
 const PasswordHash_1 = require("./PasswordHash");
+const UserAdmin_1 = require("./UserAdmin");
 class Employee {
     constructor(_name = '', _email = '', _password = '', _adminLoginVerify, _verifyResult) {
         this._name = _name;
@@ -79,7 +80,7 @@ class Employee {
             return console.log(e);
         }
     }
-    async Delete(id) {
+    async Delete(id, name) {
         try {
             const admLoginVerify = await this._adminLoginVerify.Verify();
             this._verifyResult.Result(null, admLoginVerify);
@@ -87,6 +88,10 @@ class Employee {
             const admVerifyResult = new VerifyResult_1.VerifyResult();
             const employeeSearch = new EmployeeSearch_1.EmployeeSearch(admVerify, admVerifyResult);
             await employeeSearch.SearchById(id, false);
+            if (!name || name === '')
+                return console.log('nome precisa ser enviado');
+            if (name === process.env.ADMIN_NAME)
+                UserAdmin_1.UserAdmin.AdminLogout();
             const deleteEmployee = await prisma_1.prisma.employee.delete({
                 where: {
                     id: id,
@@ -116,8 +121,8 @@ class Employee {
             });
             if (!employeeVerify)
                 return console.log('Funcionario não registrado');
-            const passwordHash = new PasswordHash_1.PasswordHash(employeeVerify.password);
-            const hashCompare = await passwordHash.Compare(this._password);
+            const passwordHash = new PasswordHash_1.PasswordHash(this._password);
+            const hashCompare = await passwordHash.Compare(employeeVerify.password);
             if (hashCompare !== true)
                 return console.log('Senha incorreta');
             await prisma_1.prisma.userLogin.create({

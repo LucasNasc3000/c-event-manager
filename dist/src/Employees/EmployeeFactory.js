@@ -20,18 +20,19 @@ class EmployeeFactory {
         if (fieldsCheck === false) {
             return console.log('Email, nome ou senha nao foram preenchidos');
         }
-        if (!this._name.includes('adm')) {
+        if (this._name !== process.env.ADMIN_NAME) {
             const empl = new Employee_1.Employee(this._name, this._email, this._password, admLoginVerify, verifyResult);
             await empl.Create();
         }
-        await UserAdmin_1.UserAdmin.CreateAdmin(this._email, this._password);
+        await UserAdmin_1.UserAdmin.CreateAdmin(this._name, this._email, this._password);
     }
     async Login() {
+        if (this._email.includes('adm')) {
+            const adminLogin = await UserAdmin_1.UserAdmin.AdminLogin(this._name, this._email, this._password);
+            return adminLogin;
+        }
         const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
         const verifyResult = new VerifyResult_1.VerifyResult();
-        if (this._email.includes('adm')) {
-            return UserAdmin_1.UserAdmin.AdminLogin(this._email, this._password);
-        }
         const empl = new Employee_1.Employee('', this._email, this._password, admLoginVerify, verifyResult);
         const employeeLogin = empl.Login();
         return employeeLogin;
@@ -62,11 +63,11 @@ class EmployeeFactory {
         const empl = new Employee_1.Employee('', '', '', admLoginVerify, verifyResult);
         await empl.Update(id, data);
     }
-    async Delete(id) {
+    async Delete(id, name) {
         const admLoginVerify = new AdminLoginVerify_1.AdminLoginVerify();
         const verifyResult = new VerifyResult_1.VerifyResult();
-        const empl = new Employee_1.Employee('', '', '', admLoginVerify, verifyResult);
-        await empl.Delete(id);
+        const empl = new Employee_1.Employee(name, '', '', admLoginVerify, verifyResult);
+        await empl.Delete(id, name);
     }
     async Search(searchParam, searchValue) {
         const admVerify = new AdminLoginVerify_1.AdminLoginVerify();

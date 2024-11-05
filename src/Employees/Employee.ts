@@ -9,6 +9,7 @@ import { Auth, AuthResult } from '../interfaces/Auth';
 import { AdminLoginVerify } from '../LoginVerify/AdminLoginVerify';
 import { VerifyResult } from '../LoginVerify/VerifyResult';
 import { PasswordHash } from './PasswordHash';
+import { UserAdmin } from './UserAdmin';
 
 export class Employee implements UserAbstract {
   constructor(
@@ -106,7 +107,7 @@ export class Employee implements UserAbstract {
     }
   }
 
-  public async Delete(id: string) {
+  public async Delete(id: string, name: string) {
     try {
       const admLoginVerify = await this._adminLoginVerify.Verify();
       this._verifyResult.Result(null, admLoginVerify);
@@ -119,6 +120,9 @@ export class Employee implements UserAbstract {
         admVerifyResult,
       );
       await employeeSearch.SearchById(id, false);
+
+      if (!name || name === '') return console.log('nome precisa ser enviado');
+      if (name === process.env.ADMIN_NAME) UserAdmin.AdminLogout();
 
       const deleteEmployee = await prisma.employee.delete({
         where: {
@@ -158,10 +162,8 @@ export class Employee implements UserAbstract {
 
       if (!employeeVerify) return console.log('Funcionario não registrado');
 
-      const passwordHash: PasswordHash = new PasswordHash(
-        employeeVerify.password,
-      );
-      const hashCompare = await passwordHash.Compare(this._password);
+      const passwordHash: PasswordHash = new PasswordHash(this._password);
+      const hashCompare = await passwordHash.Compare(employeeVerify.password);
 
       if (hashCompare !== true) return console.log('Senha incorreta');
 

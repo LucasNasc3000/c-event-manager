@@ -11,7 +11,7 @@ const VerifyResult_1 = require("./LoginVerify/VerifyResult");
 const EventSearch_1 = require("./Events/EventSearch");
 async function Decisions(options) {
     if (options.cadmin) {
-        const uf = new EmployeeFactory_1.EmployeeFactory('oAdmin_01', process.argv[3], process.argv[4]);
+        const uf = new EmployeeFactory_1.EmployeeFactory(process.argv[3], process.argv[4], process.argv[5]);
         uf.Create();
     }
     if (options.adminlog) {
@@ -65,7 +65,7 @@ async function Decisions(options) {
     }
     if (options.deleteUsers) {
         const uf = new EmployeeFactory_1.EmployeeFactory();
-        uf.Delete(process.argv[3]);
+        uf.Delete(process.argv[3], process.argv[4]);
     }
     if (options.createEvent) {
         const adminVerify = new AdminLoginVerify_1.AdminLoginVerify();

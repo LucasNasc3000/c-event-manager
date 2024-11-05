@@ -6,7 +6,8 @@ const DateTime_1 = require("../utils/DateTime");
 const LogFactory_1 = require("../Logs/LogFactory");
 const PasswordHash_1 = require("./PasswordHash");
 class UserAdmin {
-    constructor(adminEmail, adminPassword) {
+    constructor(name, adminEmail, adminPassword) {
+        this.name = name;
         this.adminEmail = adminEmail;
         this.adminPassword = adminPassword;
     }
@@ -17,9 +18,8 @@ class UserAdmin {
                     email: this.adminEmail,
                 },
             });
-            if (admExists === null) {
-                return console.log('Administrador não encontrado');
-            }
+            if (admExists === null)
+                return null;
             return admExists;
         }
         catch (e) {
@@ -50,11 +50,12 @@ class UserAdmin {
                 if (typeof createHash === 'string') {
                     await prisma_1.prisma.employee.create({
                         data: {
-                            name: 'adm@30001',
+                            name: this.name,
                             email: this.adminEmail,
-                            password: this.adminPassword,
+                            password: createHash,
                         },
                     });
+                    return;
                 }
                 else {
                     return console.log('Erro ao criar admin. A senha precisa ser uma string');
@@ -66,9 +67,9 @@ class UserAdmin {
             return console.log('Erro ao criar administrador');
         }
     }
-    static async CreateAdmin(adminEmail, adminPassword) {
+    static async CreateAdmin(name, adminEmail, adminPassword) {
         try {
-            const admin = new UserAdmin(adminEmail, adminPassword);
+            const admin = new UserAdmin(name, adminEmail, adminPassword);
             const admExists = await admin.FindAdmin();
             if (admExists)
                 return admExists.email;
@@ -79,9 +80,9 @@ class UserAdmin {
             return console.log('Erro ao criar novo administrador');
         }
     }
-    static async AdminLogin(adminEmail, adminPassword) {
+    static async AdminLogin(name, adminEmail, adminPassword) {
         try {
-            const admin = new UserAdmin(adminEmail, adminPassword);
+            const admin = new UserAdmin(name, adminEmail, adminPassword);
             const admExists = await admin.FindAdmin();
             const isLogged = await admin.IsLogged();
             if (admExists) {

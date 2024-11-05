@@ -12,9 +12,9 @@ import { EventSearch } from './Events/EventSearch';
 export async function Decisions(options: OptionValues) {
   if (options.cadmin) {
     const uf = new EmployeeFactory(
-      'oAdmin_01',
       process.argv[3],
       process.argv[4],
+      process.argv[5],
     );
     uf.Create();
   }
@@ -95,7 +95,7 @@ export async function Decisions(options: OptionValues) {
 
   if (options.deleteUsers) {
     const uf = new EmployeeFactory();
-    uf.Delete(process.argv[3]);
+    uf.Delete(process.argv[3], process.argv[4]);
   }
 
   if (options.createEvent) {

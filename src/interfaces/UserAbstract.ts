@@ -8,7 +8,7 @@ export interface UserAbstract {
   ):
     | Promise<void | null>
     | Promise<'id nao informado' | 'nenhum dado informado' | undefined>;
-  Delete(id: string): Promise<void>;
+  Delete(id: string, name: string): Promise<void>;
   Login(): Promise<void>;
   Logout(): Promise<void>;
 }

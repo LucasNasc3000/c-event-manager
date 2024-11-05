@@ -14,7 +14,7 @@ export class PasswordHash {
 
   async Compare(hash: string) {
     try {
-      const passwordCheck = await bcrypt.compare(hash, this._password);
+      const passwordCheck = await bcrypt.compare(this._password, hash);
       return passwordCheck;
     } catch (e) {
       return e;

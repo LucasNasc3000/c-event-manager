@@ -23,7 +23,7 @@ export class EmployeeFactory implements UserAbstract {
       return console.log('Email, nome ou senha nao foram preenchidos');
     }
 
-    if (!this._name.includes('adm')) {
+    if (this._name !== process.env.ADMIN_NAME) {
       const empl = new Employee(
         this._name,
         this._email,
@@ -33,16 +33,22 @@ export class EmployeeFactory implements UserAbstract {
       );
       await empl.Create();
     }
-    await UserAdmin.CreateAdmin(this._email, this._password);
+    await UserAdmin.CreateAdmin(this._name, this._email, this._password);
   }
 
   public async Login() {
+    if (this._email.includes('adm')) {
+      const adminLogin = await UserAdmin.AdminLogin(
+        this._name,
+        this._email,
+        this._password,
+      );
+
+      return adminLogin;
+    }
+
     const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
     const verifyResult: VerifyResult = new VerifyResult();
-
-    if (this._email.includes('adm')) {
-      return UserAdmin.AdminLogin(this._email, this._password);
-    }
 
     const empl = new Employee(
       '',
@@ -108,18 +114,18 @@ export class EmployeeFactory implements UserAbstract {
     await empl.Update(id, data);
   }
 
-  public async Delete(id: string) {
+  public async Delete(id: string, name: string) {
     const admLoginVerify: AdminLoginVerify = new AdminLoginVerify();
     const verifyResult: VerifyResult = new VerifyResult();
 
     const empl: Employee = new Employee(
-      '',
+      name,
       '',
       '',
       admLoginVerify,
       verifyResult,
     );
-    await empl.Delete(id);
+    await empl.Delete(id, name);
   }
 
   public async Search(searchParam: string, searchValue: string) {

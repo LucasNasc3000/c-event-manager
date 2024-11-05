@@ -25,7 +25,7 @@ async function Index() {
         .option('-cs, --createUser <values>', 'Cria um novo usuario')
         .option('-ru, --readUsers', 'Mostra todos os usuarios')
         .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados do usuario')
-        .option('-du, --deleteUsers <id>', 'Deleta um usuario')
+        .option('-du, --deleteUsers <id> <name>', 'Deleta um usuario')
         .option('-su, --searchUser <searchUserParam> <searchUserValue>', 'Pesquisa um usuario')
         .option('-list, --logsList', 'Lista todos os registro de login')
         .option('-outs, --logoutsList', 'Lista todos os registro de logout')

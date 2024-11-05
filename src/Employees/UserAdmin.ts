@@ -4,10 +4,12 @@ import { LogFactory } from '../Logs/LogFactory';
 import { PasswordHash } from './PasswordHash';
 
 export class UserAdmin {
+  private name: string;
   private adminEmail: string;
   private adminPassword: string;
 
-  private constructor(adminEmail: string, adminPassword: string) {
+  private constructor(name: string, adminEmail: string, adminPassword: string) {
+    this.name = name;
     this.adminEmail = adminEmail;
     this.adminPassword = adminPassword;
   }
@@ -20,9 +22,7 @@ export class UserAdmin {
         },
       });
 
-      if (admExists === null) {
-        return console.log('Administrador não encontrado');
-      }
+      if (admExists === null) return null;
 
       return admExists;
     } catch (e) {
@@ -56,11 +56,13 @@ export class UserAdmin {
         if (typeof createHash === 'string') {
           await prisma.employee.create({
             data: {
-              name: 'adm@30001',
+              name: this.name,
               email: this.adminEmail,
-              password: this.adminPassword,
+              password: createHash,
             },
           });
+
+          return;
         } else {
           return console.log(
             'Erro ao criar admin. A senha precisa ser uma string',
@@ -74,9 +76,13 @@ export class UserAdmin {
     }
   }
 
-  static async CreateAdmin(adminEmail: string, adminPassword: string) {
+  static async CreateAdmin(
+    name: string,
+    adminEmail: string,
+    adminPassword: string,
+  ) {
     try {
-      const admin = new UserAdmin(adminEmail, adminPassword);
+      const admin = new UserAdmin(name, adminEmail, adminPassword);
       const admExists = await admin.FindAdmin();
 
       if (admExists) return admExists.email;
@@ -88,9 +94,13 @@ export class UserAdmin {
     }
   }
 
-  static async AdminLogin(adminEmail: string, adminPassword: string) {
+  static async AdminLogin(
+    name: string,
+    adminEmail: string,
+    adminPassword: string,
+  ) {
     try {
-      const admin = new UserAdmin(adminEmail, adminPassword);
+      const admin = new UserAdmin(name, adminEmail, adminPassword);
       const admExists = await admin.FindAdmin();
       const isLogged = await admin.IsLogged();
 
