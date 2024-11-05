@@ -27,8 +27,8 @@ export async function Index() {
     .option('Usuarios (somente administrador): ')
     .option('-cs, --createUser <values>', 'Cria um novo usuario')
     .option('-ru, --readUsers', 'Mostra todos os usuarios')
-    .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados do usuario')
-    .option('-du, --deleteUsers <id> <name>', 'Deleta um usuario')
+    .option('-uu, --updateUser <id> <values>', 'Atualiza os dados do usuario')
+    .option('-du, --deleteUser <id> <name>', 'Deleta um usuario')
     .option(
       '-su, --searchUser <searchUserParam> <searchUserValue>',
       'Pesquisa um usuario',
@@ -57,7 +57,7 @@ export async function Index() {
       '-ca, --cadmin <adminUsername> <password>',
       'Cadastra o administrador',
     )
-    .option('-elog, --emplog <username> <password>', 'Login de usuarios')
+    .option('-elog, --emplog <useremail> <password>', 'Login de usuarios')
     .option(
       '-alog, --adminlog <adminuser> <adminpassword>',
       'Login de administrador',
@@ -72,5 +72,6 @@ export async function Index() {
 }
 
 // mudar o nome da pasta
+// verificar inconsistencias
 
 Index();

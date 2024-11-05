@@ -24,8 +24,8 @@ async function Index() {
         .option('Usuarios (somente administrador): ')
         .option('-cs, --createUser <values>', 'Cria um novo usuario')
         .option('-ru, --readUsers', 'Mostra todos os usuarios')
-        .option('-uu, --updateUsers <id> <values>', 'Atualiza os dados do usuario')
-        .option('-du, --deleteUsers <id> <name>', 'Deleta um usuario')
+        .option('-uu, --updateUser <id> <values>', 'Atualiza os dados do usuario')
+        .option('-du, --deleteUser <id> <name>', 'Deleta um usuario')
         .option('-su, --searchUser <searchUserParam> <searchUserValue>', 'Pesquisa um usuario')
         .option('-list, --logsList', 'Lista todos os registro de login')
         .option('-outs, --logoutsList', 'Lista todos os registro de logout')
@@ -36,7 +36,7 @@ async function Index() {
         .option('Dados relativos ao cadastro e pesquisa de eventos: ', 'date, hour, name, hosts, modality, location? plattform?')
         .option('Valores para cadastrar e pesquisar por usuarios (somente administrador): ', 'name, email')
         .option('-ca, --cadmin <adminUsername> <password>', 'Cadastra o administrador')
-        .option('-elog, --emplog <username> <password>', 'Login de usuarios')
+        .option('-elog, --emplog <useremail> <password>', 'Login de usuarios')
         .option('-alog, --adminlog <adminuser> <adminpassword>', 'Login de administrador')
         .option('-eout, --elogout <email>', 'Logout para usuarios')
         .option('-out, --logout', 'Logout do administrador');
@@ -46,4 +46,5 @@ async function Index() {
 }
 exports.Index = Index;
 // mudar o nome da pasta
+// verificar inconsistencias
 Index();

@@ -34,10 +34,18 @@ async function Decisions(options) {
         const uf = new EmployeeFactory_1.EmployeeFactory(process.argv[3], process.argv[4], process.argv[5]);
         uf.Create();
     }
-    if (options.updateUsers) {
+    if (options.updateUser) {
         const uf = new EmployeeFactory_1.EmployeeFactory();
         const data = [process.argv[4], process.argv[5]];
         uf.Update(process.argv[3], data);
+    }
+    if (options.readUsers) {
+        const uf = new EmployeeFactory_1.EmployeeFactory();
+        uf.List();
+    }
+    if (options.deleteUser) {
+        const uf = new EmployeeFactory_1.EmployeeFactory();
+        uf.Delete(process.argv[3], process.argv[4]);
     }
     if (options.searchUser) {
         const uf = new EmployeeFactory_1.EmployeeFactory();
@@ -58,14 +66,6 @@ async function Decisions(options) {
     if (options.logoutsSearch) {
         const logSearch = new LogFactory_1.LogFactory(false, process.argv[3], process.argv[4]);
         logSearch.Filter();
-    }
-    if (options.readUsers) {
-        const uf = new EmployeeFactory_1.EmployeeFactory();
-        uf.List();
-    }
-    if (options.deleteUsers) {
-        const uf = new EmployeeFactory_1.EmployeeFactory();
-        uf.Delete(process.argv[3], process.argv[4]);
     }
     if (options.createEvent) {
         const adminVerify = new AdminLoginVerify_1.AdminLoginVerify();
