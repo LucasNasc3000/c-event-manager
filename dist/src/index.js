@@ -1,3 +1,4 @@
+#!/usr/bin/ env node
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -39,7 +40,8 @@ async function Index() {
         .option('-elog, --emplog <useremail> <password>', 'Login de usuarios')
         .option('-alog, --adminlog <adminuser> <adminpassword>', 'Login de administrador')
         .option('-eout, --elogout <email>', 'Logout para usuarios')
-        .option('-out, --logout', 'Logout do administrador');
+        .option('-out, --logout', 'Logout do administrador')
+        .option('-p, --params', 'Lista todos os parâmetros de funcionários e eventos');
     program.parse(process.argv);
     const options = program.opts();
     (0, Decisions_1.Decisions)(options);

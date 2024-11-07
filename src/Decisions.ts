@@ -178,4 +178,39 @@ export async function Decisions(options: OptionValues) {
     );
     filter.Filter();
   }
+
+  if (options.params) {
+    console.log('Exemplos: ');
+
+    const employee = {
+      entity: 'EMPLOYEES',
+      name: 'Osvaldo - Nome único',
+      email: 'osvaldo@mail.com - Email único',
+      password: '12345678',
+    };
+
+    const logs = {
+      entity: 'LOGS',
+      email: 'osvaldo@mail.com',
+      loginOrlogoutDate: '03/03/2023',
+      loginOrlogoutHour: '18:30:00',
+    };
+
+    const events = {
+      entity: 'EVENTS',
+      eventCreator: 'Gilberto',
+      date: '03/03/2023',
+      hour: '18:30:00',
+      name: 'boas-vindas',
+      hosts: 'João,Gabriel,Paula',
+      modality: 'online/presencial',
+      location: 'Rua dos Tatus, 256 - São Paulo - Brasil/null',
+      plattform: 'google-meet/null',
+      eventCreatorId: 'uuid do funcionário que criou o evento',
+    };
+
+    console.table(employee);
+    console.table(logs);
+    console.table(events);
+  }
 }

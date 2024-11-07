@@ -1,3 +1,5 @@
+#!/usr/bin/ env node
+
 /* eslint-disable no-case-declarations */
 import { Command } from 'commander';
 import figlet from 'figlet';
@@ -63,7 +65,11 @@ export async function Index() {
       'Login de administrador',
     )
     .option('-eout, --elogout <email>', 'Logout para usuarios')
-    .option('-out, --logout', 'Logout do administrador');
+    .option('-out, --logout', 'Logout do administrador')
+    .option(
+      '-p, --params',
+      'Lista todos os parâmetros de funcionários e eventos',
+    );
   program.parse(process.argv);
 
   const options = program.opts();
