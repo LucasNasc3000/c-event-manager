@@ -6,9 +6,12 @@ O C-Event Manager atua como um CRUD e também oferece a funcionalidade de pesqui
 O controle de acesso é feito com o uso de duas tabelas no banco de dados, uma para o funcionário e outra para o administrador. Quando o administrador ou um funcionário realiza o login é feito um registro em uma destas tabelas e o mesmo serve para validar todas as demais operações com eventos e/ou funcionários. Somente um usuário pode realizar o login por vez, seja ele funcionário ou administrador. O logout é feito com a exclusão do registro em uma das duas tabelas no banco de dados mencionadas acima.
 
 ## Status
-Em desenvolvimento 🛠️
+Finalizado ✔️
 
-# Tecnologias utilizadas
+## Como usar
+1. Clone o repositório em uma pasta em seu PC --> `git clone `
+
+## Tecnologias utilizadas
 - TypeScript
 - Node js
 - Commander js
