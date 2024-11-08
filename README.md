@@ -8,8 +8,11 @@ O controle de acesso é feito com o uso de duas tabelas no banco de dados, uma p
 ## Status
 Finalizado ✔️
 
-## Como usar
-1. Clone o repositório em uma pasta em seu PC --> `git clone `
+## Como usar (apenas com o node js)
+1. Clone o repositório em um diretório em seu PC --> `git clone https://github.com/LucasNasc3000/c-event-manager`
+2. Instale as dependências --> `npm i`
+3. Veja todos os comandos disponíveis rodando este comando dentro do diretório raiz do projeto --> `node dist/src/index.js --help`
+4. Para ver os dados das entidades --> `node dist/src/index.js --params`
 
 ## Tecnologias utilizadas
 - TypeScript
